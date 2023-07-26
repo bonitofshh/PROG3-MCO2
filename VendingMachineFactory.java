@@ -123,7 +123,7 @@ public class VendingMachineFactory {
                                         Item tempItem = new Item(tempName, tempCalories, tempPrice); //creates temporary instance of item with user inputs of name, calories, and price
                                         Item[] itemList = new Item[20];
                                         for (int j = 0; i < tempQty; j++){
-                                            itemList[i] = tempItem; 
+                                            itemList[j] = tempItem; 
                                         }
                                         ItemSlot temp = new ItemSlot(itemList, tempItem); //creates temporary instance slot based on inputted quantity and item 
                                         VM.getSlotList()[i] = temp; //saves value to the slot of the vending machine 
