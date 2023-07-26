@@ -7,7 +7,7 @@
 
 
 public class ItemSlot {
-    private int quantity;
+    private Item[] itemList;
     private Item item;
     
 
@@ -17,45 +17,52 @@ public class ItemSlot {
      * @param item item object
      */
 
-    public ItemSlot(int quantity, Item item) {
-        this.quantity = quantity;
+    public ItemSlot(Item[] itemList, Item item) {
+        this.itemList = itemList;
         this.item = item;
     }
 
     /**
-     * A class that creates an ItemSlot object without quantity.
-     * @param quantity number of items
-     * @param item item object
+     * Gets the item of the slot. 
+     * @return the item of the slot.
      */
-    public ItemSlot(Item item) {
-        this.quantity = 0;
-        this.item = item;
-    }
-    
-    /**
-     * Gets current quantity of items in the slot. 
-     * @return the number of items in the slot.
-     */
-    public int getQuantity() {
-        return quantity;
-    }
-
-    
-    /**
-     * Gets the item in the slot
-     * @return Item object in the slot
-     */
-
     public Item getItem() {
         return item;
     }
-
+    
     /**
-     * Sets the quantity of items in the item slot.
-     * @param quantity number of items
+     * Gets the list of items in the slot
+     * @return ItemList of the slot
      */
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public Item[] getItemList() {
+        return itemList;
     }
+
+    /**
+     * Adds quantity of item objects in the item slot.
+     * @param quantity number of items
+     */
+    public void addStock (Item item, int quantity){
+        for (int i = 0; i < 20; i++) {
+            if (itemList[i] == null && quantity > 0) {
+                itemList[i] = item;
+                quantity--;
+            }
+        }
+    }
+
+    /**
+     * Gets the number of objects in a slot
+     * @return number of objects
+     */
+    public int getQuantity() {
+        int count = 0;
+        for (int i = 0; i < 20; i++) {
+            if (itemList[i] != null) count++;
+        }
+    
+        return count;
+    }
+
 }
