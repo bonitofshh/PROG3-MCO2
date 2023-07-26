@@ -43,11 +43,25 @@ public class ItemSlot {
      * Adds quantity of item objects in the item slot.
      * @param quantity number of items
      */
-    public void addStock (Item item, int quantity){
+    public void addStock (int quantity){
         for (int i = 0; i < 20; i++) {
             if (itemList[i] == null && quantity > 0) {
                 itemList[i] = item;
                 quantity--;
+            }
+        }
+    }
+
+    /**
+     * Removes one instance of the item
+     * @param item the item to be removed
+     */
+    public void removeOneStock (){
+        for (int i = 0; i < 20; i++){
+            if (itemList[i] == null){
+                int index = i-1;
+                itemList[index] = null;
+                i = 20;
             }
         }
     }
@@ -64,5 +78,4 @@ public class ItemSlot {
     
         return count;
     }
-
 }

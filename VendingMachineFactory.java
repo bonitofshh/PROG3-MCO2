@@ -12,6 +12,7 @@ public class VendingMachineFactory {
         Item water = new Item("Water", 20, 20);
         Item hotdog = new Item("Hotdog", 105, 35);
 
+        //TODO: Change into for loops (ref. Line 92)
         ItemSlot breadSlot = new ItemSlot(15, bread);
         ItemSlot baconSlot = new ItemSlot(13, bacon);
         ItemSlot chickenSlot = new ItemSlot(11, chicken);
@@ -88,7 +89,11 @@ public class VendingMachineFactory {
                                         }
                                         
                                         Item tempItem = new Item(tempName, tempCalories, tempPrice); //creates temporary instance of item with user inputs of name, calories, and price
-                                        ItemSlot temp = new ItemSlot(tempQty, tempItem); //creates temporary instance slot based on inputted quantity and item 
+                                        Item[] itemList;
+                                        for (int j = 0; i < tempQty; j++){
+                                            itemList[i] = tempItem; 
+                                        }
+                                        ItemSlot temp = new ItemSlot(itemList, tempItem); //creates temporary instance slot based on inputted quantity and item 
                                         VM.getSlotList()[i] = temp; //saves value to the slot of the vending machine 
                                         
                                     }

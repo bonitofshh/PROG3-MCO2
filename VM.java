@@ -89,7 +89,7 @@ public class VM {
         // Create a temp copy of the slotList array
         ItemSlot[] temp = new ItemSlot[slotList.length];
         for (int i = 0; i < slotList.length; i++) {
-            temp[i] = new ItemSlot(slotList[i].getQuantity(), slotList[i].getItem());
+            temp[i] = new ItemSlot(slotList[i].getItemList(), slotList[i].getItem());
         }
 
         // Update the startInventoryList with the temp copy
@@ -209,7 +209,7 @@ public class VM {
             
         }
         System.out.println("You have received [1] [" + slotList[index].getItem().getName() +"]");
-        slotList[index].setQuantity(slotList[index].getQuantity() - 1);
+        slotList[index].removeOneStock();
     }
    
     /**
@@ -439,7 +439,7 @@ public class VM {
             if (addStock == 0) System.out.println("Stocking cancelled.");
             else if (slotList[index].getQuantity() + addStock > 20) System.out.println("Number of items cannot exceed 20!");
             else {
-                slotList[index].setQuantity(slotList[index].getQuantity() + addStock);
+                slotList[index].addStock(addStock);
                 System.out.println("[" + addStock + "] stocks of [" + name + "] have been successfully added.");
                 transactionList.clear();
                 setStartInventory(getSlotList()); 
