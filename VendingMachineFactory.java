@@ -13,46 +13,14 @@ public class VendingMachineFactory {
         Item hotdog = new Item("Hotdog", 105, 35);
 
         //TODO: Change into for loops (ref. Line 92)
-        Item[] breadList = new Item[20];
-        for(int i = 0; i < 15; i ++){
-            breadList[i] = bread;
-        }
-        ItemSlot breadSlot = new ItemSlot(breadList, bread);
-        Item[] baconList = new Item[20];
-        for(int i = 0; i < 13; i ++){
-            baconList[i] = bacon;
-        }
-        ItemSlot baconSlot = new ItemSlot(baconList, bacon);
-        Item[] chickenList = new Item[20];
-        for(int i = 0; i < 11; i ++){
-            chickenList[i] = chicken;
-        }
-        ItemSlot chickenSlot = new ItemSlot(chickenList, chicken);
-        Item[] sausageList = new Item[20];
-        for(int i = 0; i < 18; i ++){
-            sausageList[i] = sausage;
-        }
-        ItemSlot sausageSlot = new ItemSlot(sausageList, sausage);
-        Item[] chipsList = new Item[20];
-        for(int i = 0; i < 14; i ++){
-            chipsList[i] = chips;
-        }
-        ItemSlot chipsSlot = new ItemSlot(chipsList, chips);
-        Item[] spriteList = new Item[20];
-        for(int i = 0; i < 17; i ++){
-            spriteList[i] = sprite;
-        }
-        ItemSlot spriteSlot = new ItemSlot(spriteList, sprite);
-        Item[] waterList = new Item[20];
-        for(int i = 0; i < 12; i ++){
-            waterList[i] = water;
-        }
-        ItemSlot waterSlot = new ItemSlot(waterList, water);
-        Item[] hotdogList = new Item[20];
-        for(int i = 0; i < 10; i ++){
-            hotdogList[i] = hotdog;
-        }
-        ItemSlot hotdogSlot = new ItemSlot(hotdogList, hotdog);
+        ItemSlot breadSlot = new ItemSlot(15, bread);
+        ItemSlot baconSlot = new ItemSlot(13, bacon);
+        ItemSlot chickenSlot = new ItemSlot(11, chicken);
+        ItemSlot sausageSlot = new ItemSlot(18, sausage);
+        ItemSlot chipsSlot = new ItemSlot(14, chips);
+        ItemSlot spriteSlot = new ItemSlot(17, sprite);
+        ItemSlot waterSlot = new ItemSlot(12, water);
+        ItemSlot hotdogSlot = new ItemSlot(10, hotdog);
 
         ItemSlot slots[] = {breadSlot, baconSlot, chickenSlot, sausageSlot, chipsSlot, spriteSlot, waterSlot, hotdogSlot};
         Money moneyBox = new Money(10, 10, 10, 10, 10, 10, 10, 10, 10, 0);
@@ -121,7 +89,7 @@ public class VendingMachineFactory {
                                         }
                                         
                                         Item tempItem = new Item(tempName, tempCalories, tempPrice); //creates temporary instance of item with user inputs of name, calories, and price
-                                        Item[] itemList = new Item[20];
+                                        Item[] itemList;
                                         for (int j = 0; i < tempQty; j++){
                                             itemList[j] = tempItem; 
                                         }
