@@ -55,7 +55,7 @@ public class VendingMachineFactory {
         ItemSlot hotdogSlot = new ItemSlot(hotdogList, hotdog);
 
         ItemSlot slots[] = {breadSlot, baconSlot, chickenSlot, sausageSlot, chipsSlot, spriteSlot, waterSlot, hotdogSlot};
-        Money moneyBox = new Money(10, 10, 10, 10, 10, 10, 10, 10, 10, 0);
+        Money moneyBox = new Money(10, 10, 10, 10, 10, 10);
         ArrayList<Transactions> transactionList = new ArrayList<Transactions>();
 
         VM bakery = new VM("Egg Drop", slots, slots, moneyBox);

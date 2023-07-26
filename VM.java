@@ -121,13 +121,9 @@ public class VM {
         System.out.println("[1] 1 Peso coin/s");
         System.out.println("[2] 5 Peso coin/s");
         System.out.println("[3] 10 Peso coin/s");
-        System.out.println("[4] 20 Peso coin/s");
-        System.out.println("[5] 20 Peso bill/s");
-        System.out.println("[6] 50 Peso bill/s");
-        System.out.println("[7] 100 Peso bill/s");
-        System.out.println("[8] 200 Peso bill/s");
-        System.out.println("[9] 500 Peso bill/s");
-        System.out.println("[10] 1000 Peso bill/s");
+        System.out.println("[4] 20 Peso bill/s");
+        System.out.println("[5] 50 Peso bill/s");
+        System.out.println("[6] 100 Peso bill/s");
         System.out.print("[0] Continue: ");
         
         while(choice != 0){
@@ -145,33 +141,17 @@ public class VM {
                     System.out.print("Added 10 Peso coin! : ");
                     money.setCoin10(money.getCoin10() + 1); 
                     break;
-                case 4: 
-                    System.out.print("Added 20 Peso coin! : ");
-                    money.setCoin20(money.getCoin20() + 1); 
-                    break;
-                case 5:
+                case 4:
                     System.out.print("Added 20 Peso bill! : ");
                     money.setBill20(money.getBill20() + 1); 
                     break;
-                case 6: 
+                case 5: 
                     System.out.print("Added 50 Peso bill! : ");
                     money.setBill50(money.getBill50() + 1); 
                     break;
-                case 7:
+                case 6:
                     System.out.print("Added 100 Peso bill! : ");
                     money.setBill100(money.getBill100() + 1); 
-                    break;
-                case 8: 
-                    System.out.print("Added 200 Peso bill! : ");
-                    money.setBill200(money.getBill200() + 1); ; 
-                    break;
-                case 9:
-                    System.out.print("Inserted 500 Peso bill! : ");
-                    money.setBill500(money.getBill500() + 1); 
-                    break;
-                case 10: 
-                    System.out.print("Inserted 1000 Peso bill! : ");
-                    money.setBill1000(money.getBill1000() + 1); 
                     break;
                 case 0: 
                     break;
@@ -255,32 +235,24 @@ public class VM {
             return false;
         } 
 
-        for (int i = 1; i <= 10; i++){
+        for (int i = 1; i <= 6; i++){
                 int numDenomGet = switch(i) {
-                    case 1 -> moneyBox.getBill1000(); 
-                    case 2 -> moneyBox.getBill500(); 
-                    case 3 -> moneyBox.getBill200(); 
-                    case 4 -> moneyBox.getBill100();
-                    case 5 -> moneyBox.getBill50();
-                    case 6 -> moneyBox.getBill20();
-                    case 7 -> moneyBox.getCoin20();
-                    case 8 -> moneyBox.getCoin10();
-                    case 9 -> moneyBox.getCoin5();
-                    case 10 -> moneyBox.getCoin1();
+                    case 1 -> moneyBox.getBill100();
+                    case 2 -> moneyBox.getBill50();
+                    case 3 -> moneyBox.getBill20();
+                    case 4 -> moneyBox.getCoin10();
+                    case 5 -> moneyBox.getCoin5();
+                    case 6 -> moneyBox.getCoin1();
                     default -> 0;
                 };
 
                 int numValue = switch (i) { 
-                    case 1 -> 1000;
-                    case 2 -> 500;
-                    case 3 -> 200;
-                    case 4 -> 100;
-                    case 5 -> 50;
-                    case 6 -> 20;
-                    case 7 -> 20;
-                    case 8 -> 10;
-                    case 9 -> 5;
-                    case 10 -> 1;
+                    case 1 -> 100;
+                    case 2 -> 50;
+                    case 3 -> 20;
+                    case 4 -> 10;
+                    case 5 -> 5;
+                    case 6 -> 1;
                     default -> 0;
                 };
 
@@ -319,14 +291,10 @@ public class VM {
             }
         } 
         if(found == true) tempChange -= (slotList[index].getItem().getPrice()); //Checks if the item has been found
-        if(tempChange == 0){ //Checks if there is a need for change
-            moneyBox.setBill1000(moneyBox.getBill1000()+ userInput.getBill1000()); 
-            moneyBox.setBill500(moneyBox.getBill500()+ userInput.getBill500()); 
-            moneyBox.setBill200(moneyBox.getBill200()+ userInput.getBill200()); 
+        if(tempChange == 0){ //Checks if there is a need for change 
             moneyBox.setBill100(moneyBox.getBill100()+ userInput.getBill100()); 
             moneyBox.setBill50(moneyBox.getBill50()+ userInput.getBill50()); 
             moneyBox.setBill20(moneyBox.getBill20()+ userInput.getBill20()); 
-            moneyBox.setCoin20(moneyBox.getCoin20()+ userInput.getCoin20()); 
             moneyBox.setCoin10(moneyBox.getCoin10()+ userInput.getCoin10()); 
             moneyBox.setCoin5(moneyBox.getCoin5()+ userInput.getCoin5()); 
             moneyBox.setCoin1(moneyBox.getCoin1()+ userInput.getCoin1()); 
@@ -335,30 +303,22 @@ public class VM {
         while(tempChange > 0){
             for (i = 1; i <= 10; i++){
                 int numDenomGet = switch(i) {//assigns the number of bills in the machine to this variable
-                    case 1 -> moneyBox.getBill1000(); 
-                    case 2 -> moneyBox.getBill500(); 
-                    case 3 -> moneyBox.getBill200(); 
-                    case 4 -> moneyBox.getBill100();
-                    case 5 -> moneyBox.getBill50();
-                    case 6 -> moneyBox.getBill20();
-                    case 7 -> moneyBox.getCoin20();
-                    case 8 -> moneyBox.getCoin10();
-                    case 9 -> moneyBox.getCoin5();
-                    case 10 -> moneyBox.getCoin1();
+                    case 1 -> moneyBox.getBill100();
+                    case 2 -> moneyBox.getBill50();
+                    case 3 -> moneyBox.getBill20();
+                    case 4 -> moneyBox.getCoin10();
+                    case 5 -> moneyBox.getCoin5();
+                    case 6 -> moneyBox.getCoin1();
                     default -> 0;
                 };
 
                 int numValue = switch (i) { //assigns the value of a bill/coin to this variable
-                    case 1 -> 1000;
-                    case 2 -> 500;
-                    case 3 -> 200;
-                    case 4 -> 100;
-                    case 5 -> 50;
-                    case 6 -> 20;
-                    case 7 -> 20;
-                    case 8 -> 10;
-                    case 9 -> 5;
-                    case 10 -> 1;
+                    case 1 -> 100;
+                    case 2 -> 50;
+                    case 3 -> 20;
+                    case 4 -> 10;
+                    case 5 -> 5;
+                    case 6 -> 1;
                     default -> 0;
                 };
 
@@ -372,41 +332,29 @@ public class VM {
                 }
 
                 switch(i) { //adds the user's money input to the current moneyBox of the machine
-                    case 1: moneyBox.setBill1000(numDenomGet + userInput.getBill1000()); break;
-                    case 2: moneyBox.setBill500(numDenomGet + userInput.getBill500()); break;
-                    case 3: moneyBox.setBill200(numDenomGet + userInput.getBill200()); break;
-                    case 4: moneyBox.setBill100(numDenomGet + userInput.getBill100()); break;
-                    case 5: moneyBox.setBill50(numDenomGet + userInput.getBill50()); break;
-                    case 6: moneyBox.setBill20(numDenomGet + userInput.getBill20()); break;
-                    case 7: moneyBox.setCoin20(numDenomGet + userInput.getCoin20()); break;
-                    case 8: moneyBox.setCoin10(numDenomGet + userInput.getCoin10()); break;
-                    case 9: moneyBox.setCoin5(numDenomGet + userInput.getCoin5()); break;
-                    case 10: moneyBox.setCoin1(numDenomGet + userInput.getCoin1()); break;      
+                    case 1: moneyBox.setBill100(numDenomGet + userInput.getBill100()); break;
+                    case 2: moneyBox.setBill50(numDenomGet + userInput.getBill50()); break;
+                    case 3: moneyBox.setBill20(numDenomGet + userInput.getBill20()); break;
+                    case 4: moneyBox.setCoin10(numDenomGet + userInput.getCoin10()); break;
+                    case 5: moneyBox.setCoin5(numDenomGet + userInput.getCoin5()); break;
+                    case 6: moneyBox.setCoin1(numDenomGet + userInput.getCoin1()); break;      
                 };
                 switch(i) { //sets the number of denominations to be given to the user as change
-                    case 1: change.setBill1000(count); break;
-                    case 2: change.setBill500(count); break;
-                    case 3: change.setBill200(count); break;
-                    case 4: change.setBill100(count); break;
-                    case 5: change.setBill50(count); break;
-                    case 6: change.setBill20(count); break;
-                    case 7: change.setCoin20(count); break;
-                    case 8: change.setCoin10(count); break;
-                    case 9: change.setCoin5(count); break;
-                    case 10: change.setCoin1(count); break;      
+                    case 1: change.setBill100(count); break;
+                    case 2: change.setBill50(count); break;
+                    case 3: change.setBill20(count); break;
+                    case 4: change.setCoin10(count); break;
+                    case 5: change.setCoin5(count); break;
+                    case 6: change.setCoin1(count); break;      
                 };
 
                 switch(i) { //Sets the user input's money denominations back to 0
-                    case 1: userInput.setBill1000(0); break;
-                    case 2: userInput.setBill500(0); break;
-                    case 3: userInput.setBill200(0); break;
-                    case 4: userInput.setBill100(0); break;
-                    case 5: userInput.setBill50(0); break;
-                    case 6: userInput.setBill20(0); break;
-                    case 7: userInput.setCoin20(0); break;
-                    case 8: userInput.setCoin10(0); break;
-                    case 9: userInput.setCoin5(0); break;
-                    case 10: userInput.setCoin1(0); break;      
+                    case 1: userInput.setBill100(0); break;
+                    case 2: userInput.setBill50(0); break;
+                    case 3: userInput.setBill20(0); break;
+                    case 4: userInput.setCoin10(0); break;
+                    case 5: userInput.setCoin5(0); break;
+                    case 6: userInput.setCoin1(0); break;      
                 };
             }   
         }
@@ -482,13 +430,9 @@ public class VM {
      * @param money attribute that will get zeroed out.
      */
     public void emptyMoney(Money money){ // TODO: possible feature is to place collected money inside a "savings" attribute inside Vending Machine Factory
-        money.setBill1000(0);
-        money.setBill500(0);
-        money.setBill200(0);
         money.setBill100(0);
         money.setBill50(0);
         money.setBill20(0);
-        money.setCoin20(0);
         money.setCoin10(0);
         money.setCoin5(0);
         money.setCoin1(0);
