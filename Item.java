@@ -8,7 +8,7 @@
 public class Item {
     protected String name;
     protected int calories;
-    private int price;
+    protected int price;
     
     /**
      * A function that creates an item details by giving a name, number of calories, and price.

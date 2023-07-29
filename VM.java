@@ -180,11 +180,10 @@ public class VM {
      * @param name String of the item to be searched
      * @return true if item quantity is > 0, false if otherwise
      */
-    public boolean isItemAvail(String name, int maxItems){
-        for(int i = 0; i < slotList.length; i++){
-            if(name.equals(slotList[i].getItem().getName()) == true)
-                if(slotList[i].getQuantity(maxItems) > 0)
-                    return true;   
+    public boolean isItemAvail(String name, int maxItems, ItemSlot[] list){
+        for(int i = 0; i < list.length; i++){
+            if(name.equals(list[i].getItem().getName()) == true)
+                if(list[i].getQuantity(maxItems) > 0) return true; 
         }
         return false; 
     }
@@ -434,8 +433,7 @@ public class VM {
             } while (newPrice <= 0);
                 
             System.out.println(slotList[index].getItem().getName() + "'s new price has been set to: " + slotList[index].getItem().getPrice());
-        }
-        
+        }  
     }
 
     /**
@@ -473,7 +471,9 @@ public class VM {
         while (isValid == 0) {
             System.out.println("Enter number of slots: "); //asks for number of slots 
             int slotNum = sc.nextInt();
-            if (slotNum < 8 || slotNum > 20) {
+
+            //TODO: REVERT BACK
+            if (slotNum < 1 || slotNum > 20) {
                 System.out.println("Invalid number of slots!");
             }
             else { 
@@ -546,7 +546,7 @@ public class VM {
         itemName = sc.nextLine();
         for(int i = 0;  i < getSlotList().length; i++){
             if(itemName.equals(getSlotList()[i].getItem().getName())){ //checks if item exists 
-                if(isItemAvail(itemName, maxItems) == true) { //checks if item is available
+                if(isItemAvail(itemName, maxItems, slotList) == true) { //checks if item is available
                     if(validChange(itemName) == true) { //checks if the vending machine has enough change 
                         dispenseItem(itemName, getSlotList()); //dispenses item 
                         Money tempChange = dispenseChange(itemName); //dispenses user's change 
@@ -611,6 +611,11 @@ public class VM {
                     System.out.println("Invalid option!");   
             }
         } 
+    }
+
+    public void displayInterface(){
+        System.out.println("\nDisplaying Inventory:");
+        displayProducts(getStartInventory(), maxItems);
     }
 }
 

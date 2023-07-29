@@ -6,12 +6,12 @@ public class SpecialItem extends Item{
     
     public SpecialItem (String name){
         super(name, 0, 0);
-        ingredients = new ArrayList<>();
+        ingredients = new ArrayList<Item>();
     }
 
     public void addIngredient(Item ingredient){
         ingredients.add(ingredient);
-        calories += ingredient.calories;
-    }
-    
+        super.calories += ingredient.getCalories();
+        super.price += ingredient.getPrice();
+    } 
 }
