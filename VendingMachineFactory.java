@@ -3,6 +3,8 @@ import java.util.ArrayList; //imports utilities
 
 public class VendingMachineFactory {
     public static void main(String args[]) {
+
+        //TODO NOTE: TEMPORARY VALUES FOR FASTER TESTING
         Item bread = new Item("Bread", 100, 50);
         Item bacon = new Item("Bacon", 80, 20);
         Item chicken = new Item("Chicken", 90, 40);
@@ -12,53 +14,45 @@ public class VendingMachineFactory {
         Item water = new Item("Water", 20, 20);
         Item hotdog = new Item("Hotdog", 105, 35);
 
-        //TODO: Change into for loops (ref. Line 92)
-        Item[] breadList = new Item[20];
-        for(int i = 0; i < 15; i ++){
-            breadList[i] = bread;
-        }
+        int testMax = 20;
+        Item[] breadList = new Item[testMax];
+        for (int i = 0; i < 15; i++) breadList[i] = bread;
         ItemSlot breadSlot = new ItemSlot(breadList, bread);
-        Item[] baconList = new Item[20];
-        for(int i = 0; i < 13; i ++){
-            baconList[i] = bacon;
-        }
+
+        Item[] baconList = new Item[testMax];
+        for (int i = 0; i < 13; i++) baconList[i] = bacon;
         ItemSlot baconSlot = new ItemSlot(baconList, bacon);
-        Item[] chickenList = new Item[20];
-        for(int i = 0; i < 11; i ++){
-            chickenList[i] = chicken;
-        }
+
+        Item[] chickenList = new Item[testMax];
+        for (int i = 0; i < 11; i++) chickenList[i] = chicken;
         ItemSlot chickenSlot = new ItemSlot(chickenList, chicken);
-        Item[] sausageList = new Item[20];
-        for(int i = 0; i < 18; i ++){
-            sausageList[i] = sausage;
-        }
+        
+        Item[] sausageList = new Item[testMax];
+        for (int i = 0; i < 18; i++) sausageList[i] = sausage;
         ItemSlot sausageSlot = new ItemSlot(sausageList, sausage);
-        Item[] chipsList = new Item[20];
-        for(int i = 0; i < 14; i ++){
-            chipsList[i] = chips;
-        }
+        
+        Item[] chipsList = new Item[testMax];
+        for (int i = 0; i < 14; i++) chipsList[i] = chips;
         ItemSlot chipsSlot = new ItemSlot(chipsList, chips);
-        Item[] spriteList = new Item[20];
-        for(int i = 0; i < 17; i ++){
-            spriteList[i] = sprite;
-        }
+        
+        Item[] spriteList = new Item[testMax];
+        for (int i = 0; i < 17; i++) spriteList[i] = sprite;
         ItemSlot spriteSlot = new ItemSlot(spriteList, sprite);
-        Item[] waterList = new Item[20];
-        for(int i = 0; i < 12; i ++){
-            waterList[i] = water;
-        }
+        
+        Item[] waterList = new Item[testMax];
+        for (int i = 0; i < 12; i++) waterList[i] = water;
         ItemSlot waterSlot = new ItemSlot(waterList, water);
-        Item[] hotdogList = new Item[20];
-        for(int i = 0; i < 10; i ++){
-            hotdogList[i] = hotdog;
-        }
+        
+        Item[] hotdogList = new Item[testMax];
+        for (int i = 0; i < 10; i++) hotdogList[i] = hotdog;
         ItemSlot hotdogSlot = new ItemSlot(hotdogList, hotdog);
 
         ItemSlot slots[] = {breadSlot, baconSlot, chickenSlot, sausageSlot, chipsSlot, spriteSlot, waterSlot, hotdogSlot};
         Money moneyBox = new Money(10, 10, 10, 10, 10, 10);
         ArrayList<Transactions> transactionList = new ArrayList<Transactions>();
 
-        VM bakery = new VM("Egg Drop", slots, slots, moneyBox);
+        VM bakery = new VM("Egg Drop", slots, slots, moneyBox, testMax);
+        SVM bakery2 = new SVM("Egg Drop", slots, slots, moneyBox, testMax);
 
         int choice = 0;
         String itemName = null; //declares and initializes holder variables for user input
@@ -91,8 +85,20 @@ public class VendingMachineFactory {
                                     System.out.println("Invalid number of slots!");
                                 }
                                 else { 
-                                    VM VM = new VM(slotName, slotNum);  
+                                    //TODO: CHECK IF PWEDE GANTO
+                                    int rawr = 0;
+                                    int maxItems = 0;
+                                    while (rawr == 0) {
+                                        System.out.println("Enter max quantity of items per slot: ");
+                                        maxItems = sc.nextInt();
+                                        if (maxItems < 5 && maxItems > 20) System.out.println("Invalid number!");
+                                        else rawr = 1;
+                                    }
+
+                                    VM VM = new VM(slotName, slotNum, maxItems);  
                                     vmList.add(VM); //creates instance of a vending machine and asks for user input for item name, calories, price, and quantity 
+                                    
+                                    
                                     for(int i = 0; i < slotNum; i++){
                                         int flag = 0, tempPrice = 0, tempQty = 0, tempCalories = 0;
                                         System.out.println("Enter item name for Slot [" + (i+1) + "]: ");
@@ -121,7 +127,7 @@ public class VendingMachineFactory {
                                         }
                                         
                                         Item tempItem = new Item(tempName, tempCalories, tempPrice); //creates temporary instance of item with user inputs of name, calories, and price
-                                        Item[] itemList = new Item[20];
+                                        Item[] itemList = new Item[maxItems];
                                         for (int j = 0; i < tempQty; j++){
                                             itemList[j] = tempItem; 
                                         }

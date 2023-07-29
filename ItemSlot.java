@@ -9,11 +9,10 @@
 public class ItemSlot {
     private Item[] itemList;
     private Item item;
-    
 
     /**
      * A class that creates an ItemSlot object.
-     * @param quantity number of items
+     * @param itemList list of items
      * @param item item object
      */
 
@@ -29,7 +28,15 @@ public class ItemSlot {
     public Item getItem() {
         return item;
     }
-    
+
+    /**
+     * Gets the item of the slot. 
+     * @return the item of the slot.
+     */
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
     /**
      * Gets the list of items in the slot
      * @return ItemList of the slot
@@ -43,8 +50,8 @@ public class ItemSlot {
      * Adds quantity of item objects in the item slot.
      * @param quantity number of items
      */
-    public void addStock (int quantity){
-        for (int i = 0; i < 20; i++) {
+    public void addStock (int quantity, int maxItems){
+        for (int i = 0; i < maxItems; i++) {
             if (itemList[i] == null && quantity > 0) {
                 itemList[i] = item;
                 quantity--;
@@ -56,12 +63,12 @@ public class ItemSlot {
      * Removes one instance of the item
      * @param item the item to be removed
      */
-    public void removeOneStock (){
-        for (int i = 0; i < 20; i++){
+    public void removeOneStock (Item[] itemList, int maxItems){
+        for (int i = 0; i < maxItems; i++){
             if (itemList[i] == null){
                 int index = i-1;
                 itemList[index] = null;
-                i = 20;
+                i = maxItems;
             }
         }
     }
@@ -75,7 +82,6 @@ public class ItemSlot {
         for (int i = 0; i < 20; i++) {
             if (itemList[i] != null) count++;
         }
-    
         return count;
     }
 }

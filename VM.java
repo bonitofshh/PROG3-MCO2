@@ -16,28 +16,31 @@ public class VM {
     protected Money moneyBox;
     protected Money userInput; 
     protected ArrayList<Transactions> transactionList;
+    protected int maxItems;
 
     /**
      * Creates a VM object and sets each attribute to default
      * @param slotName Name of the vending machine
      * @param slotNum Number of slots of the vending machine
      */
-    public VM(String slotName, int slotNum){
+    public VM(String slotName, int slotNum, int maxItems){
         this.name = slotName;
         this.slotList = new ItemSlot[slotNum];
         this.startInventoryList = new ItemSlot[slotNum];
         this.moneyBox = new Money();
         this.userInput = new Money();
         this.transactionList = new ArrayList<Transactions>();
+        this.maxItems = maxItems;
     }
 
-    public VM(String name, ItemSlot slotList[], ItemSlot startInventoryList[], Money moneyBox){
+    public VM(String name, ItemSlot slotList[], ItemSlot startInventoryList[], Money moneyBox, int maxItems){
         this.name = name;
         this.slotList = slotList;
         this.startInventoryList = startInventoryList;
         this.moneyBox = moneyBox;
         this.userInput = new Money();
         this.transactionList = new ArrayList<Transactions>();
+        this.maxItems = maxItems;
     }
 
     /**
@@ -97,6 +100,7 @@ public class VM {
     }
 
     /**
+     * //TODO: DELETE WHEN GUI
      * A function that displays the products given a parameter in the machine
      * @param product ItemSlot[] array that contains items and quantities
      */
@@ -170,7 +174,7 @@ public class VM {
     public boolean isItemAvail(String name){
         for(int i = 0; i < slotList.length; i++){
             if(name.equals(slotList[i].getItem().getName()) == true)
-                if(slotList[i].getQuantity()>0)
+                if(slotList[i].getQuantity() > 0)
                     return true;   
         }
         return false; 
@@ -189,7 +193,7 @@ public class VM {
             
         }
         System.out.println("You have received [1] [" + slotList[index].getItem().getName() +"]");
-        slotList[index].removeOneStock();
+        slotList[index].removeOneStock(slotList[index].getItemList(), maxItems);
     }
    
     /**
@@ -387,7 +391,7 @@ public class VM {
             if (addStock == 0) System.out.println("Stocking cancelled.");
             else if (slotList[index].getQuantity() + addStock > 20) System.out.println("Number of items cannot exceed 20!");
             else {
-                slotList[index].addStock(addStock);
+                slotList[index].addStock(addStock, maxItems);
                 System.out.println("[" + addStock + "] stocks of [" + name + "] have been successfully added.");
                 transactionList.clear();
                 setStartInventory(getSlotList()); 
