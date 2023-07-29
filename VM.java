@@ -535,5 +535,82 @@ public class VM {
         }
         return VM;
     }
+
+    public void testVM(Scanner sc){
+        String itemName = null;
+        int guard = 0;
+        displayProducts(getSlotList(), maxItems); 
+        addMoney(getUserInput(), sc);
+        System.out.println("Enter name of item to purchase: ");
+        itemName = sc.nextLine(); 
+        itemName = sc.nextLine();
+        for(int i = 0;  i < getSlotList().length; i++){
+            if(itemName.equals(getSlotList()[i].getItem().getName())){ //checks if item exists 
+                if(isItemAvail(itemName, maxItems) == true) { //checks if item is available
+                    if(validChange(itemName) == true) { //checks if the vending machine has enough change 
+                        dispenseItem(itemName, getSlotList()); //dispenses item 
+                        Money tempChange = dispenseChange(itemName); //dispenses user's change 
+                        createTransaction(itemName); //creates a transaction 
+                        tempChange.displayDenominations(); //displays the denominations of the change 
+                        emptyMoney(getUserInput()); //resets user inputted money value 
+                        guard = 1;
+                    } else guard = 1;
+                }
+            }
+        }
+        if(guard == 0){ //returns user's money and resets money input when previous conditions aren't met
+                System.out.println("Item not found");
+                System.out.println("Returning money...");
+                emptyMoney(getUserInput());
+        }
+    }
+
+    public void maintenanceVM(Scanner sc){
+        String itemName = null;
+        int guard = 0;
+        while (guard == 0){
+            System.out.println("Welcome back, operator!");
+            System.out.println("[1] Restock items\n[2] Change Item Price\n[3] Collect Money in Vending Machine\n[4] Replenish Change");
+            System.out.println("[5] Show Transaction Summary\n[6] Exit");
+            int choice = sc.nextInt();
+
+            switch(choice){
+                case 1: 
+                    System.out.println("\n(Displaying Initial Inventory)");
+                    displayProducts(getStartInventory(), maxItems);
+                    System.out.println("\n(Displaying Current Inventory)");
+
+                    displayProducts(getSlotList(), maxItems); //displays ending inventory after previous purchases 
+                    System.out.println("Enter item name to restock: ");
+
+                    itemName = sc.nextLine();//input buffer 
+                    itemName = sc.nextLine();
+                    addStock(itemName, sc);                                                     
+                    break;
+                case 2: 
+                    displayProducts(getSlotList(), maxItems); 
+                    System.out.println("Enter item name to change price: ");
+                    itemName = sc.nextLine(); //input buffer 
+                    itemName = sc.nextLine();
+                    setPrice(itemName, sc);//changes item's price 
+                    break;
+                case 3:
+                    System.out.println("Collecting money from money box....");
+                    System.out.println("You have collected " + getMoneyBox().getTotalMoney() + " from the money box");
+                    getMoneyBox().displayDenominations();
+                    emptyMoney(getMoneyBox()); //empties money box 
+                    break;
+                case 4:
+                    addMoney(getMoneyBox(), sc); //adds change
+                    break;
+                case 5: 
+                    printTransactionSummary(); //prints summary of transactions
+                    break;  
+                case 6: guard = 1; break;
+                default: 
+                    System.out.println("Invalid option!");   
+            }
+        } 
+    }
 }
 
