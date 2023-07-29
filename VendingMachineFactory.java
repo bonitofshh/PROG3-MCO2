@@ -52,7 +52,7 @@ public class VendingMachineFactory {
         ArrayList<Transactions> transactionList = new ArrayList<Transactions>();
 
         VM bakery = new VM("Egg Drop", slots, slots, moneyBox, testMax);
-        //SVM bakery2 = new SVM("Egg Drop", slots, slots, moneyBox, testMax);
+        SVM bakery2 = new SVM("Egg Drop", slots, slots, moneyBox, testMax);
 
         int choice = 0;
         String itemName = null; //declares and initializes holder variables for user input
@@ -77,9 +77,6 @@ public class VendingMachineFactory {
                             VM.createVM(sc, vmList);
                             break;
                         case 2: // TODO: Create a special vending machine function (MCO2)
-                            /* 
-                            Implement customizable preset items 
-                            */
                             SVM SVM = new SVM();
                             SVM.createVM(sc, vmList);
                             break;
@@ -188,7 +185,6 @@ public class VendingMachineFactory {
                                                 break;
                                             case 5: 
                                                 VM.printTransactionSummary(); //prints summary of transactions
-                                                //
                                                 break;  
                                             case 6: guard = 1; break;
                                             default: 
