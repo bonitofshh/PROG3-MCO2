@@ -77,9 +77,9 @@ public class ItemSlot {
      * Gets the number of objects in a slot
      * @return number of objects
      */
-    public int getQuantity() {
+    public int getQuantity(int maxItems) {
         int count = 0;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < maxItems; i++) {
             if (itemList[i] != null) count++;
         }
         return count;

@@ -6,7 +6,7 @@
  */
 
 public class Item {
-    private String name;
+    protected String name;
     protected int calories;
     private int price;
     

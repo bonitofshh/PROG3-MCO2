@@ -43,6 +43,15 @@ public class VM {
         this.maxItems = maxItems;
     }
 
+    public VM(){
+        this.name = null;
+        this.slotList = new ItemSlot[99];
+        this.startInventoryList = new ItemSlot[99];
+        this.moneyBox = new Money();
+        this.userInput = new Money();
+        this.transactionList = new ArrayList<Transactions>();
+        this.maxItems = 0;
+    }
     /**
      * Gets the slotList attribute of a vending machine
      * @return slotList -> contains the number of slots and corresponding item
@@ -104,12 +113,12 @@ public class VM {
      * A function that displays the products given a parameter in the machine
      * @param product ItemSlot[] array that contains items and quantities
      */
-    public void displayProducts(ItemSlot[] product){ 
+    public void displayProducts(ItemSlot[] product, int maxItems){ 
         System.out.println("\nAvailable products: ");
         System.out.println("Item Name\tPrice\tCalories\tQty");
         for(int i = 0; i < product.length; i++){
             System.out.println("["+ (i+1) + "] " + product[i].getItem().getName() + "\t" + product[i].getItem().getPrice() + 
-            "\t" + product[i].getItem().getCalories() + "\t\t" + product[i].getQuantity());
+            "\t" + product[i].getItem().getCalories() + "\t\t" + product[i].getQuantity(maxItems));
         }
         System.out.println("\n");
     }
@@ -171,10 +180,10 @@ public class VM {
      * @param name String of the item to be searched
      * @return true if item quantity is > 0, false if otherwise
      */
-    public boolean isItemAvail(String name){
+    public boolean isItemAvail(String name, int maxItems){
         for(int i = 0; i < slotList.length; i++){
             if(name.equals(slotList[i].getItem().getName()) == true)
-                if(slotList[i].getQuantity() > 0)
+                if(slotList[i].getQuantity(maxItems) > 0)
                     return true;   
         }
         return false; 
@@ -389,7 +398,7 @@ public class VM {
             } while (addStock < 0);
             
             if (addStock == 0) System.out.println("Stocking cancelled.");
-            else if (slotList[index].getQuantity() + addStock > 20) System.out.println("Number of items cannot exceed 20!");
+            else if (slotList[index].getQuantity(maxItems) + addStock > 20) System.out.println("Number of items cannot exceed 20!");
             else {
                 slotList[index].addStock(addStock, maxItems);
                 System.out.println("[" + addStock + "] stocks of [" + name + "] have been successfully added.");
@@ -454,4 +463,77 @@ public class VM {
         }
         System.out.println("Total Money: " + totalMoney);
     }
+
+    public VM createVM(Scanner sc, ArrayList<VM> vmList){
+        System.out.println("Enter Vending Machine name: "); //asks for vending machine name 
+        String slotName = sc.nextLine();
+        slotName = sc.nextLine();
+        int isValid = 0;
+        VM VM = new VM(null, 0, 0);
+        while (isValid == 0) {
+            System.out.println("Enter number of slots: "); //asks for number of slots 
+            int slotNum = sc.nextInt();
+            if (slotNum < 8 || slotNum > 20) {
+                System.out.println("Invalid number of slots!");
+            }
+            else { 
+                //TODO: CHECK IF PWEDE GANTO
+                int rawr = 0;
+                int maxItems = 0;
+                while (rawr == 0) {
+                    System.out.println("Enter max quantity of items per slot: ");
+                    maxItems = sc.nextInt();
+                    if (maxItems < 5 || maxItems > 20) System.out.println("Invalid number!");
+                    else rawr = 1;
+                }
+
+                VM = new VM(slotName, slotNum, maxItems);  
+                vmList.add(VM); //creates instance of a vending machine and asks for user input for item name, calories, price, and quantity 
+                
+                
+                for(int i = 0; i < slotNum; i++){
+                    int flag = 0, tempPrice = 0, tempQty = 0, tempCalories = 0;
+                    System.out.println("Enter item name for Slot [" + (i+1) + "]: ");
+                    String tempName = sc.nextLine();
+                    tempName = sc.nextLine();
+                    while (flag == 0){
+                        System.out.println("Enter " + tempName + "'s price: ");
+                        tempPrice = sc.nextInt();
+                        if(tempPrice <= 0) System.out.println("Has to be positive");
+                        else flag = 1;
+                    }
+                    flag = 0;
+                    while (flag == 0){
+                        System.out.println("Enter " + tempName + "'s calories: ");
+                        tempCalories = sc.nextInt();
+                        if(tempCalories < 0) System.out.println("Cannot be negative!");
+                        else flag = 1;
+                    }
+                    flag = 0;
+                    while (flag == 0){
+                        System.out.println("Enter " + tempName + "'s quantity: ");
+                        tempQty = sc.nextInt();
+                        if(tempQty <= 0) System.out.println("The value has to be positive.");
+                        else if (tempQty > maxItems) System.out.println("It can only hold " + maxItems + " items!");
+                        else flag = 1;
+                    }
+                    
+                    Item tempItem = new Item(tempName, tempCalories, tempPrice); //creates temporary instance of item with user inputs of name, calories, and price
+                    Item[] itemList = new Item[maxItems];
+                    for (int j = 0; j < tempQty; j++){
+                        itemList[j] = tempItem; 
+                    }
+                    ItemSlot temp = new ItemSlot(itemList, tempItem); //creates temporary instance slot based on inputted quantity and item 
+                    VM.getSlotList()[i] = temp; //saves value to the slot of the vending machine 
+                    
+                }
+                isValid = 1;
+                System.out.println("Vending machine successfully created.");
+                VM.setStartInventory(VM.getSlotList()); //saves starting inventory of the vending machine
+                return VM;
+            } 
+        }
+        return VM;
+    }
 }
+
