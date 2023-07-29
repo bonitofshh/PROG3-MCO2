@@ -356,11 +356,12 @@ public class SVM extends VM {
             switch (option) {
                 case 1:
                     String ingredientName = "temp";       
+                    int tempNum = -1;
                     while (!ingredientName.equals("done") && !ingredientName.equals("Done")) { 
+                        tempNum++;
                         exists = 0;
                         displayProducts(slotList, maxItems);
-                        System.out.println("Enter name of ingredient to add");
-                        System.out.println("Enter done if finished: ");
+                        System.out.println("Enter name of ingredient to add (Type \"done\" if finished): ");
                         //TODO: IMPLEMENT RILEY BRUTE FORCE SOLUTION
                         ingredientName = sc.nextLine();
                         ingredientName = sc.nextLine();
@@ -370,7 +371,7 @@ public class SVM extends VM {
                                 if(isItemAvail(ingredientName, maxItems, slotList) == true) { //checks if item is available
                                     customItem.addIngredient(getSlotList()[i].getItem());
                                     System.out.println("[" + getSlotList()[i].getItem().getName() + "] has been added.");
-                                } else if (ingredientName.equals("done") || ingredientName.equals("Done")) exists = 1;
+                                } else if (ingredientName.equals("done") || ingredientName.equals("Done")) exists = 1; //TODO: PROGRAM DOESNT RECOGNIZE
                                 else System.out.println("Item is not available!");
                             }
                         if (exists == 0) System.out.println("Item doesn't exist!");   
@@ -378,14 +379,16 @@ public class SVM extends VM {
                     }  
 
                     String addOnName = "temp";
+                    tempNum = -1;
                     while (!addOnName.equals("done") && !addOnName.equals("Done")) {
+                        tempNum++;
                         exists = 0;
                         displayAddOns();
                         System.out.println("Enter name of add-on to add");
                         System.out.println("Enter done if finished: ");
                         //TODO: IMPLEMENT RILEY BRUTE FORCE SOLUTION
                         addOnName = sc.nextLine();
-                        addOnName = sc.nextLine();
+                        if (tempNum == 0) addOnName = sc.nextLine();
                         for(int i = 0;  i < getAddOnSlotList().length; i++) {
                             if(addOnName.equals(getAddOnSlotList()[i].getItem().getName())) { //checks if item exists 
                                 exists = 1;
