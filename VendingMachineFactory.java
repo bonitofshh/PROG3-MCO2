@@ -3,64 +3,10 @@ import java.util.ArrayList; //imports utilities
 
 public class VendingMachineFactory {
     public static void main(String args[]) {
-        //TODO NOTE: TEMPORARY VALUES FOR FASTER TESTING
-        Item bread = new Item("Bread", 100, 50);
-        Item bacon = new Item("Bacon", 80, 20);
-        Item chicken = new Item("Chicken", 90, 40);
-        Item sausage = new Item("Sausage", 40, 30);
-        Item chips = new Item("Chips", 150, 25);
-        Item sprite = new Item("Sprite", 140, 40);
-        Item water = new Item("Water", 20, 20);
-        Item hotdog = new Item("Hotdog", 105, 35);
-
-        int testMax = 20;
-        Item[] breadList = new Item[testMax];
-        for (int i = 0; i < 15; i++) breadList[i] = bread;
-        ItemSlot breadSlot = new ItemSlot(breadList, bread);
-
-        Item[] baconList = new Item[testMax];
-        for (int i = 0; i < 13; i++) baconList[i] = bacon;
-        ItemSlot baconSlot = new ItemSlot(baconList, bacon);
-
-        Item[] chickenList = new Item[testMax];
-        for (int i = 0; i < 11; i++) chickenList[i] = chicken;
-        ItemSlot chickenSlot = new ItemSlot(chickenList, chicken);
-        
-        Item[] sausageList = new Item[testMax];
-        for (int i = 0; i < 18; i++) sausageList[i] = sausage;
-        ItemSlot sausageSlot = new ItemSlot(sausageList, sausage);
-        
-        Item[] chipsList = new Item[testMax];
-        for (int i = 0; i < 14; i++) chipsList[i] = chips;
-        ItemSlot chipsSlot = new ItemSlot(chipsList, chips);
-        
-        Item[] spriteList = new Item[testMax];
-        for (int i = 0; i < 17; i++) spriteList[i] = sprite;
-        ItemSlot spriteSlot = new ItemSlot(spriteList, sprite);
-        
-        Item[] waterList = new Item[testMax];
-        for (int i = 0; i < 12; i++) waterList[i] = water;
-        ItemSlot waterSlot = new ItemSlot(waterList, water);
-        
-        Item[] hotdogList = new Item[testMax];
-        for (int i = 0; i < 10; i++) hotdogList[i] = hotdog;
-        ItemSlot hotdogSlot = new ItemSlot(hotdogList, hotdog);
-
-        ItemSlot slots[] = {breadSlot, baconSlot, chickenSlot, sausageSlot, chipsSlot, spriteSlot, waterSlot, hotdogSlot};
-        Money moneyBox = new Money(10, 10, 10, 10, 10, 10);
         ArrayList<Transactions> transactionList = new ArrayList<Transactions>();
-
-        VM bakery = new VM("Egg Drop-R", slots, slots, moneyBox, testMax);
-        //VM eggDrop = new VM("Egg Drop-S", slots, slots, moneyBox, testMax);
-
         int choice = 0;
-
         Scanner sc = new Scanner(System.in);
-        ArrayList<VM> vmList = new ArrayList<VM>(); //declares instances of the scanner and arrayList of vending machines
-        vmList.add(bakery);
-        //vmList.add(eggDrop);
-
-        bakery.setStartInventory(bakery.getSlotList());
+        ArrayList<VM> vmList = new ArrayList<VM>(); //declares instances of the scanner and arrayList of vending machines;
         System.out.println("Welcome to the Vending Machine Factory!");
 
         while (choice != 3) { //loop program until user exits 
@@ -76,7 +22,7 @@ public class VendingMachineFactory {
                             VM VM = new VM();
                             VM.createVM(sc, vmList);
                             break;
-                        case 2: // TODO: Create a special vending machine function (MCO2)
+                        case 2:
                             SVM SVM = new SVM();
                             SVM.createVM(sc, vmList);
                             break;
@@ -109,9 +55,7 @@ public class VendingMachineFactory {
                         else {   
                             int vmTest = -1;
                             VM VM = vmList.get(index);
-                            
                             VM.displayInterface();
-                            
                             
                             while (vmTest != 3) {
                                 System.out.println("[1] Test Vending Features\n[2] Perform Maintenance\n[3] Exit");

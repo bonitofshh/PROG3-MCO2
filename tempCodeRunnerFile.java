@@ -1,1 +1,0 @@
-SVM.createVM(sc, vmList);

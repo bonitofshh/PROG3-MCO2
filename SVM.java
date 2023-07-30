@@ -60,25 +60,38 @@ public class SVM extends VM {
     public boolean validIngredients() {
         ItemSlot[] tempList = slotList;
         ItemSlot[] tempAddOn = addOnSlotList;
-        ArrayList<Item> tempCart = customItem.ingredients;
+        ArrayList<Item> tempCart = customItem.getIngredients();
 
         int count = -1;
-        while (tempCart != null) { //checks if cart is empty or not
+        while (tempCart.size() > 0) { //checks if cart is empty or not
             count++;
             for (int i = 0; i < tempList.length; i++) {
+                //TODO: CHECK IF CONDITION WORKS
                 if (tempCart.get(count) == tempList[i].getItem() 
-                            && isItemAvail(tempList[i].getItem().getName(), maxItems, tempList) == false) {
-                    return false;
-                    
-                } else if (tempCart.get(count) == tempList[i].getItem()
-                            && isItemAvail(tempList[i].getItem().getName(), maxItems, tempAddOn) == false) {
+                        && isItemAvail(tempList[i].getItem().getName(), maxItems, tempList) == false) {
                     return false;
                     
                 } else if (tempCart.get(count) == tempList[i].getItem()) { 
                     tempList[i].removeOneStock(tempList[i].getItemList(), maxItems);
-                    tempCart.remove(count);
+                    tempCart.remove(count); 
+                    count = -1;
                 }
             }
+            if (tempCart.size() > 0) {
+                count++;
+                for (int i = 0; i < tempAddOn.length; i++) {
+                    if (tempCart.get(count) == tempList[i].getItem()
+                            && isItemAvail(tempAddOn[i].getItem().getName(), maxItems, tempAddOn) == false) {
+                        return false;
+
+                    } else if (tempCart.get(count) == tempAddOn[i].getItem()) { 
+                        tempList[i].removeOneStock(tempAddOn[i].getItemList(), maxItems);
+                        tempCart.remove(count);
+                        count = -1;
+                    }
+                }
+            }
+            
         }
         return true;
     }
@@ -93,6 +106,8 @@ public class SVM extends VM {
             for (int j = 0; j < slotList.length; j++) {
                 if (temp == slotList[j].getItem()) {
                     slotList[j].removeOneStock(slotList[j].getItemList(), maxItems);
+                } else if (temp == addOnSlotList[j].getItem()) {
+                    addOnSlotList[j].removeOneStock(addOnSlotList[j].getItemList(), numAddOn);
                 }
             }
         }
@@ -105,13 +120,10 @@ public class SVM extends VM {
      */
     @Override
     public void addStock(String name, Scanner sc){
-        int index = -1, addStock = -1, isAddOn = 0;;
-        //Scanner sc = new Scanner(System.in);
+        int index = -1, addStock = -1, isAddOn = 0;
 
         for (int i = 0; i < slotList.length; i++) {
-            if (name.equals(slotList[i].getItem().getName()) == true) {
-                index = i;
-            }
+            if (name.equals(slotList[i].getItem().getName()) == true) index = i;
         }
 
         for (int i = 0; i < addOnSlotList.length; i++) {
@@ -166,7 +178,6 @@ public class SVM extends VM {
      */
     @Override
     public void setPrice (String name, Scanner sc){
-        //Scanner sc = new Scanner(System.in);
         int index = -1, isAddOn = 0, newPrice;
         for(int i = 0; i < slotList.length; i++){
             if(name.equals(slotList[i].getItem().getName()) == true){
@@ -314,7 +325,7 @@ public class SVM extends VM {
                             addOnList[j] = tempAddOn; 
                         }
                         ItemSlot temp = new ItemSlot(addOnList, tempAddOn);
-                        SVM.addOnSlotList[i] = temp;
+                        SVM.getAddOnSlotList()[i] = temp;
                     }   
                     //isValid = 1;
                     System.out.println("Vending machine successfully created.");
@@ -342,9 +353,22 @@ public class SVM extends VM {
         System.out.println("Item Name\tPrice\tCalories\tQty");
         for(int i = 0; i < addOnSlotList.length; i++){
             System.out.println("["+ (i+1) + "] " + addOnSlotList[i].getItem().getName() + "\t" + addOnSlotList[i].getItem().getPrice() + 
-            "\t" + addOnSlotList[i].getItem().getCalories() + "\t\t" + addOnSlotList[i].getQuantity(numAddOn));
+            "\t" + addOnSlotList[i].getItem().getCalories() + "\t\t" + addOnSlotList[i].getQuantity(maxItems));
         }
         System.out.println("\n");
+    }
+
+    public String[] preparationString(Scanner sc){
+        String[] preparations = new String[customItem.ingredients.size()];
+
+        //TODO: INPUTBUFFER THINGY
+        for (int i = 0; i < customItem.ingredients.size(); i++) {
+            System.out.print("Enter preparation for [" + customItem.ingredients.get(i).getName() + "]: ");
+            String tempPrep = sc.nextLine();
+            tempPrep = sc.nextLine();
+            preparations[i] = tempPrep;
+        }
+        return preparations;
     }
 
     @Override
@@ -357,10 +381,10 @@ public class SVM extends VM {
                 case 1:
                     String ingredientName = "temp";       
                     int tempNum = -1;
-                    while (!ingredientName.equals("done") && !ingredientName.equals("Done")) { 
+                    displayProducts(slotList, maxItems);
+                    while (!ingredientName.equals("done")) { 
                         tempNum++;
                         exists = 0;
-                        displayProducts(slotList, maxItems);
                         System.out.println("Enter name of ingredient to add (Type \"done\" if finished): ");
                         //TODO: IMPLEMENT RILEY BRUTE FORCE SOLUTION
                         ingredientName = sc.nextLine();
@@ -371,7 +395,7 @@ public class SVM extends VM {
                                 if(isItemAvail(ingredientName, maxItems, slotList) == true) { //checks if item is available
                                     customItem.addIngredient(getSlotList()[i].getItem());
                                     System.out.println("[" + getSlotList()[i].getItem().getName() + "] has been added.");
-                                } else if (ingredientName.equals("done") || ingredientName.equals("Done")) exists = 1; //TODO: PROGRAM DOESNT RECOGNIZE
+                                } else if (ingredientName.equals("done")) exists = 1; //TODO: PROGRAM DOESNT RECOGNIZE
                                 else System.out.println("Item is not available!");
                             }
                         if (exists == 0) System.out.println("Item doesn't exist!");   
@@ -380,12 +404,11 @@ public class SVM extends VM {
 
                     String addOnName = "temp";
                     tempNum = -1;
-                    while (!addOnName.equals("done") && !addOnName.equals("Done")) {
+                    displayAddOns();
+                    while (!addOnName.equals("done")) {
                         tempNum++;
                         exists = 0;
-                        displayAddOns();
-                        System.out.println("Enter name of add-on to add");
-                        System.out.println("Enter done if finished: ");
+                        System.out.println("Enter name of add-on to add (Type \"done\" if finished): ");
                         //TODO: IMPLEMENT RILEY BRUTE FORCE SOLUTION
                         addOnName = sc.nextLine();
                         if (tempNum == 0) addOnName = sc.nextLine();
@@ -394,24 +417,41 @@ public class SVM extends VM {
                                 exists = 1;
                                 if(isItemAvail(addOnName, maxItems, addOnSlotList) == true) { //checks if item is available
                                     customItem.addIngredient(getAddOnSlotList()[i].getItem());
-                                    System.out.println("[" + getAddOnSlotList()[i].getItem().getName() + "]");
+                                    System.out.println("[" + getAddOnSlotList()[i].getItem().getName() + "] has been added.");
                                     
-                                } else if (addOnName.equals("done") || addOnName.equals("Done")) exists = 1;
+                                } else if (addOnName.equals("done")) exists = 1;
                                 else  System.out.println("Add-on is not available!");
                             }
+                        if (exists == 0) System.out.println("Add-on doesn't exist!");  
                         }     
                     }
-                        if (exists == 0) System.out.println("Add-on doesn't exist!");   
-                    
 
-                    System.out.println("Your total is: " + customItem.getPrice());
-                    System.out.println("Sumary of [" + customItem.getName() + "] : ");
+                    System.out.println("\nYour total is: " + customItem.getPrice());
+                    System.out.println("\nSumary of [" + customItem.getName() + "]: ");
                     for (int i = 0; i < customItem.ingredients.size(); i++) {
-                        System.out.println("[" + (i+1) + "] " + customItem.ingredients.get(i).getName());
+                        System.out.println("[+] " + customItem.ingredients.get(i).getName());
                     }
+
+                    //TODO: Find bug that causes the value of customItem.ingredients.size() to reset
                     addMoney(getUserInput(), sc);
                     if (validChangeCustom() == true) {
-                        if (validIngredients() == true) removeFromSVM();
+                        if (validIngredients() == true) {
+
+                            
+                            String[] preps = preparationString(sc);
+
+                            for (int i = 0; i < preps.length; i++) {
+                                System.out.println("The [" + customItem.ingredients.get(i).getName() + 
+                                "] is being [" + preps[i] + "].");
+                            }
+                            
+                            removeFromSVM();
+                            customItem.resetCustomItem();
+                            System.out.println("You have received [" + customItem.getName() +"]");
+                            dispenseCustomChange();
+                            beep = 1;
+                            
+                        }
                         else {
                             System.out.println("The vending machine does not have enough ingredients!");
                             System.out.println("Returning money...");
@@ -419,7 +459,7 @@ public class SVM extends VM {
                             customItem.ingredients.clear();
                         }
                     } else if (userInput.getTotalMoney() < customItem.getPrice()){
-                        System.out.println("Not enough!");
+                        System.out.println("Not enough inserted!");
                         System.out.println("Returning money...");
                         emptyMoney(getUserInput());
                         customItem.ingredients.clear();
@@ -493,5 +533,81 @@ public class SVM extends VM {
         System.out.println("\nDisplaying Inventory:");
         displayProducts(getStartInventory(), maxItems);
         displayAddOns(); 
+    }
+    
+    public Money dispenseCustomChange(){
+        Money change = new Money();
+        int i = 0;
+        int tempChange = userInput.getTotalMoney() - customItem.getPrice();
+        
+        if(tempChange == 0) { //Checks if there is a need for change 
+            moneyBox.setBill100(moneyBox.getBill100()+ userInput.getBill100()); 
+            moneyBox.setBill50(moneyBox.getBill50()+ userInput.getBill50()); 
+            moneyBox.setBill20(moneyBox.getBill20()+ userInput.getBill20()); 
+            moneyBox.setCoin10(moneyBox.getCoin10()+ userInput.getCoin10()); 
+            moneyBox.setCoin5(moneyBox.getCoin5()+ userInput.getCoin5()); 
+            moneyBox.setCoin1(moneyBox.getCoin1()+ userInput.getCoin1()); 
+        }
+
+        while(tempChange > 0){
+            for (i = 1; i <= 10; i++){
+                int numDenomGet = switch(i) {//assigns the number of bills in the machine to this variable
+                    case 1 -> moneyBox.getBill100();
+                    case 2 -> moneyBox.getBill50();
+                    case 3 -> moneyBox.getBill20();
+                    case 4 -> moneyBox.getCoin10();
+                    case 5 -> moneyBox.getCoin5();
+                    case 6 -> moneyBox.getCoin1();
+                    default -> 0;
+                };
+
+                int numValue = switch (i) { //assigns the value of a bill/coin to this variable
+                    case 1 -> 100;
+                    case 2 -> 50;
+                    case 3 -> 20;
+                    case 4 -> 10;
+                    case 5 -> 5;
+                    case 6 -> 1;
+                    default -> 0;
+                };
+
+                int count = 0; //counter for number of bills a certain denomination has to be returned to the user as change
+                if(tempChange >= numValue){ //checks if change is greater than the value of the current bill/coin
+                    while(numDenomGet>0){  //while there are still available denominations of a certain bill/coin in the machine
+                        tempChange -= numValue; //subtracts the current value from the change
+                        numDenomGet--;  //decrements the number of bills in the machine
+                        count++; //increases the count by 1
+                    }
+                }
+
+                switch(i) { //adds the user's money input to the current moneyBox of the machine
+                    case 1: moneyBox.setBill100(numDenomGet + userInput.getBill100()); break;
+                    case 2: moneyBox.setBill50(numDenomGet + userInput.getBill50()); break;
+                    case 3: moneyBox.setBill20(numDenomGet + userInput.getBill20()); break;
+                    case 4: moneyBox.setCoin10(numDenomGet + userInput.getCoin10()); break;
+                    case 5: moneyBox.setCoin5(numDenomGet + userInput.getCoin5()); break;
+                    case 6: moneyBox.setCoin1(numDenomGet + userInput.getCoin1()); break;      
+                };
+                switch(i) { //sets the number of denominations to be given to the user as change
+                    case 1: change.setBill100(count); break;
+                    case 2: change.setBill50(count); break;
+                    case 3: change.setBill20(count); break;
+                    case 4: change.setCoin10(count); break;
+                    case 5: change.setCoin5(count); break;
+                    case 6: change.setCoin1(count); break;      
+                };
+
+                switch(i) { //Sets the user input's money denominations back to 0
+                    case 1: userInput.setBill100(0); break;
+                    case 2: userInput.setBill50(0); break;
+                    case 3: userInput.setBill20(0); break;
+                    case 4: userInput.setCoin10(0); break;
+                    case 5: userInput.setCoin5(0); break;
+                    case 6: userInput.setCoin1(0); break;      
+                };
+            }   
+        }
+        System.out.println("You have received " + change.getTotalMoney() + " in change.");
+        return change;    
     }
 }

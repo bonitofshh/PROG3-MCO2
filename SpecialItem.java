@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 public class SpecialItem extends Item{
-    Item baseIngredient;
     ArrayList<Item> ingredients;
     
     public SpecialItem (String name){
@@ -14,4 +13,13 @@ public class SpecialItem extends Item{
         super.calories += ingredient.getCalories();
         super.price += ingredient.getPrice();
     } 
+
+    public ArrayList<Item> getIngredients() {
+        return this.ingredients;
+    }
+
+    public void resetCustomItem() {
+        this.price = 0;
+        this.calories = 0;
+    }
 }
