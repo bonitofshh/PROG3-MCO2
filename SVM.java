@@ -228,11 +228,16 @@ public class SVM extends VM {
         while (isValidSVM == 0) {
             System.out.println("Enter number of slots for individual items: "); //asks for number of slots 
             int slotNum = sc.nextInt();
+            
 
             //TODO: REVERT BACK
             if (slotNum < 1 || slotNum > 20) {
                 System.out.println("Invalid number of slots!");
             }
+            System.out.println("Enter number of slots for add-ons: ");
+            numAddOn = sc.nextInt();
+            if(numAddOn < 0)
+                System.out.println("Invalid number of add-ons");
             else { 
                 //TODO: CHECK IF PWEDE GANTO
                 int rawr = 0;
@@ -243,95 +248,91 @@ public class SVM extends VM {
                     if (maxItems < 5 || maxItems > 20) System.out.println("Invalid number!");
                     else rawr = 1;
                 }
-                System.out.println("Enter number of slots for add-ons: ");
-                numAddOn = sc.nextInt();
-                if(numAddOn < 0)
-                    System.out.println("Invalid number of add-ons");
-                else {
-                    System.out.println("Enter the customizable item (eg. sandwich/ramen/mongolian rice): ");
-                    String specialItem = sc.nextLine();
-                    specialItem = sc.nextLine();
+               
+                System.out.println("Enter the customizable item (eg. sandwich/ramen/mongolian rice): ");
+                String specialItem = sc.nextLine();
+                specialItem = sc.nextLine();
 
-                    SVM = new SVM(slotNameSVM, slotNum, maxItems, numAddOn, specialItem);
-                    vmList.add(SVM);
-                    for(int i = 0; i < slotNum; i++){
-                        int flag = 0, tempPrice = 0, tempQty = 0, tempCalories = 0;
-                        String tempName;
-                        System.out.println("Enter item name for Slot [" + (i+1) + "]: ");
-                        if(i > 0) tempName = sc.nextLine();  
-                        tempName = sc.nextLine();
-                        
-                        while (flag == 0){
-                            System.out.println("Enter " + tempName + "'s price: ");
-                            tempPrice = sc.nextInt();
-                            if(tempPrice <= 0) System.out.println("Has to be positive");
-                            else flag = 1;
-                        }
-                        flag = 0;
-                        while (flag == 0){
-                            System.out.println("Enter " + tempName + "'s calories: ");
-                            tempCalories = sc.nextInt();
-                            if(tempCalories < 0) System.out.println("Cannot be negative!");
-                            else flag = 1;
-                        }
-                        flag = 0;
-                        while (flag == 0){
-                            System.out.println("Enter " + tempName + "'s quantity: ");
-                            tempQty = sc.nextInt();
-                            if(tempQty <= 0) System.out.println("The value has to be positive.");
-                            else if (tempQty > maxItems) System.out.println("It can only hold " + maxItems + " items!");
-                            else flag = 1;
-                        }
-                        
-                        Item tempItem = new Item(tempName, tempCalories, tempPrice); //creates temporary instance of item with user inputs of name, calories, and price
-                        Item[] itemList = new Item[maxItems];
-                        for (int j = 0; j < tempQty; j++){
-                            itemList[j] = tempItem; 
-                        }
-                        ItemSlot temp = new ItemSlot(itemList, tempItem); //creates temporary instance slot based on inputted quantity and item 
-                        SVM.getSlotList()[i] = temp; //saves value to the slot of the vending machine 
+                SVM = new SVM(slotNameSVM, slotNum, maxItems, numAddOn, specialItem);
+                vmList.add(SVM);
+                for(int i = 0; i < slotNum; i++){
+                    int flag = 0, tempPrice = 0, tempQty = 0, tempCalories = 0;
+                    String tempName;
+                    System.out.println("Enter item name for Slot [" + (i+1) + "]: ");
+                    if(i > 0) tempName = sc.nextLine();  
+                    tempName = sc.nextLine();
+                    
+                    while (flag == 0){
+                        System.out.println("Enter " + tempName + "'s price: ");
+                        tempPrice = sc.nextInt();
+                        if(tempPrice <= 0) System.out.println("Has to be positive");
+                        else flag = 1;
                     }
-
-                    for(int i = 0; i < numAddOn; i++){
-                        int flag = 0, tempPrice = 0, tempQty = 0, tempCalories = 0;
-                        System.out.println("Enter add-on name for Slot [" + (i+1) + "]: ");
-                        String tempName = sc.nextLine();
-                        tempName = sc.nextLine();
-                        while (flag == 0){
-                            System.out.println("Enter " + tempName + "'s price: ");
-                            tempPrice = sc.nextInt();
-                            if(tempPrice <= 0) System.out.println("Has to be positive");
-                            else flag = 1;
-                        }
-                        flag = 0;
-                        while (flag == 0){
-                            System.out.println("Enter " + tempName + "'s calories: ");
-                            tempCalories = sc.nextInt();
-                            if(tempCalories < 0) System.out.println("Cannot be negative!");
-                            else flag = 1;
-                        }
-                        flag = 0;
-                        while (flag == 0){
-                            System.out.println("Enter " + tempName + "'s quantity: ");
-                            tempQty = sc.nextInt();
-                            if(tempQty <= 0) System.out.println("The value has to be positive.");
-                            else if (tempQty > maxItems) System.out.println("It can only hold " + maxItems + " items!");
-                            else flag = 1;
-                        }
-                        
-                        Item tempAddOn = new addOn(tempName, tempCalories, tempPrice);
-                        Item[] addOnList = new Item[maxItems];
-                        for (int j = 0; j < tempQty; j++){
-                            addOnList[j] = tempAddOn; 
-                        }
-                        ItemSlot temp = new ItemSlot(addOnList, tempAddOn);
-                        SVM.getAddOnSlotList()[i] = temp;
-                    }   
-                    //isValid = 1;
-                    System.out.println("Vending machine successfully created.");
-                    SVM.setStartInventory(SVM.getSlotList()); //saves starting inventory of the vending machine
-                    return SVM;
+                    flag = 0;
+                    while (flag == 0){
+                        System.out.println("Enter " + tempName + "'s calories: ");
+                        tempCalories = sc.nextInt();
+                        if(tempCalories < 0) System.out.println("Cannot be negative!");
+                        else flag = 1;
+                    }
+                    flag = 0;
+                    while (flag == 0){
+                        System.out.println("Enter " + tempName + "'s quantity: ");
+                        tempQty = sc.nextInt();
+                        if(tempQty <= 0) System.out.println("The value has to be positive.");
+                        else if (tempQty > maxItems) System.out.println("It can only hold " + maxItems + " items!");
+                        else flag = 1;
+                    }
+                    
+                    Item tempItem = new Item(tempName, tempCalories, tempPrice); //creates temporary instance of item with user inputs of name, calories, and price
+                    Item[] itemList = new Item[maxItems];
+                    for (int j = 0; j < tempQty; j++){
+                        itemList[j] = tempItem; 
+                    }
+                    ItemSlot temp = new ItemSlot(itemList, tempItem); //creates temporary instance slot based on inputted quantity and item 
+                    SVM.getSlotList()[i] = temp; //saves value to the slot of the vending machine 
                 }
+
+                for(int i = 0; i < numAddOn; i++){
+                    int flag = 0, tempPrice = 0, tempQty = 0, tempCalories = 0;
+                    System.out.println("Enter add-on name for Slot [" + (i+1) + "]: ");
+                    String tempName = sc.nextLine();
+                    tempName = sc.nextLine();
+                    while (flag == 0){
+                        System.out.println("Enter " + tempName + "'s price: ");
+                        tempPrice = sc.nextInt();
+                        if(tempPrice <= 0) System.out.println("Has to be positive");
+                        else flag = 1;
+                    }
+                    flag = 0;
+                    while (flag == 0){
+                        System.out.println("Enter " + tempName + "'s calories: ");
+                        tempCalories = sc.nextInt();
+                        if(tempCalories < 0) System.out.println("Cannot be negative!");
+                        else flag = 1;
+                    }
+                    flag = 0;
+                    while (flag == 0){
+                        System.out.println("Enter " + tempName + "'s quantity: ");
+                        tempQty = sc.nextInt();
+                        if(tempQty <= 0) System.out.println("The value has to be positive.");
+                        else if (tempQty > maxItems) System.out.println("It can only hold " + maxItems + " items!");
+                        else flag = 1;
+                    }
+                    
+                    Item tempAddOn = new addOn(tempName, tempCalories, tempPrice);
+                    Item[] addOnList = new Item[maxItems];
+                    for (int j = 0; j < tempQty; j++){
+                        addOnList[j] = tempAddOn; 
+                    }
+                    ItemSlot temp = new ItemSlot(addOnList, tempAddOn);
+                    SVM.getAddOnSlotList()[i] = temp;
+                }   
+                //isValid = 1;
+                System.out.println("Vending machine successfully created.");
+                SVM.setStartInventory(SVM.getSlotList()); //saves starting inventory of the vending machine
+                return SVM;
+                
                 
             }
         }
@@ -427,7 +428,7 @@ public class SVM extends VM {
                     }
 
                     System.out.println("\nYour total is: " + customItem.getPrice());
-                    System.out.println("\nSumary of [" + customItem.getName() + "]: ");
+                    System.out.println("\nSummary of [" + customItem.getName() + "]: ");
                     for (int i = 0; i < customItem.ingredients.size(); i++) {
                         System.out.println("[+] " + customItem.ingredients.get(i).getName());
                     }

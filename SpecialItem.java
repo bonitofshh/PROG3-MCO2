@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class SpecialItem extends Item{
     ArrayList<Item> ingredients;
+    Item baseIngredient;
     
     public SpecialItem (String name){
         super(name, 0, 0);
