@@ -60,41 +60,71 @@ public class SVM extends VM {
     public boolean validIngredients() {
         ItemSlot[] tempList = slotList;
         ItemSlot[] tempAddOn = addOnSlotList;
+        
+        //ArrayList<Item> tempAddOn = new ArrayList<Item>();
+        /*for(int i = 0; i< addOnSlotList.length; i++){
+            tempAddOn.add(addOnSlotList[i].getItem());
+        }*/
+        
         ArrayList<Item> tempCart = customItem.getIngredients();
 
-        int count = -1;
-        while (tempCart.size() > 0) { //checks if cart is empty or not
-            count++;
+        //int count = 0;
+        /*(while (tempCart.size() > 0) { //checks if cart is empty or not
+            //count++;
+            for(int i = 0; i < tempCart.size(); i++){
+                for(int j = 0; j < tempList.length; j++){
+                    if (tempCart.get(i) == tempList[j].getItem() 
+                        && isItemAvail(tempList[j].getItem().getName(), maxItems, tempList) == false) {
+                    return false;
+                    
+                    } else if (tempCart.get(i) == tempList[j].getItem()) { 
+                        tempList[j].removeOneStock(tempList[j].getItemList(), maxItems);
+                        tempCart.remove(i); 
+                    }
+                }   
+            }
+
+            if(tempCart.size() > 0){
+                for(int i = 0; i < tempAddOn.size(); i++){
+                    for(int j = 0; j < tempList.length; j++){
+                        if (tempAddOn.get(i) == tempList[j].getItem() 
+                            && isItemAvail(tempList[j].getItem().getName(), maxItems, tempList) == false) {
+                        return false;
+                        
+                        } else if (tempAddOn.get(i) == tempList[j].getItem()) { 
+                            tempList[j].removeOneStock(tempList[j].getItemList(), maxItems);
+                            tempAddOn.remove(i); 
+                        }
+                    }   
+                }
+            }*/
+            /* */
             for (int i = 0; i < tempList.length; i++) {
                 //TODO: CHECK IF CONDITION WORKS
-                if (tempCart.get(count) == tempList[i].getItem() 
+                if (tempCart.get(0) == tempList[i].getItem() 
                         && isItemAvail(tempList[i].getItem().getName(), maxItems, tempList) == false) {
                     return false;
                     
-                } else if (tempCart.get(count) == tempList[i].getItem()) { 
+                } else if (tempCart.get(0) == tempList[i].getItem()) { 
                     tempList[i].removeOneStock(tempList[i].getItemList(), maxItems);
-                    tempCart.remove(count); 
-                    count = -1;
+                    tempCart.remove(0); 
                 }
             }
             if (tempCart.size() > 0) {
-                count++;
                 for (int i = 0; i < tempAddOn.length; i++) {
-                    if (tempCart.get(count) == tempList[i].getItem()
+                    if (tempCart.get(0) == tempList[i].getItem()
                             && isItemAvail(tempAddOn[i].getItem().getName(), maxItems, tempAddOn) == false) {
                         return false;
 
-                    } else if (tempCart.get(count) == tempAddOn[i].getItem()) { 
+                    } else if (tempCart.get(0) == tempAddOn[i].getItem()) { 
                         tempList[i].removeOneStock(tempAddOn[i].getItemList(), maxItems);
-                        tempCart.remove(count);
-                        count = -1;
+                        tempCart.remove(0);
                     }
                 }
             }
-            
-        }
         return true;
     }
+    
 
     /**
      * 
@@ -224,7 +254,7 @@ public class SVM extends VM {
         String slotNameSVM = sc.nextLine();
         slotNameSVM = sc.nextLine();
         int isValidSVM = 0;
-        SVM SVM = new SVM(null, 0, 0, 0, null);
+        SVM SVM = new SVM(null, 0, 0, 0, "null");
         while (isValidSVM == 0) {
             System.out.println("Enter number of slots for individual items: "); //asks for number of slots 
             int slotNum = sc.nextInt();
@@ -283,8 +313,13 @@ public class SVM extends VM {
                         else if (tempQty > maxItems) System.out.println("It can only hold " + maxItems + " items!");
                         else flag = 1;
                     }
-                    
-                    Item tempItem = new Item(tempName, tempCalories, tempPrice); //creates temporary instance of item with user inputs of name, calories, and price
+
+                    System.out.println("Enter " + tempName + "'s preparation method (ex. Toasting bread): ");
+                    String tempPrep = sc.nextLine();
+                    if(i > 0) tempPrep = sc.nextLine();  
+                    tempPrep = sc.nextLine();
+                        
+                    Item tempItem = new Item(tempName, tempCalories, tempPrice, tempPrep); //creates temporary instance of item with user inputs of name, calories, and price
                     Item[] itemList = new Item[maxItems];
                     for (int j = 0; j < tempQty; j++){
                         itemList[j] = tempItem; 
@@ -294,6 +329,7 @@ public class SVM extends VM {
                 }
 
                 displayProducts(SVM.getSlotList(), maxItems);
+<<<<<<< Updated upstream
                 System.out.println("/nEnter base ingredient for custom item [" + specialItem + "]: ");
                 int choice = sc.nextInt() - 1;
                 SVM.customItem = new SpecialItem(specialItem, SVM.getSlotList()[choice].getItem());
@@ -301,6 +337,12 @@ public class SVM extends VM {
 
 
                 
+=======
+                System.out.println("\nEnter base ingredient for custom item [" + specialItem + "]: ");
+                int choice = sc.nextInt() - 1;
+                SVM.customItem = new SpecialItem(specialItem, SVM.getSlotList()[choice].getItem());
+                System.out.println("["+ SVM.customItem.getBaseIngredient().getName() + "] has been set as base ingredient for " + "[" + specialItem + "]\n");
+>>>>>>> Stashed changes
   
                 for(int i = 0; i < numAddOn; i++){
                     int flag = 0, tempPrice = 0, tempQty = 0, tempCalories = 0;
@@ -404,6 +446,8 @@ public class SVM extends VM {
                                 exists = 1;
                                 if(isItemAvail(ingredientName, maxItems, slotList) == true) { //checks if item is available
                                     customItem.addIngredient(getSlotList()[i].getItem());
+                                    customItem.setPrice(customItem.getPrice() + getSlotList()[i].getItem().getPrice());
+                                    customItem.setCalories(customItem.getCalories() + getSlotList()[i].getItem().getPrice());
                                     System.out.println("[" + getSlotList()[i].getItem().getName() + "] has been added.");
                                 } else if (ingredientName.equals("done")) exists = 1; //TODO: PROGRAM DOESNT RECOGNIZE
                                 else System.out.println("Item is not available!");
@@ -427,6 +471,9 @@ public class SVM extends VM {
                                 exists = 1;
                                 if(isItemAvail(addOnName, maxItems, addOnSlotList) == true) { //checks if item is available
                                     customItem.addIngredient(getAddOnSlotList()[i].getItem());
+                                    customItem.setPrice(customItem.getPrice() + getAddOnSlotList()[i].getItem().getPrice());
+                                    System.out.println(customItem.getPrice());
+                                    customItem.setCalories(customItem.getCalories() + getAddOnSlotList()[i].getItem().getPrice());
                                     System.out.println("[" + getAddOnSlotList()[i].getItem().getName() + "] has been added.");
                                     
                                 } else if (addOnName.equals("done")) exists = 1;
@@ -444,21 +491,29 @@ public class SVM extends VM {
 
                     //TODO: Find bug that causes the value of customItem.ingredients.size() to reset
                     addMoney(getUserInput(), sc);
-                    if (validChangeCustom() == true) {
-                        if (validIngredients() == true) {
+                    if (validChangeCustom() == true) { //returns false????
+                        System.out.println(customItem.ingredients.size() + "-----> this is ingredients size");
 
+                        if (validIngredients() == true) {
+                            //System.out.println("test");
+                            System.out.println(customItem.ingredients.size() + "-----> this is ingredients size");
                             
-                            String[] preps = preparationString(sc);
+                            /*String[] preps = preparationString(sc);
 
                             for (int i = 0; i < preps.length; i++) {
                                 System.out.println("The [" + customItem.ingredients.get(i).getName() + 
                                 "] is being [" + preps[i] + "].");
+                            }*/
+                            for(int i = 0; i < customItem.ingredients.size(); i++){
+                                System.out.println(customItem.ingredients.get(i).prepString + "...");
                             }
+
+
                             
+                            dispenseCustomChange();
+                            System.out.println("You have received [" + customItem.getName() +"]");
                             removeFromSVM();
                             customItem.resetCustomItem();
-                            System.out.println("You have received [" + customItem.getName() +"]");
-                            dispenseCustomChange();
                             beep = 1;
                             
                         }
@@ -549,7 +604,8 @@ public class SVM extends VM {
         Money change = new Money();
         int i = 0;
         int tempChange = userInput.getTotalMoney() - customItem.getPrice();
-        
+        System.out.println(customItem.getPrice() + "--->> this is custom item price");
+        System.out.println(tempChange + "----> this is temp change");
         if(tempChange == 0) { //Checks if there is a need for change 
             moneyBox.setBill100(moneyBox.getBill100()+ userInput.getBill100()); 
             moneyBox.setBill50(moneyBox.getBill50()+ userInput.getBill50()); 
@@ -560,7 +616,7 @@ public class SVM extends VM {
         }
 
         while(tempChange > 0){
-            for (i = 1; i <= 10; i++){
+            for (i = 1; i <= 6; i++){
                 int numDenomGet = switch(i) {//assigns the number of bills in the machine to this variable
                     case 1 -> moneyBox.getBill100();
                     case 2 -> moneyBox.getBill50();

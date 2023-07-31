@@ -5,15 +5,28 @@ public class SpecialItem extends Item{
     Item baseIngredient;
     
     public SpecialItem (String name, Item baseIngredient){
+<<<<<<< Updated upstream
+        super(name, 0, 0);
+        ingredients = new ArrayList<Item>();
+        this.baseIngredient = baseIngredient;
+=======
         super(name, 0, 0);
         ingredients = new ArrayList<Item>();
         this.baseIngredient = baseIngredient;
     }
-
+    public SpecialItem (String name){
+        super(name, 0, 0);
+        ingredients = new ArrayList<Item>();
+        this.baseIngredient = null;
+>>>>>>> Stashed changes
+    }
+    
     public void addIngredient(Item ingredient){
         ingredients.add(ingredient);
-        super.calories += ingredient.getCalories();
-        super.price += ingredient.getPrice();
+        //super.calories = super.getCalories() + ingredient.getCalories();
+        //super.price = super.getPrice() + ingredient.getPrice();
+        //updatePrice(ingredient.getPrice());
+        //updateCalories(ingredient.getCalories());
     } 
 
     public ArrayList<Item> getIngredients() {
@@ -26,6 +39,13 @@ public class SpecialItem extends Item{
     }
 
     public Item getBaseIngredient(){
+<<<<<<< Updated upstream
         return baseIngredient;
     }
+=======
+        return this.baseIngredient;
+    }
+
+>>>>>>> Stashed changes
 }
+

@@ -9,7 +9,8 @@ public class Item {
     protected String name;
     protected int calories;
     protected int price;
-    
+    protected String prepString;
+
     /**
      * A function that creates an item details by giving a name, number of calories, and price.
      * @param name the name of the item
@@ -21,6 +22,14 @@ public class Item {
         this.name = name;
         this.calories = calories;
         this.price = price;
+        this.prepString = null;
+    }
+
+    public Item(String name, int calories, int price, String prepString) {
+        this.name = name;
+        this.calories = calories;
+        this.price = price;
+        this.prepString = prepString;
     }
 
     /**
@@ -30,6 +39,7 @@ public class Item {
         this.name = null;
         this.calories = 0;
         this.price = 0;
+        this.prepString = null;
     }
 
     /**
@@ -62,5 +72,9 @@ public class Item {
      */
     public void setPrice(int price){
         this.price = price;
+    }
+
+    public void setCalories(int calories){
+        this.calories = calories;
     }
 }
