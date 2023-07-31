@@ -5,11 +5,6 @@ public class SpecialItem extends Item{
     Item baseIngredient;
     
     public SpecialItem (String name, Item baseIngredient){
-<<<<<<< Updated upstream
-        super(name, 0, 0);
-        ingredients = new ArrayList<Item>();
-        this.baseIngredient = baseIngredient;
-=======
         super(name, 0, 0);
         ingredients = new ArrayList<Item>();
         this.baseIngredient = baseIngredient;
@@ -18,7 +13,6 @@ public class SpecialItem extends Item{
         super(name, 0, 0);
         ingredients = new ArrayList<Item>();
         this.baseIngredient = null;
->>>>>>> Stashed changes
     }
     
     public void addIngredient(Item ingredient){
@@ -39,13 +33,7 @@ public class SpecialItem extends Item{
     }
 
     public Item getBaseIngredient(){
-<<<<<<< Updated upstream
         return baseIngredient;
     }
-=======
-        return this.baseIngredient;
-    }
-
->>>>>>> Stashed changes
 }
 

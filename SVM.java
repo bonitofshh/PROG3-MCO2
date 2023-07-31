@@ -329,20 +329,10 @@ public class SVM extends VM {
                 }
 
                 displayProducts(SVM.getSlotList(), maxItems);
-<<<<<<< Updated upstream
-                System.out.println("/nEnter base ingredient for custom item [" + specialItem + "]: ");
-                int choice = sc.nextInt() - 1;
-                SVM.customItem = new SpecialItem(specialItem, SVM.getSlotList()[choice].getItem());
-                System.out.println(SVM.customItem.getBaseIngredient().getName());
-
-
-                
-=======
                 System.out.println("\nEnter base ingredient for custom item [" + specialItem + "]: ");
                 int choice = sc.nextInt() - 1;
                 SVM.customItem = new SpecialItem(specialItem, SVM.getSlotList()[choice].getItem());
                 System.out.println("["+ SVM.customItem.getBaseIngredient().getName() + "] has been set as base ingredient for " + "[" + specialItem + "]\n");
->>>>>>> Stashed changes
   
                 for(int i = 0; i < numAddOn; i++){
                     int flag = 0, tempPrice = 0, tempQty = 0, tempCalories = 0;
@@ -492,11 +482,11 @@ public class SVM extends VM {
                     //TODO: Find bug that causes the value of customItem.ingredients.size() to reset
                     addMoney(getUserInput(), sc);
                     if (validChangeCustom() == true) { //returns false????
-                        System.out.println(customItem.ingredients.size() + "-----> this is ingredients size");
+                        //System.out.println(customItem.ingredients.size() + "-----> this is ingredients size");
 
                         if (validIngredients() == true) {
                             //System.out.println("test");
-                            System.out.println(customItem.ingredients.size() + "-----> this is ingredients size");
+                            //System.out.println(customItem.ingredients.size() + "-----> this is ingredients size");
                             
                             /*String[] preps = preparationString(sc);
 
@@ -604,8 +594,8 @@ public class SVM extends VM {
         Money change = new Money();
         int i = 0;
         int tempChange = userInput.getTotalMoney() - customItem.getPrice();
-        System.out.println(customItem.getPrice() + "--->> this is custom item price");
-        System.out.println(tempChange + "----> this is temp change");
+        //System.out.println(customItem.getPrice() + "--->> this is custom item price");
+        //System.out.println(tempChange + "----> this is temp change");
         if(tempChange == 0) { //Checks if there is a need for change 
             moneyBox.setBill100(moneyBox.getBill100()+ userInput.getBill100()); 
             moneyBox.setBill50(moneyBox.getBill50()+ userInput.getBill50()); 
