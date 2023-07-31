@@ -4,9 +4,10 @@ public class SpecialItem extends Item{
     ArrayList<Item> ingredients;
     Item baseIngredient;
     
-    public SpecialItem (String name){
+    public SpecialItem (String name, Item baseIngredient){
         super(name, 0, 0);
         ingredients = new ArrayList<Item>();
+        this.baseIngredient = baseIngredient;
     }
 
     public void addIngredient(Item ingredient){
@@ -22,5 +23,9 @@ public class SpecialItem extends Item{
     public void resetCustomItem() {
         this.price = 0;
         this.calories = 0;
+    }
+
+    public Item getBaseIngredient(){
+        return baseIngredient;
     }
 }

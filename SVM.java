@@ -22,7 +22,7 @@ public class SVM extends VM {
         super.maxItems = maxItems;
         this.addOnSlotList = new ItemSlot[numAddOn];
         this.numAddOn = numAddOn;
-        this.customItem = new SpecialItem(specialItem);
+        this.customItem = new SpecialItem(specialItem, null);
     }
 
     /**
@@ -43,7 +43,7 @@ public class SVM extends VM {
         super.maxItems = maxItems;
         this.addOnSlotList = new ItemSlot[numAddOn];
         this.numAddOn = numAddOn;
-        this.customItem = new SpecialItem(specialItem);
+        this.customItem = new SpecialItem(specialItem, null);
     }
 
     public SVM(){
@@ -293,6 +293,15 @@ public class SVM extends VM {
                     SVM.getSlotList()[i] = temp; //saves value to the slot of the vending machine 
                 }
 
+                displayProducts(SVM.getSlotList(), maxItems);
+                System.out.println("/nEnter base ingredient for custom item [" + specialItem + "]: ");
+                int choice = sc.nextInt() - 1;
+                SVM.customItem = new SpecialItem(specialItem, SVM.getSlotList()[choice].getItem());
+                System.out.println(SVM.customItem.getBaseIngredient().getName());
+
+
+                
+  
                 for(int i = 0; i < numAddOn; i++){
                     int flag = 0, tempPrice = 0, tempQty = 0, tempCalories = 0;
                     System.out.println("Enter add-on name for Slot [" + (i+1) + "]: ");
