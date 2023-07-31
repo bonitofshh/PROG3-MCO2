@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SVM extends VM {
-    //ArrayList<Item> cartList;
     ItemSlot[] addOnSlotList;
     int numAddOn;
     SpecialItem customItem;
@@ -60,45 +59,7 @@ public class SVM extends VM {
     public boolean validIngredients() {
         ItemSlot[] tempList = slotList;
         ItemSlot[] tempAddOn = addOnSlotList;
-        
-        //ArrayList<Item> tempAddOn = new ArrayList<Item>();
-        /*for(int i = 0; i< addOnSlotList.length; i++){
-            tempAddOn.add(addOnSlotList[i].getItem());
-        }*/
-        
-        ArrayList<Item> tempCart = customItem.getIngredients();
-
-        //int count = 0;
-        /*(while (tempCart.size() > 0) { //checks if cart is empty or not
-            //count++;
-            for(int i = 0; i < tempCart.size(); i++){
-                for(int j = 0; j < tempList.length; j++){
-                    if (tempCart.get(i) == tempList[j].getItem() 
-                        && isItemAvail(tempList[j].getItem().getName(), maxItems, tempList) == false) {
-                    return false;
-                    
-                    } else if (tempCart.get(i) == tempList[j].getItem()) { 
-                        tempList[j].removeOneStock(tempList[j].getItemList(), maxItems);
-                        tempCart.remove(i); 
-                    }
-                }   
-            }
-
-            if(tempCart.size() > 0){
-                for(int i = 0; i < tempAddOn.size(); i++){
-                    for(int j = 0; j < tempList.length; j++){
-                        if (tempAddOn.get(i) == tempList[j].getItem() 
-                            && isItemAvail(tempList[j].getItem().getName(), maxItems, tempList) == false) {
-                        return false;
-                        
-                        } else if (tempAddOn.get(i) == tempList[j].getItem()) { 
-                            tempList[j].removeOneStock(tempList[j].getItemList(), maxItems);
-                            tempAddOn.remove(i); 
-                        }
-                    }   
-                }
-            }*/
-            /* */
+        ArrayList<Item> tempCart = new ArrayList<>(customItem.getIngredients());
             for (int i = 0; i < tempList.length; i++) {
                 //TODO: CHECK IF CONDITION WORKS
                 if (tempCart.get(0) == tempList[i].getItem() 
@@ -329,6 +290,7 @@ public class SVM extends VM {
                 }
 
                 displayProducts(SVM.getSlotList(), maxItems);
+
                 System.out.println("\nEnter base ingredient for custom item [" + specialItem + "]: ");
                 int choice = sc.nextInt() - 1;
                 SVM.customItem = new SpecialItem(specialItem, SVM.getSlotList()[choice].getItem());
@@ -360,8 +322,13 @@ public class SVM extends VM {
                         else if (tempQty > maxItems) System.out.println("It can only hold " + maxItems + " items!");
                         else flag = 1;
                     }
+
+                    System.out.println("Enter " + tempName + "'s preparation method (ex. Toasting bread): ");
+                    String tempPrep = sc.nextLine();
+                    if(i > 0) tempPrep = sc.nextLine();  
+                    tempPrep = sc.nextLine();
                     
-                    Item tempAddOn = new addOn(tempName, tempCalories, tempPrice);
+                    Item tempAddOn = new addOn(tempName, tempCalories, tempPrice, tempPrep);
                     Item[] addOnList = new Item[maxItems];
                     for (int j = 0; j < tempQty; j++){
                         addOnList[j] = tempAddOn; 
@@ -420,107 +387,127 @@ public class SVM extends VM {
             System.out.println("[1] Make a custom item\n[2] Buy an individual item\n[3] Cancel");
             int option = sc.nextInt();
             switch (option) {
-                case 1:
-                    String ingredientName = "temp";       
-                    int tempNum = -1;
-                    displayProducts(slotList, maxItems);
-                    while (!ingredientName.equals("done")) { 
-                        tempNum++;
-                        exists = 0;
-                        System.out.println("Enter name of ingredient to add (Type \"done\" if finished): ");
-                        //TODO: IMPLEMENT RILEY BRUTE FORCE SOLUTION
-                        ingredientName = sc.nextLine();
-                        ingredientName = sc.nextLine();
-                        for(int i = 0;  i < getSlotList().length; i++){
-                            if(ingredientName.equals(getSlotList()[i].getItem().getName())){ //checks if item exists 
-                                exists = 1;
-                                if(isItemAvail(ingredientName, maxItems, slotList) == true) { //checks if item is available
-                                    customItem.addIngredient(getSlotList()[i].getItem());
-                                    customItem.setPrice(customItem.getPrice() + getSlotList()[i].getItem().getPrice());
-                                    customItem.setCalories(customItem.getCalories() + getSlotList()[i].getItem().getPrice());
-                                    System.out.println("[" + getSlotList()[i].getItem().getName() + "] has been added.");
-                                } else if (ingredientName.equals("done")) exists = 1; //TODO: PROGRAM DOESNT RECOGNIZE
-                                else System.out.println("Item is not available!");
+                case 1: 
+                    int index = 0;
+                    for (int i = 0; i < slotList.length; i++){
+                        if (customItem.getBaseIngredient().equals(slotList[i].getItem())) index = i;
+                    }
+
+                    if (slotList[index].getQuantity(maxItems) == 0) System.out.println("The machine does not have enough [" + customItem.getBaseIngredient().getName() + "]!");
+                    else {
+                        customItem.addIngredient(customItem.getBaseIngredient());
+                        customItem.setPrice(customItem.getPrice() + customItem.getBaseIngredient().getPrice());
+                        customItem.setCalories(customItem.getCalories() + customItem.getBaseIngredient().getPrice());
+                        String ingredientName = "temp";       
+                        int tempNum = -1;
+                        displayProducts(slotList, maxItems);
+                        while (!ingredientName.equals("done")) { 
+                            tempNum++;
+                            exists = 0;
+                            System.out.println("Enter name of ingredient to add (Type \"done\" if finished): ");
+                            //TODO: IMPLEMENT RILEY BRUTE FORCE SOLUTION
+                            ingredientName = sc.nextLine();
+                            ingredientName = sc.nextLine();
+                            for(int i = 0;  i < getSlotList().length; i++){
+                                if(ingredientName.equals(getSlotList()[i].getItem().getName())){ //checks if item exists 
+                                    exists = 1;
+                                    if(isItemAvail(ingredientName, maxItems, slotList) == true) { //checks if item is available
+                                        customItem.addIngredient(getSlotList()[i].getItem());
+                                        customItem.setPrice(customItem.getPrice() + getSlotList()[i].getItem().getPrice());
+                                        customItem.setCalories(customItem.getCalories() + getSlotList()[i].getItem().getPrice());
+                                        System.out.println("[" + getSlotList()[i].getItem().getName() + "] has been added.");
+                                    } else if (ingredientName.equals("done")) exists = 1; //TODO: PROGRAM DOESNT RECOGNIZE
+                                    else System.out.println("Item is not available!");
+                                }
+                            if (exists == 0) System.out.println("Item doesn't exist!");   
+                            } 
+                        }  
+
+                        String addOnName = "temp";
+                        tempNum = -1;
+                        displayAddOns();
+                        while (!addOnName.equals("done")) {
+                            tempNum++;
+                            exists = 0;
+                            System.out.println("Enter name of add-on to add (Type \"done\" if finished): ");
+                            //TODO: IMPLEMENT RILEY BRUTE FORCE SOLUTION
+                            addOnName = sc.nextLine();
+                            if (tempNum == 0) addOnName = sc.nextLine();
+                            for(int i = 0;  i < getAddOnSlotList().length; i++) {
+                                if(addOnName.equals(getAddOnSlotList()[i].getItem().getName())) { //checks if item exists 
+                                    exists = 1;
+                                    if(isItemAvail(addOnName, maxItems, addOnSlotList) == true) { //checks if item is available
+                                        customItem.addIngredient(getAddOnSlotList()[i].getItem());
+                                        customItem.setPrice(customItem.getPrice() + getAddOnSlotList()[i].getItem().getPrice());
+                                        System.out.println(customItem.getPrice());
+                                        customItem.setCalories(customItem.getCalories() + getAddOnSlotList()[i].getItem().getPrice());
+                                        System.out.println("[" + getAddOnSlotList()[i].getItem().getName() + "] has been added.");
+                                        
+                                    } else if (addOnName.equals("done")) exists = 1;
+                                    else  System.out.println("Add-on is not available!");
+                                }
+                            if (exists == 0) System.out.println("Add-on doesn't exist!");  
+                            }     
+                        }
+
+                        System.out.println("\nYour total is: " + customItem.getPrice());
+                        System.out.println("\nSummary of [" + customItem.getName() + "]: ");
+                        for (int i = 0; i < customItem.ingredients.size(); i++) {
+                            System.out.println("[+] " + customItem.ingredients.get(i).getName());
+                        }
+
+                        addMoney(getUserInput(), sc);
+                        if (validChangeCustom() == true) { 
+
+                            if (validIngredients() == true) {
+
+                                for(int i = 0; i < customItem.ingredients.size(); i++){
+                                    System.out.println(customItem.ingredients.get(i).prepString + customItem.ingredients.get(i).getName()+" ...");
+                                }
+
+                                dispenseCustomChange();
+                                System.out.println("[" + customItem.getName() +"] has been dispensed.");
+                                removeFromSVM();
+                                customItem.resetCustomItem();
+                                beep = 1;
+                                
                             }
-                        if (exists == 0) System.out.println("Item doesn't exist!");   
+                            else {
+                                System.out.println("The vending machine does not have enough ingredients!");
+                                System.out.println("Returning money...");
+                                emptyMoney(getUserInput());
+                                customItem.ingredients.clear();
+                            }
                         } 
-                    }  
-
-                    String addOnName = "temp";
-                    tempNum = -1;
-                    displayAddOns();
-                    while (!addOnName.equals("done")) {
-                        tempNum++;
-                        exists = 0;
-                        System.out.println("Enter name of add-on to add (Type \"done\" if finished): ");
-                        //TODO: IMPLEMENT RILEY BRUTE FORCE SOLUTION
-                        addOnName = sc.nextLine();
-                        if (tempNum == 0) addOnName = sc.nextLine();
-                        for(int i = 0;  i < getAddOnSlotList().length; i++) {
-                            if(addOnName.equals(getAddOnSlotList()[i].getItem().getName())) { //checks if item exists 
-                                exists = 1;
-                                if(isItemAvail(addOnName, maxItems, addOnSlotList) == true) { //checks if item is available
-                                    customItem.addIngredient(getAddOnSlotList()[i].getItem());
-                                    customItem.setPrice(customItem.getPrice() + getAddOnSlotList()[i].getItem().getPrice());
-                                    System.out.println(customItem.getPrice());
-                                    customItem.setCalories(customItem.getCalories() + getAddOnSlotList()[i].getItem().getPrice());
-                                    System.out.println("[" + getAddOnSlotList()[i].getItem().getName() + "] has been added.");
-                                    
-                                } else if (addOnName.equals("done")) exists = 1;
-                                else  System.out.println("Add-on is not available!");
-                            }
-                        if (exists == 0) System.out.println("Add-on doesn't exist!");  
-                        }     
-                    }
-
-                    System.out.println("\nYour total is: " + customItem.getPrice());
-                    System.out.println("\nSummary of [" + customItem.getName() + "]: ");
-                    for (int i = 0; i < customItem.ingredients.size(); i++) {
-                        System.out.println("[+] " + customItem.ingredients.get(i).getName());
-                    }
-
-                    //TODO: Find bug that causes the value of customItem.ingredients.size() to reset
-                    addMoney(getUserInput(), sc);
-                    if (validChangeCustom() == true) { //returns false????
-                        //System.out.println(customItem.ingredients.size() + "-----> this is ingredients size");
-
-                        if (validIngredients() == true) {
-                            //System.out.println("test");
-                            //System.out.println(customItem.ingredients.size() + "-----> this is ingredients size");
-                            
-                            /*String[] preps = preparationString(sc);
-
-                            for (int i = 0; i < preps.length; i++) {
-                                System.out.println("The [" + customItem.ingredients.get(i).getName() + 
-                                "] is being [" + preps[i] + "].");
-                            }*/
-                            for(int i = 0; i < customItem.ingredients.size(); i++){
-                                System.out.println(customItem.ingredients.get(i).prepString + "...");
-                            }
-
-
-                            
-                            dispenseCustomChange();
-                            System.out.println("You have received [" + customItem.getName() +"]");
-                            removeFromSVM();
-                            customItem.resetCustomItem();
-                            beep = 1;
-                            
-                        }
-                        else {
-                            System.out.println("The vending machine does not have enough ingredients!");
-                            System.out.println("Returning money...");
-                            emptyMoney(getUserInput());
-                            customItem.ingredients.clear();
-                        }
-                    } else if (userInput.getTotalMoney() < customItem.getPrice()){
-                        System.out.println("Not enough inserted!");
-                        System.out.println("Returning money...");
-                        emptyMoney(getUserInput());
-                        customItem.ingredients.clear();
                     }
                     break;
-                case 2: //TODO: JUST COPY INDIV VM PROCESS
+                case 2: 
+                    String itemName = null;
+                    int guard = 0;
+                    displayProducts(getSlotList(), maxItems); 
+                    addMoney(getUserInput(), sc);
+                    System.out.println("Enter name of item to purchase: ");
+                    itemName = sc.nextLine(); 
+                    itemName = sc.nextLine();
+                    for(int i = 0;  i < getSlotList().length; i++){
+                        if(itemName.equals(getSlotList()[i].getItem().getName())){ //checks if item exists 
+                            if(isItemAvail(itemName, maxItems, slotList) == true) { //checks if item is available
+                                if(validChange(itemName) == true) { //checks if the vending machine has enough change 
+                                    dispenseItem(itemName, getSlotList()); //dispenses item 
+                                    Money tempChange = dispenseChange(itemName); //dispenses user's change 
+                                    createTransaction(itemName); //creates a transaction 
+                                    tempChange.displayDenominations(); //displays the denominations of the change 
+                                    emptyMoney(getUserInput()); //resets user inputted money value 
+                                    guard = 1;
+                                } else guard = 1;
+                            }
+                        }
+                    }
+                    if(guard == 0){ //returns user's money and resets money input when previous conditions aren't met
+                            System.out.println("Item not found");
+                            System.out.println("Returning money...");
+                            emptyMoney(getUserInput());
+                    }
                     break;
                 case 3: beep = 1;
                     break;
@@ -594,8 +581,6 @@ public class SVM extends VM {
         Money change = new Money();
         int i = 0;
         int tempChange = userInput.getTotalMoney() - customItem.getPrice();
-        //System.out.println(customItem.getPrice() + "--->> this is custom item price");
-        //System.out.println(tempChange + "----> this is temp change");
         if(tempChange == 0) { //Checks if there is a need for change 
             moneyBox.setBill100(moneyBox.getBill100()+ userInput.getBill100()); 
             moneyBox.setBill50(moneyBox.getBill50()+ userInput.getBill50()); 
