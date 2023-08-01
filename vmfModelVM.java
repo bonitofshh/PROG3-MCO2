@@ -8,6 +8,7 @@ public class vmfModelVM {
     protected Money userInput; 
     protected ArrayList<Transactions> transactionList;
     protected int maxItems;
+    protected int numItems;
 
     public vmfModelVM(String name, int slotNum, int maxItems) {
         this.name = name;
@@ -17,6 +18,7 @@ public class vmfModelVM {
         this.userInput = new Money();
         this.transactionList = new ArrayList<Transactions>();
         this.maxItems = maxItems;
+        this.numItems = 0;
     }
 
     public vmfModelVM(){
@@ -27,24 +29,31 @@ public class vmfModelVM {
         this.userInput = new Money();
         this.transactionList = new ArrayList<Transactions>();
         this.maxItems = 0;
+        this.numItems = 0;
     }
 
-    public boolean addItem(String name, int price, int calories, int index) {
+    public int getNumItems(){
+        return numItems;
+    }
+
+    public void incrementNumItems() {
+        this.numItems += 1;
+    }
+
+    public int getMaxItems(){
+        return maxItems;
+    }
+
+    public boolean addItem(String name, int price, int calories) {
         boolean flag = false;
 
         if (price > 0 && calories > 0) {
-            try {
-                slotList[index].setItem(new Item(name, price, calories));
-                flag = true;
-            }
+            slotList[numItems].setItem(new Item(name, price, calories));
+            incrementNumItems();
+            flag = true;
+            
+        } else flag = false;
 
-            catch (Exception e) {
-                System.out.println("Error: " + e);
-            }
-        } else {
-            flag = false;
-        }
-        
         return flag;
     }  
     

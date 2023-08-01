@@ -15,87 +15,93 @@ public class vmfController {
         this.vmfModelVM = vmfModelVM;
         this.vmfModelSVM = vmfModelSVM;
 
-        this.vmfView.setCreateBtn_Listener(new ActionListener() {
+        this.vmfView.setCreateBtn_Listener(new ActionListener() {//Create Vending 
             @Override
             public void actionPerformed(ActionEvent arg0){
-                vmfView.getMainFrame().dispose();
-                vmfView.choiceMenu();
-            }
-        }); //Create Vending 
+                vmfView.setStatus(vmfView.getFirstMenu(), false); 
+                vmfView.setStatus(vmfView.getChoiceMenuFrame(), true); 
+                }
+            }); 
             
         this.vmfView.setTestBtn_Listener(new ActionListener() {//Test Vending
             public void actionPerformed(ActionEvent arg0){
-                //add test VM frame
-                vmfView.getMainFrame().dispose();
-                
+                if (vmfModel.vmList.size() <= 0) vmfView.setVmSuccessLbl("There are no vending machines.");
+                else {
+                    vmfView.setStatus(vmfView.getFirstMenu(), false); 
+                    //add test VM frame
+                }
             }
         });
+        
         this.vmfView.setExitBtn_Listener(new ActionListener() {//Exit
             public void actionPerformed(ActionEvent arg0){
-                vmfView.getMainFrame().dispose();
+                vmfView.setStatus(vmfView.getFirstMenu(), false); 
             }
         });
 
-        this.vmfView.setRegularBtn_Listener(new ActionListener() {//Regular VM
-            public void actionPerformed(ActionEvent arg0){
-                vmfView.getMainFrame().dispose();
-
-                vmfView.rvmMenu(); 
+        this.vmfView.setRegularBtn_Listener(new ActionListener() {// Regular VM
+            public void actionPerformed(ActionEvent arg0) {
+                vmfView.setStatus(vmfView.getChoiceMenuFrame(), false); 
+                vmfView.setStatus(vmfView.getRvmMenuFrame(), true); 
             }
         });
 
-        this.vmfView.setSpecialBtn_Listener(new ActionListener() {//Special VM
-            public void actionPerformed(ActionEvent arg0){
-                vmfView.getMainFrame().dispose();
+        this.vmfView.setSpecialBtn_Listener(new ActionListener() {// Special VM
+            public void actionPerformed(ActionEvent arg0) {
+                vmfView.setStatus(vmfView.getChoiceMenuFrame(), false); 
+                //Add create svm frame
+            }
+        });
+
+        //TODO: MAKE INPUT VALIDATION FOR THIS PART (SLOT NUM SHOULD BE BETWEEN 8-10) 
+        //TODO: TEST IF THIS WORKS
+        this.vmfView.setNextBtnVM_Listener(new ActionListener() {//Button from asking VM deets to Item deets
+            public void actionPerformed(ActionEvent arg0) {
+
+                vmfModelVM VM = new vmfModelVM(vmfView.getVmNameTxt(), Integer.parseInt(vmfView.getSlotNumTxt()), Integer.parseInt(vmfView.getMaxItemTxt()));
+                boolean result = vmfModel.vmList.add(VM);
+
+                vmfView.setStatus(vmfView.getRvmMenuFrame(), false);
+                vmfView.setStatus(vmfView.getAddItemFrame(), true); 
+
+                if(result) {
+                    vmfView.setVmSuccessLbl("Vending Machine successfully created");
+                } else {
+                    vmfView.setVmSuccessLbl("Vending Machine creation failed :(");
+                }
+
+                vmfView.clearTxtVM();
+            }
+        });
+
+        this.vmfView.setNextBtnSVM_Listener(new ActionListener() {//Button from asking SVM deets to Item deets
+            public void actionPerformed(ActionEvent arg0) {
+
+            }
+        });
+    
+        this.vmfView.setAddBtn_Listener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
                 
-            }
-        });
-    }
+                if (vmfView.getItemNameTxt().equals(null) || Integer.parseInt(vmfView.getItemPriceTxt()) <= 0 || 
+                Integer.parseInt(vmfView.getItemCaloriesTxt()) <= 0) {
+                    vmfView.setitemStatusLbl("Check your values!");
 
-        public void addItemsToMachine() {
-            //TODO: WE'RE HERE
-            this.vmfView.setNextBtn_Listener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0){
-                    vmfView.getMainFrame().dispose();
-                    for (int i = 0; i < vmfView.toInt(vmfView.getSlotNumTxt()); i++) {
-                        vmfView.addItemsMenu();
-                    }
-    
-                    vmfModelVM VM = new vmfModelVM(vmfView.getVmNameTxt(), vmfView.toInt(vmfView.getSlotNumTxt()), vmfView.toInt(vmfView.getMaxItemTxt())); 
-                    boolean result = vmfModel.vmList.add(VM);
-    
-                    if(result) {
-                        vmfView.setVmSuccessLbl("Vending Machine successfully created");
-                    } else {
-                        vmfView.setVmSuccessLbl("Vending Machine creation failed :(");
-                    }
-    
-                    vmfView.clearTxtVM();
-                }
-            });
-    
-            this.vmfView.setAddBtn_Listener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
+                } else {
+                    boolean flag = vmfModelVM.addItem(vmfView.getItemNameTxt(), Integer.parseInt(vmfView.getItemPriceTxt()), 
+                            Integer.parseInt(vmfView.getItemCaloriesTxt()));
                     
-                    if (vmfView.getItemNameTxt().isEmpty() || vmfView.toInt(vmfView.getItemPriceTxt()) <= 0 || 
-                    vmfView.toInt(vmfView.getSlotNumTxt()) < 7 || vmfView.toInt(vmfView.getItemCaloriesTxt()) <= 0 || 
-                    vmfView.toInt(vmfView.getSlotNumTxt()) > 10) {
-                        vmfView.setitemSuccessLbl("Check your values!");
+                    boolean result = vmfModelVM.slotList[vmfModelVM.getNumItems()].addStock(Integer.parseInt(vmfView.getItemQuantityTxt()), 
+                            vmfModelVM.maxItems);
+    
+                    if (flag && result) {
+                        vmfView.setitemStatusLbl("Item added");
+                        vmfView.clearItemTxt();
                     } else {
-                        int slotIndex = vmfView.toInt(vmfView.getSlotNumTxt());
-                        boolean flag = vmfModelVM.addItem(vmfView.getItemNameTxt(), vmfView.toInt(vmfView.getItemPriceTxt()), 
-                                vmfView.toInt(vmfView.getItemCaloriesTxt()), slotIndex);
-                        
-                        boolean result = vmfModelVM.slotList[slotIndex].addStock(vmfView.toInt(vmfView.getItemQuantityTxt()), 
-                                vmfModelVM.maxItems);
-        
-                        if (flag && result) {
-                            vmfView.setitemStatusLbl("Item added");
-                        } else {
-                            vmfView.setitemStatusLbl("Item adding failed :(");
-                        }
+                        vmfView.setitemStatusLbl("Item adding failed :(");
                     }
                 }
-        });
+            }
+        });   
     }
 }
