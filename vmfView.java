@@ -21,6 +21,7 @@ public class vmfView {
 
     private JLabel nameLbl, slotNumLbl1,slotNumLbl2, maxItemLbl;
     private JLabel itemNameLbl, itemPriceLbl, itemCaloriesLbl, itemQuantityLbl;
+    private JLabel vmSuccessLbl, itemSuccessLbl;
     private JLabel itemStatusLbl;
     private JLabel sectionLbl;
 
@@ -31,14 +32,16 @@ public class vmfView {
 
 
     public vmfView(){
-        //firstMenu();
+        firstMenu();
         //choiceMenu();
         //rvmMenu();
-        addItems();
+        //addItems();
         //vmListMenu();
     }
 
     public void firstMenu(){
+        vmSuccessLbl = new JLabel("");
+
         this.createBtn = new JButton("Create Vending Machine");
         this.testBtn = new JButton("Test Vending Machine");
         this.exitBtn = new JButton("Exit");
@@ -50,10 +53,17 @@ public class vmfView {
         this.testBtn.setBounds(120, 371, 460, 157);
         this.exitBtn.setBounds(120, 566, 460, 157);
 
+        //TODO: above the create vending machine button
+        vmSuccessLbl.setBounds(0, 0, 0, 0);
+
         mainFrame.add(createBtn);
         mainFrame.add(testBtn);
         mainFrame.add(exitBtn);
         mainFrame.setVisible(true);
+    }
+
+    public void setVmSuccessLbl(String string) {
+        this.vmSuccessLbl.setText(string);
     }
 
     public void setCreateBtn_Listener(ActionListener actionListener){
@@ -170,6 +180,7 @@ public class vmfView {
         mainFrame.setLayout(null);
         mainFrame.setVisible(true);
     }
+    
     public JFrame getMainFrame(){
         return mainFrame;
     }
@@ -182,8 +193,8 @@ public class vmfView {
         itemCaloriesLbl = new JLabel("Enter item calories: ");
         itemQuantityLbl = new JLabel("Enter item quantity: ");
 
-        itemStatusLbl = new JLabel("item added to slot[i]");
-
+        itemStatusLbl = new JLabel("Item added!");
+        itemSuccessLbl = new JLabel("");
 
         itemNameTxt = new JTextField();
         itemPriceTxt = new JTextField();
@@ -231,6 +242,13 @@ public class vmfView {
         mainFrame.setVisible(true);
     }
 
+    public void setitemSuccessLbl(String string) {
+        this.itemSuccessLbl.setText(string);
+    }
+
+    public void setitemStatusLbl(String string) {
+        this.itemStatusLbl.setText(string);
+    }
     public void vmListMenu(){
         mainFrame = new JFrame("Vending Machine List");
 
@@ -258,9 +276,50 @@ public class vmfView {
 
     public void testVMMenu(){
         mainFrame = new JFrame("Test Regular Vending Machine");
-
-
-
     }
 
+    public int toInt (String string){
+            return Integer.parseInt(string);
+        }
+    
+    public String getVmNameTxt(){
+            return this.vmNameTxt.getText();
+        }
+    
+        public String getSlotNumTxt(){
+            return this.slotNumTxt.getText();
+        }
+    
+        public String getMaxItemTxt(){
+            return this.maxItemTxt.getText();
+        }
+    
+        public void clearTxtVM(){
+            this.vmNameTxt.setText("");
+            this.slotNumTxt.setText("");
+            this.maxItemTxt.setText("");
+        }
+    
+        public String getItemNameTxt() {
+            return this.itemNameTxt.getText();
+        } 
+    
+        public String getItemPriceTxt() {
+            return this.itemPriceTxt.getText();
+        }
+    
+        public String getItemCaloriesTxt() {
+            return this.itemCaloriesTxt.getText();
+        }
+    
+        public String getItemQuantityTxt() {
+            return this.itemQuantityTxt.getText();
+        }
+    
+        public void setAddBtn_Listener(ActionListener actionListener){
+            this.addBtn.addActionListener(actionListener);
+        }
+
 }
+
+
