@@ -78,6 +78,7 @@ public class vmfView {
         mainFrame.add(regularBtn);
         mainFrame.add(specialBtn);
         mainFrame.setVisible(true);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public void setRegularBtn_Listener(ActionListener actionListener){
