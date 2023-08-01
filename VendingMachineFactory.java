@@ -12,7 +12,7 @@ public class VendingMachineFactory {
         while (choice != 3) { //loop program until user exits 
             System.out.println("[1] Make Vending Machine\n[2] Test Vending Machine\n[3] Exit");
             choice = sc.nextInt();
-            
+
             switch (choice) {
                 case 1:
                     System.out.println("[1] Regular Vending Machine\n[2] Special Vending Machine");

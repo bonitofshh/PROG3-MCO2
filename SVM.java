@@ -55,7 +55,6 @@ public class SVM extends VM {
         return addOnSlotList;
     }
 
-    //TODO: FIX TOMORROW
     public boolean validIngredients() {
         ItemSlot[] tempList = slotList;
         ItemSlot[] tempAddOn = addOnSlotList;
@@ -230,7 +229,6 @@ public class SVM extends VM {
             if(numAddOn < 0)
                 System.out.println("Invalid number of add-ons");
             else { 
-                //TODO: CHECK IF PWEDE GANTO
                 int rawr = 0;
                 int maxItems = 0;
                 while (rawr == 0) {
@@ -239,7 +237,6 @@ public class SVM extends VM {
                     if (maxItems < 5 || maxItems > 20) System.out.println("Invalid number!");
                     else rawr = 1;
                 }
-               
                 System.out.println("Enter the customizable item (eg. sandwich/ramen/mongolian rice): ");
                 String specialItem = sc.nextLine();
                 specialItem = sc.nextLine();
@@ -452,6 +449,7 @@ public class SVM extends VM {
 
                         System.out.println("\nYour total is: " + customItem.getPrice());
                         System.out.println("\nSummary of [" + customItem.getName() + "]: ");
+                        System.out.println("Total calories: " + customItem.getCalories());
                         for (int i = 0; i < customItem.ingredients.size(); i++) {
                             System.out.println("[+] " + customItem.ingredients.get(i).getName());
                         }
