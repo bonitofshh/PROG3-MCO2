@@ -50,13 +50,18 @@ public class ItemSlot {
      * Adds quantity of item objects in the item slot.
      * @param quantity number of items
      */
-    public void addStock (int quantity, int maxItems){
-        for (int i = 0; i < maxItems; i++) {
-            if (itemList[i] == null && quantity > 0) {
-                itemList[i] = item;
-                quantity--;
+    public boolean addStock (int quantity, int maxItems){
+        if (quantity > 0 && (quantity + getQuantity(maxItems) < maxItems)) {
+            for (int i = 0; i < maxItems; i++) {
+                if (itemList[i] == null && quantity > 0) {
+                    itemList[i] = item;
+                    quantity--;
+                }
             }
+            return true;
         }
+        
+        return false;
     }
 
     /**
