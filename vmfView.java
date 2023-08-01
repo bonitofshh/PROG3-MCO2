@@ -1,11 +1,20 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JTextArea;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+
+import java.awt.Font;
+import java.awt.TextField;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.OutputStream;
 
 public class vmfView {
     
@@ -23,7 +32,9 @@ public class vmfView {
     private JLabel itemStatusLbl;
     private JLabel sectionLbl;
 
-    private JTextField vmNameTxt, slotNumTxt, maxItemTxt;
+    private JTextField vmNameTxt;
+    private JTextField rvmNameTxt, rvmSlotNumTxt, rvmMaxItemTxt;
+    private JTextField svmNameTxt, svmSlotNumTxt, svmMaxItemTxt;
     private JTextField itemNameTxt, itemPriceTxt, itemCaloriesTxt, itemQuantityTxt;
 
     private JTextArea vendingListTextArea, slotTextArea, totalPriceTextArea, inventoryTextArea;
@@ -124,9 +135,9 @@ public class vmfView {
         slotNumLbl1 = new JLabel("# of item slots: ");
         maxItemLbl = new JLabel("Max # per slot: ");
 
-        vmNameTxt = new JTextField();
-        slotNumTxt = new JTextField();
-        maxItemTxt = new JTextField();
+        rvmNameTxt = new JTextField();
+        rvmSlotNumTxt = new JTextField();
+        rvmMaxItemTxt = new JTextField();
 
         this.nextBtnVM = new JButton("Next");
 
@@ -135,24 +146,73 @@ public class vmfView {
         slotNumLbl1.setBounds(30, 302, 253, 42);
         maxItemLbl.setBounds(30, 474, 253, 42);
 
-        vmNameTxt.setBounds(296, 113, 308, 76);
-        slotNumTxt.setBounds(296, 285, 308, 76);
-        maxItemTxt.setBounds(296, 456, 308, 76);
+        rvmNameTxt.setBounds(296, 113, 308, 76);
+        rvmSlotNumTxt.setBounds(296, 285, 308, 76);
+        rvmMaxItemTxt.setBounds(296, 456, 308, 76);
 
         nextBtnVM.setBounds(184, 645, 308, 165);
 
         rvmMenuFrame.add(nameLbl);
         rvmMenuFrame.add(slotNumLbl1);
         rvmMenuFrame.add(maxItemLbl);
-        rvmMenuFrame.add(vmNameTxt);
-        rvmMenuFrame.add(slotNumTxt);
-        rvmMenuFrame.add(maxItemTxt);
+        rvmMenuFrame.add(rvmNameTxt);
+        rvmMenuFrame.add(rvmSlotNumTxt);
+        rvmMenuFrame.add(rvmMaxItemTxt);
         rvmMenuFrame.add(nextBtnVM);
 
         rvmMenuFrame.setResizable(false);
         rvmMenuFrame.setLayout(null);
         rvmMenuFrame.setVisible(false);
         rvmMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void svmMenu(){
+
+        JLabel svmMenuNameLbl,svmMenuSlotNumLbl, svmMenuAddOnNumLbl, svmMenuMaxItemLbl;
+        JTextField svmMenuNameTxt, svmMenuSlotNumTxt, svmMenuAddOnTxt,svmMenuMaxItemTxt;
+        JButton svmMenuNextBtn;
+
+        svmMenuFrame = new JFrame("Intialize SVM");
+        svmMenuNameLbl = new JLabel("SVM name: ");
+        svmMenuSlotNumLbl = new JLabel("# of item slots: ");
+        svmMenuAddOnNumLbl = new JLabel("# of add-on slots: ");
+        svmMenuMaxItemLbl = new JLabel("Max # per slot: ");
+
+        svmMenuNameTxt = new JTextField();
+        svmMenuSlotNumTxt = new JTextField();
+        svmMenuAddOnTxt = new JTextField();
+        svmMenuMaxItemTxt = new JTextField();
+
+        svmMenuNextBtn = new JButton("Next");
+
+        svmMenuFrame.setSize(700, 900);
+        svmMenuNameLbl.setBounds(22, 217, 207, 36);
+        svmMenuSlotNumLbl.setBounds(22, 340, 207, 36);
+        svmMenuAddOnNumLbl.setBounds(22, 461, 255, 36);
+        svmMenuMaxItemLbl.setBounds(22, 583, 296, 36);
+
+        svmMenuNameTxt.setBounds(316, 195, 340, 67);
+        svmMenuSlotNumTxt.setBounds(316, 314, 308, 76);
+        svmMenuAddOnTxt.setBounds(316, 432, 308, 76);
+        svmMenuMaxItemTxt.setBounds(316, 557, 308, 76);
+
+        svmMenuNextBtn.setBounds(148, 711, 340, 145);
+
+        svmMenuFrame.add(svmMenuFrame);
+        svmMenuFrame.add(svmMenuNameLbl);
+        svmMenuFrame.add(svmMenuSlotNumLbl);
+        svmMenuFrame.add(svmMenuAddOnNumLbl);
+        svmMenuFrame.add(svmMenuMaxItemLbl);
+        svmMenuFrame.add(svmMenuNameTxt);
+        svmMenuFrame.add(svmMenuSlotNumTxt);
+        svmMenuFrame.add(svmMenuAddOnTxt);
+        svmMenuFrame.add(svmMenuMaxItemTxt);
+        svmMenuFrame.add(svmMenuNextBtn);
+
+        svmMenuFrame.setResizable(false);
+        svmMenuFrame.setLayout(null);
+        svmMenuFrame.setVisible(true);
+        svmMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public JFrame getRvmMenuFrame(){
@@ -163,68 +223,48 @@ public class vmfView {
         this.nextBtnVM.addActionListener(actionListener);
     }
 
-    public String getVmNameTxt(){
-        return this.vmNameTxt.getText();
+    public String getRVMNameTxt(){
+        return rvmNameTxt.getText();
     }
 
-    public String getSlotNumTxt(){
-        return this.slotNumTxt.getText();
+    public String getRVMSlotNumTxt(){
+
+        return rvmSlotNumTxt.getText();
     }
 
-    public String getMaxItemTxt(){
-        return this.maxItemTxt.getText();
+    public String getRVMMaxItemTxt(){
+        return rvmMaxItemTxt.getText();
     }
 
-    public void clearTxtVM(){
-        this.vmNameTxt.setText("");
-        this.slotNumTxt.setText("");
-        this.maxItemTxt.setText("");
+    public void clearRVMTxtVM(){
+        this.rvmNameTxt.setText("");
+        this.rvmSlotNumTxt.setText("");
+        this.rvmMaxItemTxt.setText("");
     }
 
-// TODO svm menu not yet updated
-    public void svmMenu(){
-
-        svmMenuFrame = new JFrame("Intialize SVM");
-        nameLbl = new JLabel("VM name: ");
-        slotNumLbl1 = new JLabel("# of item slots: ");
-        slotNumLbl2 = new JLabel("# of add-on slots: ");
-        maxItemLbl = new JLabel("Max # per slot: ");
-
-        vmNameTxt = new JTextField();
-        slotNumTxt = new JTextField();
-        maxItemTxt = new JTextField();
-
-        nextBtnSVM = new JButton("Next ->");
-
-        svmMenuFrame.setSize(700, 900);
-        nameLbl.setBounds(40, 60, 200, 35);
-        slotNumLbl1.setBounds(40, 120, 200, 35);
-        slotNumLbl2.setBounds(40, 120, 200, 35);
-        maxItemLbl.setBounds(40, 180, 200, 35);
-        vmNameTxt.setBounds(150, 60, 100, 30);
-        slotNumTxt.setBounds(150, 120, 100, 30);
-        maxItemTxt.setBounds(150, 180, 100, 30);
-        nextBtnSVM.setBounds(100, 240, 100, 30);
-
-        svmMenuFrame.add(nameLbl);
-        svmMenuFrame.add(slotNumLbl1);
-        svmMenuFrame.add(slotNumLbl2);
-        svmMenuFrame.add(maxItemLbl);
-        svmMenuFrame.add(vmNameTxt);
-        svmMenuFrame.add(slotNumTxt);
-        svmMenuFrame.add(maxItemTxt);
-        svmMenuFrame.add(nextBtnSVM);
-
-        svmMenuFrame.setResizable(false);
-        svmMenuFrame.setLayout(null);
-        svmMenuFrame.setVisible(false);
-        svmMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
     
-    public JFrame getSvmMenuFrame(){
+    public JFrame getSVMMenuFrame(){
         return this.svmMenuFrame;
     }
 
+    public String getSVMNameTxt(){
+        return svmNameTxt.getText();
+    }
+
+    public String getSVMSlotNumTxt(){
+
+        return svmSlotNumTxt.getText();
+    }
+
+    public String getSVMMaxItemTxt(){
+        return svmMaxItemTxt.getText();
+    }
+
+    public void clearSVMTxtVM(){
+        this.svmNameTxt.setText("");
+        this.svmSlotNumTxt.setText("");
+        this.svmMaxItemTxt.setText("");
+    }
     public void setNextBtnSVM_Listener(ActionListener actionListener){
         this.nextBtnSVM.addActionListener(actionListener);
     }
@@ -614,7 +654,7 @@ public class vmfView {
 
     }
 
-    public JFrame getMaintenanFrame(){
+    public JFrame getMaintenanceFrame(){
         return this.maintenanceFrame;
     }
 }

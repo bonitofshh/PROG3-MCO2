@@ -1,6 +1,6 @@
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+import java.util.*;
 import javax.swing.JButton;
 
 public class vmfController {
@@ -58,7 +58,7 @@ public class vmfController {
         this.vmfView.setNextBtnVM_Listener(new ActionListener() {//Button from asking VM deets to Item deets
             public void actionPerformed(ActionEvent arg0) {
 
-                vmfModelVM VM = new vmfModelVM(vmfView.getVmNameTxt(), Integer.parseInt(vmfView.getSlotNumTxt()), Integer.parseInt(vmfView.getMaxItemTxt()));
+                vmfModelVM VM = new vmfModelVM(vmfView.getRVMNameTxt(), Integer.parseInt(vmfView.getRVMSlotNumTxt()), Integer.parseInt(vmfView.getRVMMaxItemTxt()));
                 boolean result = vmfModel.vmList.add(VM);
 
                 vmfView.setStatus(vmfView.getRvmMenuFrame(), false);
@@ -70,7 +70,7 @@ public class vmfController {
                     vmfView.setVmSuccessLbl("Vending Machine creation failed :(");
                 }
 
-                vmfView.clearTxtVM();
+                //vmfView.clearTxtVM();
             }
         });
 
