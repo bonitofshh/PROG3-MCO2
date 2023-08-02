@@ -3,7 +3,6 @@ import java.util.ArrayList; //imports utilities
 
 public class VendingMachineFactory {
     public static void main(String args[]) {
-        ArrayList<Transactions> transactionList = new ArrayList<Transactions>();
         int choice = 0;
         Scanner sc = new Scanner(System.in);
         ArrayList<VM> vmList = new ArrayList<VM>(); //declares instances of the scanner and arrayList of vending machines;

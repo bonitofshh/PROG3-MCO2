@@ -10,7 +10,7 @@ public class vmfModel {
     public String getVMList(){
         StringBuilder temp = new StringBuilder();
         for (int i = 0; i < vmList.size(); i++) {
-            temp.append("1. " + vmList.get(i).name);
+            temp.append((i+1) + ". " + vmList.get(i).name + "\n");
         }
 
         return temp.toString();

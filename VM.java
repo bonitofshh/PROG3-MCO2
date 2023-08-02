@@ -440,7 +440,7 @@ public class VM {
      * Empties out a certain Money attribute. It sets all the denominations back to 0.
      * @param money attribute that will get zeroed out.
      */
-    public void emptyMoney(Money money){ // TODO: possible feature is to place collected money inside a "savings" attribute inside Vending Machine Factory
+    public void emptyMoney(Money money){ 
         money.setBill100(0);
         money.setBill50(0);
         money.setBill20(0);
@@ -472,7 +472,6 @@ public class VM {
             System.out.println("Enter number of slots: "); //asks for number of slots 
             int slotNum = sc.nextInt();
 
-            //TODO: REVERT BACK
             if (slotNum < 1 || slotNum > 20) {
                 System.out.println("Invalid number of slots!");
             }
