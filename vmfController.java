@@ -537,7 +537,6 @@ public class vmfController {
             }
         });
 
-        //TODO: LOOK FOR PROBLEM IN ADDING MONEY
         this.vmfView.setVMcoin1MT_Listener(new ActionListener() {//adds 1 1coin to the machine
             public void actionPerformed(ActionEvent arg0) {
                 vmfModelVM.moneyBox.setCoin1(vmfModelVM.moneyBox.getCoin1() + 1);
@@ -602,12 +601,13 @@ public class vmfController {
 
         this.vmfView.setVMmaintenanceTransactionBtn_Listener(new ActionListener(){
             public void actionPerformed(ActionEvent arg0){
+
+                vmfView.setRVMTransactionsTextArea(vmfModelVM.printTransactionSummary());
                 vmfView.setStatus(vmfView.getRVMTransactions(), true); 
-                
-                for(int j = 0; j < vmfModelVM.transactionList.size(); j++){
-                    vmfView.rvmTransactionsTextArea.append(vmfModelVM.transactionList.get(j).getName() + " - " + vmfModelVM.transactionList.get(j).getPrice() + "Php\n");
-                }
+                vmfView.getRVMTransactions().revalidate();
+                vmfView.getRVMTransactions().repaint();  
             }
         });
+    
     }
 }
