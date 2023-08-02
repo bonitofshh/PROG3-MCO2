@@ -1,7 +1,6 @@
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.*;
-import javax.swing.JButton;
 
 public class vmfController {
     private vmfView vmfView;
@@ -9,17 +8,17 @@ public class vmfController {
     private vmfModelVM vmfModelVM;
     private vmfModelSVM vmfModelSVM;
 
-    public vmfController(vmfView vmfView, vmfModel vmfModel, vmfModelVM vmfModelVM, vmfModelSVM vmfModelSVM){
+    public vmfController(vmfView vmfView, vmfModel vmfModel){
         this.vmfView = vmfView;
         this.vmfModel = vmfModel;
-        this.vmfModelVM = vmfModelVM;
-        this.vmfModelSVM = vmfModelSVM;
 
         this.vmfView.setCreateBtn_Listener(new ActionListener() {//Create Vending 
             @Override
             public void actionPerformed(ActionEvent arg0){
                 vmfView.setStatus(vmfView.getFirstMenu(), false); 
                 vmfView.setStatus(vmfView.getChoiceMenuFrame(), true); 
+                vmfView.setVmSuccessLbl("");
+                vmfView.setitemStatusLbl("");
                 }
             }); 
             
@@ -42,6 +41,7 @@ public class vmfController {
         this.vmfView.setRegularBtn_Listener(new ActionListener() {// Regular VM
             public void actionPerformed(ActionEvent arg0) {
                 vmfView.setStatus(vmfView.getChoiceMenuFrame(), false); 
+                vmfView.clearRVMTxtVM();
                 vmfView.setStatus(vmfView.getRvmMenuFrame(), true); 
             }
         });
@@ -49,38 +49,52 @@ public class vmfController {
         this.vmfView.setSpecialBtn_Listener(new ActionListener() {// Special VM
             public void actionPerformed(ActionEvent arg0) {
                 vmfView.setStatus(vmfView.getChoiceMenuFrame(), false); 
-                //Add create svm frame
+                vmfView.setStatus(vmfView.getSVMMenuFrame(), true);
+
             }
         });
 
         //TODO: MAKE INPUT VALIDATION FOR THIS PART (SLOT NUM SHOULD BE BETWEEN 8-10) 
         //TODO: TEST IF THIS WORKS
-        this.vmfView.setNextBtnVM_Listener(new ActionListener() {//Button from asking VM deets to Item deets
+        this.vmfView.setVmNextBtn_Listener(new ActionListener() {//Button from asking VM deets to Item deets
             public void actionPerformed(ActionEvent arg0) {
 
-                vmfModelVM VM = new vmfModelVM(vmfView.getRVMNameTxt(), Integer.parseInt(vmfView.getRVMSlotNumTxt()), Integer.parseInt(vmfView.getRVMMaxItemTxt()));
-                boolean result = vmfModel.vmList.add(VM);
-
-                vmfView.setStatus(vmfView.getRvmMenuFrame(), false);
-                vmfView.setStatus(vmfView.getAddItemFrame(), true); 
-
-                if(result) {
-                    vmfView.setVmSuccessLbl("Vending Machine successfully created");
+                //TODO: REVERT BACK TO 8 AND 10
+                if (Integer.parseInt(vmfView.getRVMSlotNumTxt()) < 1 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 100) {
+                    vmfView.setVMspecsLbl("Only 8-10 slots are allowed!");
                 } else {
-                    vmfView.setVmSuccessLbl("Vending Machine creation failed :(");
-                }
 
-                //vmfView.clearTxtVM();
+                    String tempName = vmfView.getRVMNameTxt();
+                    int tempSlot = Integer.parseInt(vmfView.getRVMSlotNumTxt().trim());
+                    int tempMax = Integer.parseInt(vmfView.getRVMMaxItemTxt().trim());
+
+                    vmfModelVM = new vmfModelVM(tempName, tempSlot, tempMax);
+
+                    vmfView.setStatus(vmfView.getRvmMenuFrame(), false);
+                    vmfView.setStatus(vmfView.getAddItemFrame(), true); 
+
+                    boolean result = vmfModel.vmList.add(vmfModelVM);      
+                    
+                    if (result) {
+                        vmfView.setVmSuccessLbl("Vending Machine successfully created");
+                        vmfView.getFirstMenu().revalidate();
+                        vmfView.getFirstMenu().repaint();
+                    } else {
+                        vmfView.setVmSuccessLbl("Vending Machine creation failed :(");
+                        vmfView.getFirstMenu().revalidate();
+                        vmfView.getFirstMenu().repaint();
+                    }
+                }
             }
         });
 
         this.vmfView.setNextBtnSVM_Listener(new ActionListener() {//Button from asking SVM deets to Item deets
             public void actionPerformed(ActionEvent arg0) {
-
+                
             }
         });
     
-        this.vmfView.setAddBtn_Listener(new ActionListener() {
+        this.vmfView.setAddBtnVM_Listener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 
                 if (vmfView.getItemNameTxt().equals(null) || Integer.parseInt(vmfView.getItemPriceTxt()) <= 0 || 
@@ -88,20 +102,43 @@ public class vmfController {
                     vmfView.setitemStatusLbl("Check your values!");
 
                 } else {
-                    boolean flag = vmfModelVM.addItem(vmfView.getItemNameTxt(), Integer.parseInt(vmfView.getItemPriceTxt()), 
-                            Integer.parseInt(vmfView.getItemCaloriesTxt()));
                     
-                    boolean result = vmfModelVM.slotList[vmfModelVM.getNumItems()].addStock(Integer.parseInt(vmfView.getItemQuantityTxt()), 
-                            vmfModelVM.maxItems);
+                    Item tempItem = new Item (vmfView.getItemNameTxt().trim(), 
+                            Integer.parseInt(vmfView.getItemCaloriesTxt().trim()), Integer.parseInt(vmfView.getItemPriceTxt().trim()));
+                    
+                    Item[] itemList = new Item[Integer.parseInt(vmfView.getRVMMaxItemTxt().trim())];
+                    
+                    for (int j = 0; j < Integer.parseInt(vmfView.getItemQuantityTxt()); j++){
+                        itemList[j] = tempItem; 
+                    }
+                    ItemSlot temp = new ItemSlot(itemList, tempItem);
+
+                    vmfModelVM.getSlotList()[vmfModelVM.getNumItems()] = temp;
     
-                    if (flag && result) {
-                        vmfView.setitemStatusLbl("Item added");
+                    boolean flag = (vmfModelVM.getSlotList()[vmfModelVM.getNumItems()] != null);
+                    if (flag) {
+                        vmfView.setitemStatusLbl("Item added!");
+                        vmfModelVM.incrementNumItems();
                         vmfView.clearItemTxt();
+
+                        if (vmfModelVM.slotList.length == vmfModelVM.getNumItems()) {
+                            vmfView.setVisibleNextBtnVM(true);
+                            vmfView.setVisibleAddBtnVM(false);
+                            vmfView.getAddItemFrame().revalidate();
+                            vmfView.getAddItemFrame().repaint();
+                        }
                     } else {
                         vmfView.setitemStatusLbl("Item adding failed :(");
                     }
                 }
             }
         });   
+    
+        this.vmfView.setNextBtnVM_Listener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                vmfView.setStatus(vmfView.getAddItemFrame(), false);  
+                vmfView.setStatus(vmfView.getFirstMenu(), true);               
+            }
+        });
     }
 }

@@ -32,8 +32,20 @@ public class vmfModelVM {
         this.numItems = 0;
     }
 
+    public void addToSlotList(ItemSlot list) {
+        this.slotList[numItems] = list;
+    }
+
+    public ItemSlot[] getSlotList() {
+        return this.slotList;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
     public int getNumItems(){
-        return numItems;
+        return this.numItems;
     }
 
     public void incrementNumItems() {
@@ -46,21 +58,23 @@ public class vmfModelVM {
 
     public boolean addItem(String name, int price, int calories) {
         boolean flag = false;
-
         if (price > 0 && calories > 0) {
-            slotList[numItems].setItem(new Item(name, price, calories));
+            Item temp = new Item(name, calories, price);
+
+            this.slotList[numItems].setItem(temp);
             incrementNumItems();
             flag = true;
             
         } else flag = false;
-
         return flag;
     }  
-    
-    public boolean addVM(String name, ItemSlot[] slotList, int maxItems) {
-        //(vmList).add(new VM(name, slotList, maxItems))
 
-        boolean flag = false;
-        return flag;
+    public String getItemList() {
+        StringBuilder temp = new StringBuilder();
+        for (int i = 0; i < slotList.length; i++){
+            temp.append("1. " + slotList[i].getItem().getName());
+        }
+
+        return temp.toString();
     }
 }

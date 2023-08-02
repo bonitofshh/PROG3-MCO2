@@ -1,13 +1,4 @@
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.Action;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.*;
 
 import java.awt.Font;
 import java.awt.TextField;
@@ -21,14 +12,14 @@ public class vmfView {
     private JFrame firstMenuFrame, choiceMenuFrame, rvmMenuFrame, svmMenuFrame, addItemsFrame, vmListFrame, testVMFrame, maintenanceFrame;
 
     private JButton createBtn, testBtn, exitBtn, regularBtn, specialBtn;
-    private JButton nextBtnVM, nextBtnSVM,addBtn, viewBtn, nextItemBtn;
+    private JButton nextBtnVM, nextBtnSVM,addBtnVM, addBtnSVM, viewBtn;
     private JButton coinBtn, billBtn;
     private JButton updateBtn, collectBtn, buyBtn, updateQuantiyBtn, updatePriceBtn;
-
+    private JButton vmNextBtn;
 
     private JLabel nameLbl, slotNumLbl1,slotNumLbl2, maxItemLbl;
     private JLabel itemNameLbl, itemPriceLbl, itemCaloriesLbl, itemQuantityLbl;
-    private JLabel vmSuccessLbl, itemSuccessLbl;
+    private JLabel VMspecsLbl, vmSuccessLbl, itemSuccessLbl;
     private JLabel itemStatusLbl;
     private JLabel sectionLbl;
 
@@ -48,8 +39,12 @@ public class vmfView {
     private JLabel itemNameLbl1, itemNameLbl2, quantityLbl, newPriceLbl;
     private JTextField maintenanceNameTxt1, maintenanceNameTxt2, maintenanceQuantityTxt, maintenanceNewPriceTxt;
 
+    JLabel svmMenuNameLbl,svmMenuSlotNumLbl, svmMenuAddOnNumLbl, svmMenuMaxItemLbl;
+    JTextField svmMenuNameTxt, svmMenuSlotNumTxt, svmMenuAddOnTxt,svmMenuMaxItemTxt, itemNameTxtVM;
+
 
     public vmfView(){
+        
         firstMenu();
         choiceMenu();
         rvmMenu();
@@ -60,24 +55,27 @@ public class vmfView {
 
     public void firstMenu(){
         vmSuccessLbl = new JLabel("");
-
         this.createBtn = new JButton("Create Vending Machine");
         this.testBtn = new JButton("Test Vending Machine");
         this.exitBtn = new JButton("Exit");
         firstMenuFrame = new JFrame("Vending Machine Factory");
+
         firstMenuFrame.setSize(700, 900);
         firstMenuFrame.setResizable(false);
         firstMenuFrame.setLayout(null);
+        vmSuccessLbl.setBounds(120, 120, 460, 157);
+        
         this.createBtn.setBounds(120, 176, 460, 157);
         this.testBtn.setBounds(120, 371, 460, 157);
         this.exitBtn.setBounds(120, 566, 460, 157);
 
-        //TODO: above the create vending machine button
-        vmSuccessLbl.setBounds(0, 0, 0, 0);
+        vmSuccessLbl.setBounds(220, 50, 460, 157);
 
+        firstMenuFrame.add(vmSuccessLbl);
         firstMenuFrame.add(createBtn);
         firstMenuFrame.add(testBtn);
         firstMenuFrame.add(exitBtn);
+
         firstMenuFrame.setVisible(true);
     }
 
@@ -132,15 +130,17 @@ public class vmfView {
 
         rvmMenuFrame = new JFrame("Intialize RVM");
         nameLbl = new JLabel("VM name: ");
-        slotNumLbl1 = new JLabel("# of item slots: ");
+        slotNumLbl1 = new JLabel("# of item slots (8-10): ");
         maxItemLbl = new JLabel("Max # per slot: ");
+        VMspecsLbl = new JLabel("");
 
         rvmNameTxt = new JTextField();
         rvmSlotNumTxt = new JTextField();
         rvmMaxItemTxt = new JTextField();
 
-        this.nextBtnVM = new JButton("Next");
+        this.vmNextBtn = new JButton("Next");
 
+        VMspecsLbl.setBounds(280, 368, 268, 30);
         rvmMenuFrame.setSize(700, 900);
         nameLbl.setBounds(30, 131, 253, 42);
         slotNumLbl1.setBounds(30, 302, 253, 42);
@@ -150,15 +150,16 @@ public class vmfView {
         rvmSlotNumTxt.setBounds(296, 285, 308, 76);
         rvmMaxItemTxt.setBounds(296, 456, 308, 76);
 
-        nextBtnVM.setBounds(184, 645, 308, 165);
+        vmNextBtn.setBounds(184, 645, 308, 165);
 
+        rvmMenuFrame.add(VMspecsLbl);
         rvmMenuFrame.add(nameLbl);
         rvmMenuFrame.add(slotNumLbl1);
         rvmMenuFrame.add(maxItemLbl);
         rvmMenuFrame.add(rvmNameTxt);
         rvmMenuFrame.add(rvmSlotNumTxt);
         rvmMenuFrame.add(rvmMaxItemTxt);
-        rvmMenuFrame.add(nextBtnVM);
+        rvmMenuFrame.add(vmNextBtn);
 
         rvmMenuFrame.setResizable(false);
         rvmMenuFrame.setLayout(null);
@@ -166,11 +167,11 @@ public class vmfView {
         rvmMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void svmMenu(){
+    public void setVMspecsLbl(String string) {
+        this.VMspecsLbl.setText(string);
+    }
 
-        JLabel svmMenuNameLbl,svmMenuSlotNumLbl, svmMenuAddOnNumLbl, svmMenuMaxItemLbl;
-        JTextField svmMenuNameTxt, svmMenuSlotNumTxt, svmMenuAddOnTxt,svmMenuMaxItemTxt;
-        JButton svmMenuNextBtn;
+    public void svmMenu(){
 
         svmMenuFrame = new JFrame("Intialize SVM");
         svmMenuNameLbl = new JLabel("SVM name: ");
@@ -183,7 +184,8 @@ public class vmfView {
         svmMenuAddOnTxt = new JTextField();
         svmMenuMaxItemTxt = new JTextField();
 
-        svmMenuNextBtn = new JButton("Next");
+        addBtnSVM = new JButton("Add");
+        nextBtnSVM = new JButton("Next");
 
         svmMenuFrame.setSize(700, 900);
         svmMenuNameLbl.setBounds(22, 217, 207, 36);
@@ -196,9 +198,10 @@ public class vmfView {
         svmMenuAddOnTxt.setBounds(316, 432, 308, 76);
         svmMenuMaxItemTxt.setBounds(316, 557, 308, 76);
 
-        svmMenuNextBtn.setBounds(148, 711, 340, 145);
+        
+        nextBtnSVM.setBounds(148, 711, 340, 145);
 
-        svmMenuFrame.add(svmMenuFrame);
+        //svmMenuFrame.add(svmMenuFrame);
         svmMenuFrame.add(svmMenuNameLbl);
         svmMenuFrame.add(svmMenuSlotNumLbl);
         svmMenuFrame.add(svmMenuAddOnNumLbl);
@@ -207,11 +210,10 @@ public class vmfView {
         svmMenuFrame.add(svmMenuSlotNumTxt);
         svmMenuFrame.add(svmMenuAddOnTxt);
         svmMenuFrame.add(svmMenuMaxItemTxt);
-        svmMenuFrame.add(svmMenuNextBtn);
 
         svmMenuFrame.setResizable(false);
         svmMenuFrame.setLayout(null);
-        svmMenuFrame.setVisible(true);
+        svmMenuFrame.setVisible(false);
         svmMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -219,8 +221,8 @@ public class vmfView {
         return this.rvmMenuFrame;
     }
 
-    public void setNextBtnVM_Listener(ActionListener actionListener){
-        this.nextBtnVM.addActionListener(actionListener);
+    public void setVmNextBtn_Listener(ActionListener actionListener){
+        this.vmNextBtn.addActionListener(actionListener);
     }
 
     public String getRVMNameTxt(){
@@ -236,13 +238,13 @@ public class vmfView {
         return rvmMaxItemTxt.getText();
     }
 
+    //TODO: one field isnt clearing idk why
     public void clearRVMTxtVM(){
         this.rvmNameTxt.setText("");
         this.rvmSlotNumTxt.setText("");
         this.rvmMaxItemTxt.setText("");
     }
-
-    
+   
     public JFrame getSVMMenuFrame(){
         return this.svmMenuFrame;
     }
@@ -265,9 +267,12 @@ public class vmfView {
         this.svmSlotNumTxt.setText("");
         this.svmMaxItemTxt.setText("");
     }
+    
     public void setNextBtnSVM_Listener(ActionListener actionListener){
         this.nextBtnSVM.addActionListener(actionListener);
     }
+
+//TODO: DUPLICATE ITEMSMENU TO ADDONSMENU
 
     public void addItemsMenu(){
         addItemsFrame = new JFrame("Add Items");
@@ -284,8 +289,10 @@ public class vmfView {
         itemCaloriesTxt = new JTextField();
         itemQuantityTxt = new JTextField(); 
 
-        addBtn = new JButton("Add");
-        nextItemBtn = new JButton("Next");
+        addBtnVM = new JButton("Add");
+        nextBtnVM = new JButton("Next");
+        
+        nextBtnVM.setVisible(false);
 
         addItemsFrame.setSize(700, 900);
 
@@ -300,8 +307,8 @@ public class vmfView {
         itemCaloriesTxt.setBounds(341, 209, 304, 54);
         itemQuantityTxt.setBounds(341, 271, 304, 54);
 
-        addBtn.setBounds(189, 427, 304, 117);
-        nextItemBtn.setBounds(189, 686, 304, 118);
+        addBtnVM.setBounds(189, 427, 304, 117);
+        nextBtnVM.setBounds(189, 686, 304, 118);
 
         addItemsFrame.add(itemNameLbl);
         addItemsFrame.add(itemPriceLbl);
@@ -311,14 +318,10 @@ public class vmfView {
         addItemsFrame.add(itemPriceTxt);
         addItemsFrame.add(itemCaloriesTxt);
         addItemsFrame.add(itemQuantityTxt);
-        addItemsFrame.add(addBtn);
+        addItemsFrame.add(addBtnVM);
+        addItemsFrame.add(nextBtnVM);
 
-        //shows up when item is added successfully 
         addItemsFrame.add(itemStatusLbl);
-
-        //only shows up when items added = slot.length/size
-        //addItemsFrame.add(nextItemBtn);
-
 
         addItemsFrame.setResizable(false);
         addItemsFrame.setLayout(null);
@@ -326,16 +329,28 @@ public class vmfView {
         addItemsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    public void setVisibleNextBtnVM(boolean bool){
+        nextBtnVM.setVisible(bool);
+    }
+
+    public void setNextBtnVM_Listener(ActionListener actionListener){
+        this.nextBtnVM.addActionListener(actionListener);
+    }
+
+    public void setVisibleAddBtnVM(boolean bool) {
+        addBtnVM.setVisible(bool);
+    }
+
+    public void setVisibleAddBtnSVM(boolean bool) {
+        addBtnSVM.setVisible(bool);
+    }
+
     public JFrame getAddItemFrame(){
         return this.addItemsFrame;
     }
 
-    public void setAddBtn_Listener(ActionListener actionListener){
-        this.addBtn.addActionListener(actionListener);
-    }
-
-    public void setNextItemBtn_Listener(ActionListener actionListener){
-        this.nextItemBtn.addActionListener(actionListener);
+    public void setAddBtnVM_Listener(ActionListener actionListener){
+        this.addBtnVM.addActionListener(actionListener);
     }
 
     public void clearItemTxt(){
@@ -349,6 +364,7 @@ public class vmfView {
     public void setitemStatusLbl(String string) {
         this.itemStatusLbl.setText(string);
     }
+    
     public void vmListMenu(){
         vmListFrame = new JFrame("Vending Machine List");
 
@@ -385,7 +401,7 @@ public class vmfView {
         //vendingMachineTextArea = new JTextArea("RVM Name");
         nameLbl = new JLabel("Egg Drop");
         itemNameLbl = new JLabel("Enter item name: ");
-        itemNameTxt = new JTextField();
+        itemNameTxtVM = new JTextField();
         totalPriceTextArea = new JTextArea("Total: ");
         sectionLbl = new JLabel("Add Money");
         buyBtn = new JButton("Buy");
@@ -434,7 +450,7 @@ public class vmfView {
 
         nameLbl.setBounds(33, 41, 226, 79);
         itemNameLbl.setBounds(480, 277, 180, 28);
-        itemNameTxt.setBounds(486, 311, 183, 67);
+        itemNameTxtVM.setBounds(486, 311, 183, 67);
         totalPriceTextArea.setBounds(486, 524, 183, 67);
         sectionLbl.setBounds(335, 684, 140, 24);
 
@@ -482,7 +498,7 @@ public class vmfView {
 
         testVMFrame.add(nameLbl);
         testVMFrame.add(itemNameLbl);
-        testVMFrame.add(itemNameTxt);
+        testVMFrame.add(itemNameTxtVM);
         testVMFrame.add(totalPriceTextArea);
         testVMFrame.add(sectionLbl);
         testVMFrame.add(buyBtn);
@@ -556,6 +572,8 @@ public class vmfView {
     public void setStatus (JFrame frame, boolean bool) {
         frame.setVisible(bool);
     }
+
+
 
     public void maintenanceMenu(){
         maintenanceFrame = new JFrame("Maintenance Window");
