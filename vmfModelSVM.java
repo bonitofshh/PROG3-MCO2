@@ -1,18 +1,27 @@
+/**
+ * A vmfModelSVM object that extends vmfModelVM
+ * @author Ian Gabriel S. De Jesus & Sean Riley P. Veracruz
+ * @version %I% %G%
+ * @since 1.0
+ */
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class vmfModelSVM extends vmfModelVM {
-    //ArrayList<Item> cartList;
     ItemSlot[] addOnSlotList;
     String[] prepItemList;
     String[] prepAddOnList;
     int numAddOn;
     int numAddOnCreated;
     SpecialItem customItem;
+    
     /**
-     * 
-     * @param name
-     * @param slotNum
+     * makes a svm object
+     * @param name name of machine
+     * @param slotNum number of slot
+     * @param maxItems max items
+     * @param numAddOn number of addon slots
+     * @param specialItem name of special item
      */
     public vmfModelSVM(String name, int slotNum, int maxItems, int numAddOn, String specialItem){
         super(name, slotNum, maxItems);
@@ -31,24 +40,42 @@ public class vmfModelSVM extends vmfModelVM {
         this.prepAddOnList = new String[numAddOn];
     }
 
+    /**
+     * makes an empty svm object
+     */
     public vmfModelSVM(){
         super();
         this.addOnSlotList = new ItemSlot[numAddOn];
 
     }
 
+    /**
+     * gets number of addons created
+     * @return numAddOnCreated
+     */
     public int getNumAddOnCreated(){
         return this.numAddOnCreated;
     }
 
+    /**
+     * adds one to numberofaddons created
+     */
     public void incrementNumAddOnCreated(){
         this.numAddOnCreated+=1;
     }
 
+    /**
+     * gets the addonSLotList
+     * @return addOnSlotList
+     */
     public ItemSlot[] getAddOnSlotList(){
         return addOnSlotList;
     }
 
+    /**
+     * checks if the machine has valid ingredients for the custom item
+     * @return true if enough, false if not
+     */
     public boolean validIngredients() {
         ItemSlot[] tempList = slotList;
         ItemSlot[] tempAddOn = addOnSlotList;
@@ -88,6 +115,10 @@ public class vmfModelSVM extends vmfModelVM {
         return true;
     }
     
+    /**
+     * checks if the machine has enough change
+     * @return true if yes, false if not
+     */
     public boolean validChangeCustom(){
         int tempChange = customItem.getPrice();
         if (tempChange > userInput.getTotalMoney()) {
@@ -142,6 +173,10 @@ public class vmfModelSVM extends vmfModelVM {
             return tempChange == 0;
     }
     
+    /**
+     * dispenses change in denominations
+     * @return money object that contains number of denominations
+     */
     public Money dispenseCustomChange(){
         Money change = new Money();
         int i = 0;
@@ -218,10 +253,18 @@ public class vmfModelSVM extends vmfModelVM {
         return change;    
     }
 
+    /**
+     * gets the String preparation for each item
+     * @return string array
+     */
     public String[] getPrepItemList(){
         return this.prepItemList;
     }
 
+    /**
+     * gets the String preparation for each addOn
+     * @return string array
+     */
     public String[] getPrepAddOnSlotList(){
         return this.prepAddOnList;
     }

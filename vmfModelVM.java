@@ -10,6 +10,12 @@ public class vmfModelVM {
     protected int maxItems;
     protected int numItems;
 
+    /**
+     * creates a vm object
+     * @param name name of vm
+     * @param slotNum num of slots
+     * @param maxItems limit to num items per slot
+     */
     public vmfModelVM(String name, int slotNum, int maxItems) {
         this.name = name;
         this.slotList = new ItemSlot[slotNum];
@@ -21,6 +27,9 @@ public class vmfModelVM {
         this.numItems = 0;
     }
 
+    /**
+     * creates empty vm
+     */
     public vmfModelVM(){
         this.name = null;
         this.slotList = new ItemSlot[99];
@@ -32,31 +41,54 @@ public class vmfModelVM {
         this.numItems = 0;
     }
 
+    /**
+     * adds a list to the nth list of slotList
+     * @param list
+     */
     public void addToSlotList(ItemSlot list) {
         this.slotList[numItems] = list;
     }
 
+    /**
+     * gets slotlist
+     * @return slotlist
+     */
     public ItemSlot[] getSlotList() {
         return this.slotList;
     }
 
+    /**
+     * gets name of vm
+     * @return name of vm
+     */
     public String getName(){
         return this.name;
     }
 
+    /**
+     * gets number of items created so far
+     * @return numItems
+     */
     public int getNumItems(){
         return this.numItems;
     }
 
+    /**
+     * adds number of items by 1
+     */
     public void incrementNumItems() {
         this.numItems += 1;
     }
 
+    /**
+     * gets the max limit of items
+     * @return int numMaxItems
+     */
     public int getMaxItems(){
         return maxItems;
     }
 
-        /**
+    /**
      * A function that returns userInput 
      * @return userInput that contains number of denominations the user has put into the vending machine
      */
@@ -96,6 +128,10 @@ public class vmfModelVM {
         this.startInventoryList = temp;
     }
 
+    /**
+     * creates a transaction when an item is purchased
+     * @param name name of the item
+     */
     public void createTransaction(String name){
         int price, index = -1;
         for (int i = 0; i < slotList.length; i++) {
@@ -108,6 +144,13 @@ public class vmfModelVM {
         transactionList.add(transaction);
     }
 
+    /**
+     * adds an item to the itemslot
+     * @param name name of item
+     * @param price price of item
+     * @param calories calories of item
+     * @return true if success, otherwise if not
+     */
     public boolean addItem(String name, int price, int calories) {
         boolean flag = false;
         if (price > 0 && calories > 0) {
@@ -121,6 +164,10 @@ public class vmfModelVM {
         return flag;
     }  
 
+    /**
+     * converts itemlist to a string
+     * @return string ver of itemlist
+     */
     public String getItemList() {
         StringBuilder temp = new StringBuilder();
         for (int i = 0; i < slotList.length; i++){
@@ -130,6 +177,10 @@ public class vmfModelVM {
         return temp.toString();
     }
 
+    /**
+     * gets the inventory list
+     * @return string ver of inventory list
+     */
     public String getInventoryList() {
         StringBuilder temp = new StringBuilder();
 
@@ -141,7 +192,7 @@ public class vmfModelVM {
         return temp.toString();
     }
 
-        /**
+    /**
      * Function that checks if a certain item is available for purchase
      * @param name String of the item to be searched
      * @return true if item quantity is > 0, false if otherwise
@@ -154,7 +205,7 @@ public class vmfModelVM {
         return false; 
     }
 
-/**
+    /**
      * Function that dispenses item and updates the inventory of the vending machine
      * @param name String of the item to be searched
      * @param slotList inventory arraylist that gets updated
@@ -171,6 +222,10 @@ public class vmfModelVM {
         return index;
     }
 
+    /**
+     * gives transactionsummary 
+     * @return transactionsummary in string mode
+     */
     public String printTransactionSummary() {
         int totalMoney = 0;
         StringBuilder temp = new StringBuilder();
@@ -184,6 +239,10 @@ public class vmfModelVM {
         return temp.toString();
     }
 
+    /**
+     * emptys a money object
+     * @param money object that wants to be emptied
+     */
     public void emptyMoney(Money money){ 
         money.setBill100(0);
         money.setBill50(0);
@@ -193,6 +252,11 @@ public class vmfModelVM {
         money.setCoin1(0);
     }
 
+    /**
+     * checks if there is valid change for given item name
+     * @param name name of item
+     * @return true if valid, otherwise false
+     */
     public String validChange(String name){
         int index = -1;
         for (int i = 0; i<slotList.length; i++) {

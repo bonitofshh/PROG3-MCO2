@@ -1,3 +1,10 @@
+/**
+ * vmfController that is middle of model and view
+ * @author Ian Gabriel S. De Jesus & Sean Riley P. Veracruz
+ * @version %I% %G%
+ * @since 1.0
+ */
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 

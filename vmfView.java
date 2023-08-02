@@ -1,25 +1,27 @@
-import javax.swing.*;
+/**
+ * A view file that handles all display.
+ * @author Ian Gabriel S. De Jesus & Sean Riley P. Veracruz
+ * @version %I% %G%
+ * @since 1.0
+ */
 
-import java.awt.Font;
-import java.awt.TextField;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
+import javax.swing.*;
 import java.awt.event.ActionListener;
-import java.io.OutputStream;
+
+
 
 public class vmfView {
     
     private JFrame firstMenuFrame, choiceMenuFrame, rvmMenuFrame, svmMenuFrame, addItemsFrame, vmListFrame, testVMFrame, maintenanceFrameVM;
 
     private JButton createBtn, testBtn, exitBtn, regularBtn, specialBtn;
-    private JButton nextBtnVM, nextBtnSVM,addBtnVM, addBtnSVM, viewBtn;
-    private JButton VMcoinBtn, VMbillBtn;
-    private JButton updateBtn, collectBtn, buyBtnVM, updateQuantiyBtn, updatePriceBtn;
+    private JButton nextBtnVM, nextBtnSVM,addBtnVM, addBtnSVM;
+    private JButton buyBtnVM;
     private JButton vmNextBtn, vmTestBtn, vmMtBtn;
 
-    private JLabel nameLbl, slotNumLbl1,slotNumLbl2, maxItemLbl;
+    private JLabel nameLbl, slotNumLbl1, maxItemLbl;
     private JLabel itemNameLbl, itemPriceLbl, itemCaloriesLbl, itemQuantityLbl;
-    private JLabel VMspecsLbl, vmSuccessLbl, itemSuccessLbl;
+    private JLabel VMspecsLbl, vmSuccessLbl;
     private JLabel itemStatusLbl, vmUpdateLbl;
     private JLabel sectionLbl, nameVMLbl;
 
@@ -28,16 +30,14 @@ public class vmfView {
     private JTextField svmNameTxt, svmSlotNumTxt, svmMaxItemTxt;
     private JTextField itemNameTxt, itemPriceTxt, itemCaloriesTxt, itemQuantityTxt;
 
-    private JTextArea vendingListTextArea, slotTextArea, totalPriceTextArea, inventoryTextArea;
+    private JTextArea vendingListTextArea, totalPriceTextArea;
 
-    private JTextArea VMslotName1, VMslotName2, VMslotName3, VMslotName4, VMslotName5, VMslotName6, VMslotName7, VMslotName8, VMslotName9, VMslotName10, totalPrice, slotList;
+    private JTextArea VMslotName1, VMslotName2, VMslotName3, VMslotName4, VMslotName5, VMslotName6, VMslotName7, VMslotName8, VMslotName9, VMslotName10;
     private JLabel VMslotQty1, VMslotQty2, VMslotQty3, VMslotQty4, VMslotQty5, VMslotQty6, VMslotQty7, VMslotQty8, VMslotQty9, VMslotQty10;
     private JLabel VMslotPrice1, VMslotPrice2, VMslotPrice3, VMslotPrice4, VMslotPrice5, VMslotPrice6, VMslotPrice7, VMslotPrice8, VMslotPrice9, VMslotPrice10;
     private JButton VMcoin1, VMcoin5, VMcoin10, VMbill20, VMbill50, VMbill100;
 
-    private JLabel sectionLbl1, sectionLbl2, sectionLbl3, sectionLbl4, sectionLbl5, VMtotalMoneyLbl;
-    private JLabel itemNameLbl1, itemNameLbl2, quantityLbl, newPriceLbl;
-    private JTextField maintenanceNameTxt1, maintenanceNameTxt2, maintenanceQuantityTxt, maintenanceNewPriceTxt;
+    private JLabel VMtotalMoneyLbl;
 
     JLabel svmMenuNameLbl,svmMenuSlotNumLbl, svmMenuAddOnNumLbl, svmMenuMaxItemLbl;
     JTextField svmMenuNameTxt, svmMenuSlotNumTxt, svmMenuAddOnTxt,svmMenuMaxItemTxt, itemNameTxtVM;
@@ -76,6 +76,9 @@ public class vmfView {
 
     JButton VMmaintenanceBackbtn, VMmaintenanceTransactionBtn;
 
+    /**
+     * Function that displays all Frames
+     */
     public vmfView(){
         firstMenu();
         choiceMenu();
@@ -89,6 +92,9 @@ public class vmfView {
         svmAddAddOnsMenu();
     }
 
+    /**
+     * Menu that displays Create, Test, or Exit Buttons
+     */
     public void firstMenu(){
         vmSuccessLbl = new JLabel("");
         this.createBtn = new JButton("Create Vending Machine");
@@ -115,26 +121,50 @@ public class vmfView {
         firstMenuFrame.setVisible(true);
     }
 
+
+    /**
+     * Gets the JFrame of the firstMenu
+     * @return Jframe of FirstMenu
+     */
     public JFrame getFirstMenu(){
         return this.firstMenuFrame;
     }
 
+    /**
+     * Sets vmSuccessLbl's text
+     * @param string new text
+     */
     public void setVmSuccessLbl(String string) {
         this.vmSuccessLbl.setText(string);
     }
 
+    /**
+     * Adds an actionListener to button createBtn
+     * @param actionListener actionListener
+     */
     public void setCreateBtn_Listener(ActionListener actionListener){
         this.createBtn.addActionListener(actionListener);
     }
 
+    /**
+     * Adds an actionListener to button testBtn
+     * @param actionListener actionListener
+     */
     public void setTestBtn_Listener(ActionListener actionListener){
         this.testBtn.addActionListener(actionListener);
     }
 
+    /**
+     * Adds an actionListener to button exitBtn
+     * @param actionListener actionListener
+     */
     public void setExitBtn_Listener(ActionListener actionListener){
         this.exitBtn.addActionListener(actionListener);
     }
 
+    /**
+     * Displays the type of vending machines that can be created.
+     */
     public void choiceMenu(){
         this.regularBtn = new JButton("Regular Vending Machine");
         this.specialBtn = new JButton("Special Vending Machine");
@@ -152,20 +182,34 @@ public class vmfView {
         specialBtn.setVisible(false);
     }
 
+    /**
+     * Gets the JFrame of choiceMenu
+     * @return JFrame of choiceMenu
+     */
     public JFrame getChoiceMenuFrame(){
         return choiceMenuFrame;
     }
 
+    /**
+     * Adds an actionListener to regularBtn
+     * @param actionListener actionListener
+     */
     public void setRegularBtn_Listener(ActionListener actionListener){
         this.regularBtn.addActionListener(actionListener);
     }
 
+    /**
+     * Adds an actionListener to specialBtn
+     * @param actionListener actionListener
+     */
     public void setSpecialBtn_Listener(ActionListener actionListener){
         this.specialBtn.addActionListener(actionListener);
     }
 
+    /**
+     * Displays the rvmMenu Frame
+     */
     public void rvmMenu(){
-
         rvmMenuFrame = new JFrame("Intialize RVM");
         nameLbl = new JLabel("VM name: ");
         slotNumLbl1 = new JLabel("# of item slots (8-10): ");
@@ -205,13 +249,19 @@ public class vmfView {
         rvmMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Sets the Label VMspecsLbl
+     * @param string new Text
+     */
     public void setVMspecsLbl(String string) {
         this.VMspecsLbl.setText(string);
     }
 
+    /**
+     * Displays the svmMenu
+     */
     public void svmMenu(){
         svmMenuFrame = new JFrame("Intialize SVM");
-
         svmMenuNameLbl = new JLabel("SVM name: ");
         svmMenuSlotNumLbl = new JLabel("# of item slots: ");
         svmMenuAddOnNumLbl = new JLabel("# of add-on slots: ");
@@ -262,104 +312,196 @@ public class vmfView {
         svmMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Gets the JFrame of svmMenu
+     * @return svmMenu JFrame
+     */
     public JFrame getSvmMenuFrame(){
         return this.svmMenuFrame;
     }
 
+    /**
+     * Gets the inputted text on the textField svmMenuCustomTxt 
+     * @return svmMenuCustomTxt
+     */
     public String getsvmMenuCustomTxt(){
         return this.svmMenuCustomTxt.getText();
     }
 
+    /**
+     * sets the svmMenuCustomTxt display
+     * @param text new text String
+     */
     public void setsvmMenuCustomTxt(String text){
         this.svmMenuCustomTxt.setText(text);
     }
 
+    /**
+     * Gets the String svmMenuNameTxt
+     * @return svmMenuNameTxt
+     */
     public String getsvmMenuNameTxt(){
         return this.svmMenuNameTxt.getText();
     }
 
+    /**
+     * sets new text for svmMenuNameTxt
+     * @param text new text
+     */
     public void setsvmMenuNameTxt(String text){
         this.svmMenuNameTxt.setText(text);
     }
 
+    /**
+     * gets text of svmMenuSlotNumTxt
+     * @return String svmMenuSlotNumTxt
+     */
     public String getsvmMenuSlotNumTxt(){
         return this.svmMenuSlotNumTxt.getText();
     }
 
+    /**
+     * sets svmMenuSlotNumTxt to a new String value
+     * @param text new text String
+     */
     public void setsvmMenuSlotNumTxt(String text){
         this.svmMenuSlotNumTxt.setText(text);
     }
 
+    /**
+     * gets svmMenuAddOnTxt string value
+     * @return svmMenuAddOnTxt
+     */
     public String getsvmMenuAddOnTxt(){
         return this.svmMenuAddOnTxt.getText();
     }
 
+    /**
+     * sets svmMenuAddOnTxt new value
+     * @param text new text
+     */
     public void setsvmMenuAddOnTxt(String text){
         this.svmMenuAddOnTxt.setText(text);
     }
 
+
+    /**
+     * gets the String svmMenuMaxItemTxt
+     * @return svmMenuMaxItemTxt
+     */
     public String getsvmMenuMaxItemTxt(){
         return this.svmMenuMaxItemTxt.getText();
     }
 
+    /**
+     * sets setsvmMenuMaxItemTxt new value
+     * @param text new String
+     */
     public void setsvmMenuMaxItemTxt(String text){
         this.svmMenuMaxItemTxt.setText(text);
     }
 
+    /**
+     * gets the jframe of rvmMenu
+     * @return Jframe rvmMenuFrame
+     */
     public JFrame getRvmMenuFrame(){
         return this.rvmMenuFrame;
     }
 
+    /**
+     * gives vmNextBtn an actionlister
+     * @param actionListener actionlister
+     */
     public void setVmNextBtn_Listener(ActionListener actionListener){
         this.vmNextBtn.addActionListener(actionListener);
     }
 
+    /**
+     * gets rvmNameTxt
+     * @return String rvmNameTxt
+     */
     public String getRVMNameTxt(){
         return rvmNameTxt.getText();
     }
 
+    /**
+     * gets rvmSlotNumTxt
+     * @return rvmSlotNumTxt
+     */
     public String getRVMSlotNumTxt(){
-
         return rvmSlotNumTxt.getText();
     }
 
+    /**
+     * gets rvmMaxItemTxt
+     * @return rvmMaxItemTxt
+     */
     public String getRVMMaxItemTxt(){
         return rvmMaxItemTxt.getText();
     }
 
+    /**
+     * clears rvmNameTxt, rvmSlotNumTxt, rvmMaxItemTxt
+     */
     public void clearRVMTxtVM(){
         this.rvmNameTxt.setText("");
         this.rvmSlotNumTxt.setText("");
         this.rvmMaxItemTxt.setText("");
     }
 
+    /**
+     * gets jframe of svmmenu
+     * @return svmMenuFrame
+     */
     public JFrame getSVMMenuFrame(){
         return this.svmMenuFrame;
     }
 
+    /**
+     * gets svmNameTxt
+     * @return svmNameTxt
+     */
     public String getSVMNameTxt(){
         return svmNameTxt.getText();
     }
 
+    /**
+     * gets svmSlotNumTxt
+     * @return svmSlotNumTxt
+     */
     public String getSVMSlotNumTxt(){
-
         return svmSlotNumTxt.getText();
     }
 
+    /**
+     * gets svmMaxItemTxt
+     * @return svmMaxItemTxt
+     */
     public String getSVMMaxItemTxt(){
         return svmMaxItemTxt.getText();
     }
 
+    /**
+     * clears svmNameTxt, svmSlotNumTxt, svmMaxItemTxt
+     */
     public void clearSVMTxtVM(){
         this.svmNameTxt.setText("");
         this.svmSlotNumTxt.setText("");
         this.svmMaxItemTxt.setText("");
     }
     
+    /**
+     * adds actionListener to nextBtnSVM
+     * @param actionListener actionListener
+     */
     public void setNextBtnSVM_Listener(ActionListener actionListener){
         this.nextBtnSVM.addActionListener(actionListener);
     }
 
+    /**
+     * Window for the adding items to regvm 
+     */
     public void addItemsMenu(){
         addItemsFrame = new JFrame("Add Items");
 
@@ -415,30 +557,57 @@ public class vmfView {
         addItemsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * sets nextBtnVM visibility
+     * @param bool true or false
+     */
     public void setVisibleNextBtnVM(boolean bool){
         nextBtnVM.setVisible(bool);
     }
 
+    /**
+     * adds actionListener to nextBtnVM
+     * @param actionListener actionListener
+     */
     public void setNextBtnVM_Listener(ActionListener actionListener){
         this.nextBtnVM.addActionListener(actionListener);
     }
 
+    /**
+     * sets nextBtnVM visibility
+     * @param bool true or false
+     */
     public void setVisibleAddBtnVM(boolean bool) {
         addBtnVM.setVisible(bool);
     }
 
+    /**
+     * sets addBtnVM visibility
+     * @param bool true or false
+     */
     public void setVisibleAddBtnSVM(boolean bool) {
         addBtnSVM.setVisible(bool);
     }
 
+    /**
+     * gets frame addItemsFrame
+     * @return addItemsFrame
+     */
     public JFrame getAddItemFrame(){
         return this.addItemsFrame;
     }
 
+    /**
+     * adds addBtnVm actionListener
+     * @param actionListener actionListener
+     */
     public void setAddBtnVM_Listener(ActionListener actionListener){
         this.addBtnVM.addActionListener(actionListener);
     }
 
+    /**
+     * clears itemNameTxt, itemPriceTxt, itemCaloriesTxt, itemQuantityTxt
+     */
     public void clearItemTxt(){
         this.itemNameTxt.setText("");
         this.itemPriceTxt.setText("");
@@ -446,10 +615,17 @@ public class vmfView {
         this.itemQuantityTxt.setText("");
     }
 
+    /**
+     * sets itemStatusLbl
+     * @param string new string
+     */
     public void setitemStatusLbl(String string) {
         this.itemStatusLbl.setText(string);
     }
     
+    /**
+     * function that displays vmList
+     */
     public void vmListMenu(){
         vmListFrame = new JFrame("Vending Machine List");
 
@@ -488,34 +664,60 @@ public class vmfView {
         vendingListTextArea.setEditable(false);
     }
 
+    /**
+     * sets vmUpdateLbl
+     * @param text new text
+     */
     public void setVMupdateLbl(String text) {
         this.vmUpdateLbl.setText(text);
     }
 
+    /**
+     * gets vmListFrame
+     * @return vmListFrame
+     */
     public JFrame getVmListFrame(){
         return this.vmListFrame;
     }
 
+    /**
+     * vmNameTxt
+     * @return vmNameTxt
+     */
     public String getVMNameTxt(){
         return this.vmNameTxt.getText();
     }
 
+    /**
+     * sets vendingListTextArea new String
+     * @param string text
+     */
     public void setVendingListTextArea(String string){
         this.vendingListTextArea.setText(string);
     }
 
+    /**
+     * adds vmTestBtn actionListener
+     * @param actionListener actionListener
+     */
     public void setVMTestBtn_Listener(ActionListener actionListener) {
         this.vmTestBtn.addActionListener(actionListener);
     }
 
+    /**
+     * adds vmMtBtn actionListener
+     * @param actionListener actionListener
+     */
     public void setVMMtBtn_Listener(ActionListener actionListener) {
         this.vmMtBtn.addActionListener(actionListener);
     }
 
+    /**
+     * Window that displays the test features of an rvm
+     */
     public void testVMMenu(){
         testVMFrame = new JFrame("Test Regular Vending Machine");
 
-        //vendingMachineTextArea = new JTextArea("RVM Name");
         nameVMLbl = new JLabel("");
         itemNameLbl = new JLabel("Enter Item name: ");
         itemNameTxtVM = new JTextField();
@@ -683,134 +885,266 @@ public class vmfView {
         testVMFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
+    /**
+     * gets totalPriceTextArea
+     * @return totalPriceTextArea as string
+     */
     public String getTotalPriceTextArea() {
         return this.totalPriceTextArea.getText();
     }
 
+    /**
+     * sets totalPriceTextArea
+     * @param text new string
+     */
     public void setTotalPriceTextArea(String text) {
         this.totalPriceTextArea.setText("Total: " + text);
     }
 
+    /**
+     * adds actionListener for exitBtnVM
+     * @param actionListener addActionListener
+     */
     public void setExitBtnVM_Listener(ActionListener actionListener) {
         this.exitBtnVM.addActionListener(actionListener);
     }
 
+    /**
+     * adds actionListener for VMcoin1
+     * @param actionListener addActionListener
+     */
     public void setVMCoin1(ActionListener actionListener) {
         this.VMcoin1.addActionListener(actionListener);
     }
 
+    /**
+     * adds actionListener for VMcoin5
+     * @param actionListener addActionListener
+     */
     public void setVMCoin5(ActionListener actionListener) {
         this.VMcoin5.addActionListener(actionListener);
     }
 
+    /**
+     * adds actionListener for VMcoin10
+     * @param actionListener addActionListener
+     */
     public void setVMCoin10(ActionListener actionListener) {
         this.VMcoin10.addActionListener(actionListener);
     }
 
+    /**
+     * adds actionListener for VMbill20
+     * @param actionListener addActionListener
+     */
     public void setVMbill20(ActionListener actionListener) {
         this.VMbill20.addActionListener(actionListener);
     }
 
+    /**
+     * adds actionListener for VMbill50
+     * @param actionListener addActionListener
+     */
     public void setVMbill50(ActionListener actionListener) {
         this.VMbill50.addActionListener(actionListener);
     }
 
+    /**
+     * adds actionListener for VMbill100
+     * @param actionListener addActionListener
+     */
     public void setVMbill100(ActionListener actionListener) {
         this.VMbill100.addActionListener(actionListener);
     }
     
+    /**
+     * gets itemNameTxtVM
+     * @return itemNameTxtVM String
+     */
     public String getItemNameTxtVM() {
         return this.itemNameTxtVM.getText();
     }
 
+    /**
+     * Sets itemNameTxtVM
+     * @param text new text
+     */
     public void setItemNameTxtVM(String text) {
         this.itemNameTxtVM.setText(text);
     }
 
+    /**
+     * adds actionListener for buyBtnVM
+     * @param actionListener actionListener
+     */
     public void setBuyBtnVM_Listener (ActionListener actionListener) {
         this.buyBtnVM.addActionListener(actionListener);
     }
 
+    /**
+     * sets nameVMLbl
+     * @param text new text
+     */
     public void setNameVMLbl (String text) {
         this.nameVMLbl.setText(text);
     }
 
+    /**
+     * sets VMslotName1 new text
+     * @param text text
+     */
     public void setVMslotName1 (String text){
         this.VMslotName1.setText(text);
     }
 
+    /**
+     * sets VMslotName2 new text
+     * @param text text
+     */
     public void setVMslotName2 (String text) {
         this.VMslotName2.setText(text);
     }
 
+    /**
+     * sets VMslotName3 new text
+     * @param text text
+     */
     public void setVMslotName3 (String text) {
         this.VMslotName3.setText(text);
     }
 
+    /**
+     * sets VMslotName4 new text
+     * @param text text
+     */
     public void setVMslotName4 (String text) {
         this.VMslotName4.setText(text);
     }        
 
+    /**
+     * sets VMslotName5 new text
+     * @param text text
+     */
     public void setVMslotName5 (String text) {
         this.VMslotName5.setText(text);
     }
 
+    /**
+     * sets VMslotName6 new text
+     * @param text text
+     */
     public void setVMslotName6 (String text) {
         this.VMslotName6.setText(text);
     }
 
+    /**
+     * sets VMslotName7 new text
+     * @param text text
+     */
     public void setVMslotName7 (String text) {
         this.VMslotName7.setText(text);
     }
 
+    /**
+     * sets VMslotName8 new text
+     * @param text text
+     */
     public void setVMslotName8 (String text) {
         this.VMslotName8.setText(text);
     }
 
+    /**
+     * sets VMslotName9 new text
+     * @param text text
+     */
     public void setVMslotName9 (String text) {
         this.VMslotName9.setText(text);
     }
 
+    /**
+     * sets VMslotName10 new text
+     * @param text text
+     */
     public void setVMslotName10 (String text) {
         this.VMslotName10.setText(text);
     }  
 
+    /**
+     * sets VMslotPrice1 new Price
+     * @param text new price
+     */
     public void setVMslotPrice1 (String text) {
         this.VMslotPrice1.setText("Php: " + text);
     }
 
+    /**
+     * sets VMslotPrice2 new Price
+     * @param text new price
+     */
     public void setVMslotPrice2 (String text) {
         this.VMslotPrice2.setText("Php: " + text);
     }
 
+    /**
+     * sets VMslotPrice3 new Price
+     * @param text new price
+     */
     public void setVMslotPrice3 (String text) {
         this.VMslotPrice3.setText("Php: " + text);
     }
 
+    /**
+     * sets VMslotPrice4 new Price
+     * @param text new price
+     */
     public void setVMslotPrice4 (String text) {
         this.VMslotPrice4.setText("Php: " + text);
     }
 
+    /**
+     * sets VMslotPrice5 new Price
+     * @param text new price
+     */
     public void setVMslotPrice5 (String text) {
         this.VMslotPrice5.setText("Php: " + text);
     }
 
+    /**
+     * sets VMslotPrice6 new Price
+     * @param text new price
+     */
     public void setVMslotPrice6 (String text) {
         this.VMslotPrice6.setText("Php: " + text);
     }
 
+    /**
+     * sets VMslotPrice7 new Price
+     * @param text new price
+     */
     public void setVMslotPrice7 (String text) {
         this.VMslotPrice7.setText("Php: " + text);
     }
 
+    /**
+     * sets VMslotPrice8 new Price
+     * @param text new price
+     */
     public void setVMslotPrice8 (String text) {
         this.VMslotPrice8.setText("Php: " + text);
     }
 
+    /**
+     * sets VMslotPrice9 new Price
+     * @param text new price
+     */
     public void setVMslotPrice9 (String text) {
         this.VMslotPrice9.setText("Php: " + text);
     }
 
+    /**
+     * sets VMslotPrice10 new Price
+     * @param text new price
+     */
     public void setVMslotPrice10 (String text) {
         this.VMslotPrice10.setText("Php: " + text);
     }

@@ -26,15 +26,6 @@ public class Money {
         this.bill100 = 0;
     }
 
-    public Money (int coin1, int coin5, int coin10, int bill20, int bill50, int bill100) {
-        this.coin1 = coin1;
-        this.coin5 = coin5;
-        this.coin10 = coin10;
-        this.bill20 = bill20;
-        this.bill50 = bill50;
-        this.bill100 = bill100;
-    }
-
     /**
      * Displays a breakdown of denominations
      */
