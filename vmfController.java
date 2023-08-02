@@ -308,12 +308,11 @@ public class vmfController {
                 vmfView.setStatus(vmfView.getSVMMenuFrame(), true);
             }
         });
-        //TODO: MAKE INPUT VALIDATION FOR THIS PART (SLOT NUM SHOULD BE BETWEEN 8-10) 
+
         this.vmfView.setVmNextBtn_Listener(new ActionListener() {//Button from asking VM deets to Item deets
             public void actionPerformed(ActionEvent arg0) {
 
-                //TODO: REVERT BACK TO 8 AND 10
-                if (Integer.parseInt(vmfView.getRVMSlotNumTxt()) < 1 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 100) {
+                if (Integer.parseInt(vmfView.getRVMSlotNumTxt()) < 8 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 10) {
                     vmfView.setVMspecsLbl("Only 8-10 slots are allowed!");
                 } else {
 

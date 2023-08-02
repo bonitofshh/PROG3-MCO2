@@ -148,6 +148,8 @@ public class vmfView {
         choiceMenuFrame.add(specialBtn);
         choiceMenuFrame.setVisible(false);
         choiceMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        specialBtn.setVisible(false);
     }
 
     public JFrame getChoiceMenuFrame(){
