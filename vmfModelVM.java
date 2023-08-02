@@ -171,15 +171,17 @@ public class vmfModelVM {
         return index;
     }
 
-    //TODO: UPDATE THIS TO RETURN STRING
-    public void printTransactionSummary() {
+    public String printTransactionSummary() {
         int totalMoney = 0;
+        StringBuilder temp = new StringBuilder();
         System.out.println("Transaction No.\tItem Name\tNo. of Sales"); 
         for (int i = 0; i < transactionList.size(); i++) {
-            System.out.println("[" + (i+1) + "]\t\t" + transactionList.get(i).getName() + "\t\t 1");
+            temp.append("[" + (i+1) + "]\t\t" + transactionList.get(i).getName() + "\t\t 1\n");
             totalMoney+=transactionList.get(i).getPrice();
         }
-        System.out.println("Total Money: " + totalMoney);
+        temp.append("\nTotal Money: " + totalMoney);
+
+        return temp.toString();
     }
 
     public void emptyMoney(Money money){ 

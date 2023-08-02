@@ -221,7 +221,6 @@ public class vmfController {
             public void actionPerformed(ActionEvent arg0) {
                 int index = -1;
                 String name = vmfView.getItemNameTxtVM();
-                System.out.println(name);
                 for (int i = 0; i < vmfModelVM.getSlotList().length; i++) {
                     if (name.equals(vmfModelVM.getSlotList()[i].getItem().getName())) index = i;
                 }
@@ -305,9 +304,8 @@ public class vmfController {
         this.vmfView.setSpecialBtn_Listener(new ActionListener() {// Special VM
             public void actionPerformed(ActionEvent arg0) {
                 vmfView.setStatus(vmfView.getChoiceMenuFrame(), false); 
+                vmfView.clearRVMTxtVM();
                 vmfView.setStatus(vmfView.getSVMMenuFrame(), true);
-                
-
             }
         });
         //TODO: MAKE INPUT VALIDATION FOR THIS PART (SLOT NUM SHOULD BE BETWEEN 8-10) 
@@ -343,15 +341,8 @@ public class vmfController {
             }
         });
 
-        this.vmfView.setNextBtnSVM_Listener(new ActionListener() {//Button from asking SVM deets to Item deets
-            public void actionPerformed(ActionEvent arg0) {
-                
-            }
-        });
-    
         this.vmfView.setAddBtnVM_Listener(new ActionListener() {//Button that sets and adds item to the machine
             public void actionPerformed(ActionEvent arg0) {       
-
                 if (vmfView.getItemNameTxt().equals(null) || Integer.parseInt(vmfView.getItemPriceTxt()) <= 0 || 
                 Integer.parseInt(vmfView.getItemCaloriesTxt()) <= 0) {
                     vmfView.setitemStatusLbl("Check your values!");
@@ -362,12 +353,10 @@ public class vmfController {
                             Integer.parseInt(vmfView.getItemCaloriesTxt().trim()), Integer.parseInt(vmfView.getItemPriceTxt().trim()));
                     
                     Item[] itemList = new Item[Integer.parseInt(vmfView.getRVMMaxItemTxt().trim())];
-                    
                     for (int j = 0; j < Integer.parseInt(vmfView.getItemQuantityTxt()); j++){
                         itemList[j] = tempItem; 
                     }
                     ItemSlot temp = new ItemSlot(itemList, tempItem);
-
                     vmfModelVM.getSlotList()[vmfModelVM.getNumItems()] = temp;
     
                     boolean flag = (vmfModelVM.getSlotList()[vmfModelVM.getNumItems()] != null);
@@ -388,11 +377,11 @@ public class vmfController {
                 }
             }
         });   
-    
+        
         this.vmfView.setNextBtnVM_Listener(new ActionListener() { //Button that redirects to main frame when creation is done
             public void actionPerformed(ActionEvent arg0) {
                 vmfView.setStatus(vmfView.getAddItemFrame(), false);  
-                vmfView.setStatus(vmfView.getFirstMenu(), true);               
+                vmfView.setStatus(vmfView.getFirstMenu(), true); 
             }
         });
     
@@ -462,7 +451,6 @@ public class vmfController {
         this.vmfView.setVMupdateQuantityBtn_Listener(new ActionListener() {//Update Qty Button in VM Maintenance
             public void actionPerformed(ActionEvent arg0) {
                 String name = vmfView.getVMmaintenanceNameTxt1();
-                System.out.println(name);
                 int found = -1;
                 for (int i = 0; i < vmfModelVM.slotList.length; i++) {
                     if (name.equals(vmfModelVM.getSlotList()[i].getItem().getName())) {
@@ -602,6 +590,23 @@ public class vmfController {
                 vmfView.setVMtotalMoneyLblTxt(String.valueOf(vmfModelVM.getMoneyBox().getTotalMoney())); 
                 vmfView.getMaintenanceFrameVM().revalidate();
                 vmfView.getMaintenanceFrameVM().repaint();  
+            }
+        });
+
+        this.vmfView.setVMmaintenanceBackbtn_Listener(new ActionListener(){
+            public void actionPerformed(ActionEvent arg0){
+                vmfView.setStatus(vmfView.getMaintenanceFrameVM(), false);
+                vmfView.setStatus(vmfView.getFirstMenu(), true);
+            }
+        });
+
+        this.vmfView.setVMmaintenanceTransactionBtn_Listener(new ActionListener(){
+            public void actionPerformed(ActionEvent arg0){
+                vmfView.setStatus(vmfView.getRVMTransactions(), true); 
+                
+                for(int j = 0; j < vmfModelVM.transactionList.size(); j++){
+                    vmfView.rvmTransactionsTextArea.append(vmfModelVM.transactionList.get(j).getName() + " - " + vmfModelVM.transactionList.get(j).getPrice() + "Php\n");
+                }
             }
         });
     }

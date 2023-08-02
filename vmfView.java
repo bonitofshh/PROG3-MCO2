@@ -57,6 +57,25 @@ public class vmfView {
 
     JLabel VMmaintenanceNameTxt1Lbl, VMmaintenanceNameTxt2Lbl;
 
+    JFrame svmAddAddOnFrame;
+    JLabel svmAddOnNameLblMENU, smvAddOnPriceLblMENU, svmAddOnCaloriesLblMENU, svmAddOnQuantityLblMENU, svmAddOnPrepLblMENU,svmAddOnStatusLblMENU;
+    JTextField svmAddOnNameTxtMENU, svmAddOnPriceTxtMENU, svmAddOnCaloriesTxtMENU, svmAddOnQuantityTxtMENU, svmAddOnPrepTxtMENU;
+    JButton svmAddBtnSVMMENU, svmNextBtnSVMMENU;
+
+    JLabel svmMenuCustomLbl;
+    JTextField svmMenuCustomTxt;
+
+    JFrame svmAddItemsFrame;
+    JLabel svmItemNameLblMENU, smvItemPriceLblMENU, svmItemCaloriesLblMENU, svmItemQuantityLblMENU, svmItemPrepLblMENU,svmItemStatusLblMENU;
+    JTextField svmItemNameTxtMENU, svmItemPriceTxtMENU, svmItemCaloriesTxtMENU, svmItemQuantityTxtMENU, svmItemPrepTxtMENU;
+
+    JButton svmNextBtnSVMMENUItem, svmAddBtnSVMMENUItem;
+
+    JFrame rvmTransactions;
+    JTextArea rvmTransactionsTextArea;
+
+    JButton VMmaintenanceBackbtn, VMmaintenanceTransactionBtn;
+
     public vmfView(){
         firstMenu();
         choiceMenu();
@@ -67,6 +86,7 @@ public class vmfView {
         testVMMenu();
         maintenanceMenu();
         dispenseRVMItem();
+        svmAddAddOnsMenu();
     }
 
     public void firstMenu(){
@@ -188,49 +208,100 @@ public class vmfView {
     }
 
     public void svmMenu(){
-
         svmMenuFrame = new JFrame("Intialize SVM");
+
         svmMenuNameLbl = new JLabel("SVM name: ");
         svmMenuSlotNumLbl = new JLabel("# of item slots: ");
         svmMenuAddOnNumLbl = new JLabel("# of add-on slots: ");
         svmMenuMaxItemLbl = new JLabel("Max # per slot: ");
+        svmMenuCustomLbl = new JLabel("Custom item: ");
 
         svmMenuNameTxt = new JTextField();
         svmMenuSlotNumTxt = new JTextField();
         svmMenuAddOnTxt = new JTextField();
         svmMenuMaxItemTxt = new JTextField();
+        svmMenuCustomTxt = new JTextField();
 
-        addBtnSVM = new JButton("Add");
         nextBtnSVM = new JButton("Next");
 
         svmMenuFrame.setSize(700, 900);
-        svmMenuNameLbl.setBounds(22, 217, 207, 36);
-        svmMenuSlotNumLbl.setBounds(22, 340, 207, 36);
-        svmMenuAddOnNumLbl.setBounds(22, 461, 255, 36);
-        svmMenuMaxItemLbl.setBounds(22, 583, 296, 36);
+        svmMenuNameLbl.setBounds(22, 100, 207, 36);
+        svmMenuSlotNumLbl.setBounds(22, 200, 207, 36);
+        svmMenuAddOnNumLbl.setBounds(22, 300, 255, 36);
+        svmMenuMaxItemLbl.setBounds(22, 400, 296, 36);
+        svmMenuCustomLbl.setBounds(22, 500, 296, 36);
 
-        svmMenuNameTxt.setBounds(316, 195, 340, 67);
-        svmMenuSlotNumTxt.setBounds(316, 314, 308, 76);
-        svmMenuAddOnTxt.setBounds(316, 432, 308, 76);
-        svmMenuMaxItemTxt.setBounds(316, 557, 308, 76);
+        svmMenuNameTxt.setBounds(316, 85, 308, 76);
+        svmMenuSlotNumTxt.setBounds(316, 185, 308, 76);
+        svmMenuAddOnTxt.setBounds(316, 285, 308, 76);
+        svmMenuMaxItemTxt.setBounds(316, 385, 308, 76);
+        svmMenuCustomTxt.setBounds(316, 485, 308, 76);
 
         
         nextBtnSVM.setBounds(148, 711, 340, 145);
 
-        //svmMenuFrame.add(svmMenuFrame);
         svmMenuFrame.add(svmMenuNameLbl);
         svmMenuFrame.add(svmMenuSlotNumLbl);
         svmMenuFrame.add(svmMenuAddOnNumLbl);
         svmMenuFrame.add(svmMenuMaxItemLbl);
+        svmMenuFrame.add(svmMenuCustomLbl);
+
         svmMenuFrame.add(svmMenuNameTxt);
         svmMenuFrame.add(svmMenuSlotNumTxt);
         svmMenuFrame.add(svmMenuAddOnTxt);
         svmMenuFrame.add(svmMenuMaxItemTxt);
+        svmMenuFrame.add(svmMenuCustomTxt);
 
+        svmMenuFrame.add(nextBtnSVM);
+        
         svmMenuFrame.setResizable(false);
         svmMenuFrame.setLayout(null);
         svmMenuFrame.setVisible(false);
         svmMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public JFrame getSvmMenuFrame(){
+        return this.svmMenuFrame;
+    }
+
+    public String getsvmMenuCustomTxt(){
+        return this.svmMenuCustomTxt.getText();
+    }
+
+    public void setsvmMenuCustomTxt(String text){
+        this.svmMenuCustomTxt.setText(text);
+    }
+
+    public String getsvmMenuNameTxt(){
+        return this.svmMenuNameTxt.getText();
+    }
+
+    public void setsvmMenuNameTxt(String text){
+        this.svmMenuNameTxt.setText(text);
+    }
+
+    public String getsvmMenuSlotNumTxt(){
+        return this.svmMenuSlotNumTxt.getText();
+    }
+
+    public void setsvmMenuSlotNumTxt(String text){
+        this.svmMenuSlotNumTxt.setText(text);
+    }
+
+    public String getsvmMenuAddOnTxt(){
+        return this.svmMenuAddOnTxt.getText();
+    }
+
+    public void setsvmMenuAddOnTxt(String text){
+        this.svmMenuAddOnTxt.setText(text);
+    }
+
+    public String getsvmMenuMaxItemTxt(){
+        return this.svmMenuMaxItemTxt.getText();
+    }
+
+    public void setsvmMenuMaxItemTxt(String text){
+        this.svmMenuMaxItemTxt.setText(text);
     }
 
     public JFrame getRvmMenuFrame(){
@@ -286,8 +357,6 @@ public class vmfView {
     public void setNextBtnSVM_Listener(ActionListener actionListener){
         this.nextBtnSVM.addActionListener(actionListener);
     }
-
-//TODO: DUPLICATE ITEMSMENU TO ADDONSMENU
 
     public void addItemsMenu(){
         addItemsFrame = new JFrame("Add Items");
@@ -851,6 +920,14 @@ public class vmfView {
     public void maintenanceMenu(){
         maintenanceFrameVM = new JFrame("Maintenance Window");
 
+        VMmaintenanceBackbtn = new JButton("Back");
+        VMmaintenanceTransactionBtn = new JButton("Transactions");
+
+        VMmaintenanceBackbtn.setBounds(184, 100, 104, 63);
+        VMmaintenanceTransactionBtn.setBounds(517, 100, 104, 63);
+
+        maintenanceFrameVM.add(VMmaintenanceBackbtn);
+        maintenanceFrameVM.add(VMmaintenanceTransactionBtn);
         VMnameLbl = new JLabel("");
         VMtotalMoneyLbl = new JLabel("");
         VMsectionLbl1 = new JLabel("Add Stock");
@@ -1076,6 +1153,284 @@ public class vmfView {
 
     public void setRVMtextArea(String text) {
         this.RVMtextArea.setText(text);
+    }
+
+    public void svmAddAddOnsMenu(){  
+
+        svmAddAddOnFrame = new JFrame("Add add-ons");
+
+        svmAddOnNameLblMENU = new JLabel("Enter add-on name: ");
+        smvAddOnPriceLblMENU = new JLabel("Enter add-on price: ");
+        svmAddOnCaloriesLblMENU = new JLabel("Enter add-on calories: ");
+        svmAddOnQuantityLblMENU = new JLabel("Enter add-on quantity: ");
+        svmAddOnPrepLblMENU = new JLabel("Preparation method: ");
+
+        svmAddOnStatusLblMENU = new JLabel("");
+
+        svmAddOnNameTxtMENU = new JTextField();
+        svmAddOnPriceTxtMENU = new JTextField();
+        svmAddOnCaloriesTxtMENU = new JTextField();
+        svmAddOnQuantityTxtMENU = new JTextField(); 
+        svmAddOnPrepTxtMENU = new JTextField();
+
+        svmAddBtnSVMMENU = new JButton("Add");
+        svmNextBtnSVMMENU = new JButton("Next");
+        
+        svmNextBtnSVMMENU.setVisible(false);
+
+        svmAddAddOnFrame.setSize(700, 900);
+
+        svmAddOnNameLblMENU.setBounds(82, 101, 268, 30);
+        smvAddOnPriceLblMENU.setBounds(82, 169, 268, 30);
+        svmAddOnCaloriesLblMENU.setBounds(82, 229, 268, 30);
+        svmAddOnQuantityLblMENU.setBounds(82, 292, 268, 30);
+        svmAddOnPrepLblMENU.setBounds(82, 355, 268, 30);
+        svmAddOnStatusLblMENU.setBounds(280, 368, 268, 30);
+        
+        svmNextBtnSVMMENU.setVisible(false);
+
+        svmAddOnNameTxtMENU.setBounds(341, 77, 304, 54);
+        svmAddOnPriceTxtMENU.setBounds(341, 145, 304, 54);
+        svmAddOnCaloriesTxtMENU.setBounds(341, 209, 304, 54);
+        svmAddOnQuantityTxtMENU.setBounds(341, 271, 304, 54);
+        svmAddOnPrepTxtMENU.setBounds(341, 333, 304, 54);
+
+        svmAddBtnSVMMENU.setBounds(189, 427, 304, 117);
+        svmNextBtnSVMMENU.setBounds(189, 686, 304, 118);
+
+        svmAddAddOnFrame.add(svmAddOnNameLblMENU);
+        svmAddAddOnFrame.add(smvAddOnPriceLblMENU);
+        svmAddAddOnFrame.add(svmAddOnCaloriesLblMENU);
+        svmAddAddOnFrame.add(svmAddOnQuantityLblMENU);
+        svmAddAddOnFrame.add(svmAddOnPrepLblMENU);
+        svmAddAddOnFrame.add(svmAddOnStatusLblMENU);
+        
+
+        svmAddAddOnFrame.add(svmAddOnNameTxtMENU);
+        svmAddAddOnFrame.add(svmAddOnPriceTxtMENU);
+        svmAddAddOnFrame.add(svmAddOnCaloriesTxtMENU);
+        svmAddAddOnFrame.add(svmAddOnQuantityTxtMENU);
+        svmAddAddOnFrame.add(svmAddOnPrepTxtMENU);
+
+
+        svmAddAddOnFrame.add(svmAddBtnSVMMENU);
+        svmAddAddOnFrame.add(svmNextBtnSVMMENU);
+
+        svmAddAddOnFrame.setResizable(false);
+        svmAddAddOnFrame.setLayout(null);
+        svmAddAddOnFrame.setVisible(false);
+        svmAddAddOnFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public JFrame getsvmAddAddOnFrame(){
+        return this.svmAddAddOnFrame;
+    }
+
+    public void svmAddBtnSVMMENU_Listener(ActionListener actionListener) {
+        this.svmAddBtnSVMMENU.addActionListener(actionListener);
+    }
+
+    public void svmNextBtnSVMMENU_Listener(ActionListener actionListener) {
+        this.svmNextBtnSVMMENU.addActionListener(actionListener);
+    }
+
+    public void setVisiblesvmAddBtnSVMMENU(boolean bool) {
+        this.svmAddBtnSVMMENU.setVisible(bool);
+    }
+
+    public void setVisiblesvmNextBtnSVMMENU(boolean bool) {
+        this.svmNextBtnSVMMENU.setVisible(bool);
+    }
+    
+    public String getsvmAddOnNameTxtMENU(){
+        return this.svmAddOnNameTxtMENU.getText();
+    }
+
+    public void setsvmAddOnNameTxtMENU(String text) {
+        this.svmAddOnNameTxtMENU.setText(text);
+    }
+
+    public String getsvmAddOnPriceTxtMENU(){
+        return this.svmAddOnPriceTxtMENU.getText();
+    }
+
+    public void setsvmAddOnPriceTxtMENU(String text){
+        this.svmAddOnPriceTxtMENU.setText(text);
+    }
+
+    public String getsvmAddOnCaloriesTxtMENU(){
+        return this.svmAddOnCaloriesTxtMENU.getText();
+    }
+
+    public void setsvmAddOnCaloriesTxtMENU(String text){
+        this.svmAddOnCaloriesTxtMENU.setText(text);
+    }
+
+    public String getsvmAddOnQuantityTxtMENU(){
+        return this.svmAddOnQuantityTxtMENU.getText();
+    }
+
+    public void setsvmAddOnQuantityTxtMENU(String text){
+        this.svmAddOnQuantityTxtMENU.setText(text);
+    }
+
+    public String getsvmAddOnPrepTxtMENU(){
+        return this.svmAddOnPrepTxtMENU.getText();
+    }
+
+    public void setsvmAddOnPrepTxtMENU(String text){
+        this.svmAddOnPrepTxtMENU.setText(text);
+    }
+
+    public void svmAddItemsMenu(){
+        svmAddItemsFrame = new JFrame("Add Items");
+
+        svmItemNameLblMENU = new JLabel("Enter item name: ");
+        smvItemPriceLblMENU = new JLabel("Enter item price: ");
+        svmItemCaloriesLblMENU = new JLabel("Enter item calories: ");
+        svmItemQuantityLblMENU = new JLabel("Enter item quantity: ");
+        svmItemPrepLblMENU = new JLabel("Preparation method: ");
+
+        svmItemStatusLblMENU = new JLabel("");
+
+        svmItemNameTxtMENU = new JTextField();
+        svmItemPriceTxtMENU = new JTextField();
+        svmItemCaloriesTxtMENU = new JTextField();
+        svmItemQuantityTxtMENU = new JTextField(); 
+        svmItemPrepTxtMENU = new JTextField();
+
+        svmAddBtnSVMMENUItem = new JButton("Add");
+        svmNextBtnSVMMENUItem = new JButton("Next");
+        
+        svmNextBtnSVMMENU.setVisible(false);
+
+        svmAddItemsFrame.setSize(700, 900);
+
+        svmItemNameLblMENU.setBounds(82, 101, 268, 30);
+        smvItemPriceLblMENU.setBounds(82, 169, 268, 30);
+        svmItemCaloriesLblMENU.setBounds(82, 229, 268, 30);
+        svmItemQuantityLblMENU.setBounds(82, 292, 268, 30);
+        svmItemPrepLblMENU.setBounds(82, 355, 268, 30);
+        svmItemStatusLblMENU.setBounds(280, 368, 268, 30);
+
+        svmItemNameTxtMENU.setBounds(341, 77, 304, 54);
+        svmItemPriceTxtMENU.setBounds(341, 145, 304, 54);
+        svmItemCaloriesTxtMENU.setBounds(341, 209, 304, 54);
+        svmItemQuantityTxtMENU.setBounds(341, 271, 304, 54);
+        svmItemPrepTxtMENU.setBounds(341, 333, 304, 54);
+
+        svmAddBtnSVMMENUItem.setBounds(189, 427, 304, 117);
+        svmNextBtnSVMMENUItem.setBounds(189, 686, 304, 118);
+
+        svmAddItemsFrame.add(svmItemNameLblMENU);
+        svmAddItemsFrame.add(smvItemPriceLblMENU);
+        svmAddItemsFrame.add(svmItemCaloriesLblMENU);
+        svmAddItemsFrame.add(svmItemQuantityLblMENU);
+        svmAddItemsFrame.add(svmItemPrepLblMENU);
+        svmAddItemsFrame.add(svmItemStatusLblMENU);
+
+        svmAddItemsFrame.add(svmItemNameTxtMENU);
+        svmAddItemsFrame.add(svmItemPriceTxtMENU);
+        svmAddItemsFrame.add(svmItemCaloriesTxtMENU);
+        svmAddItemsFrame.add(svmItemQuantityTxtMENU);
+        svmAddItemsFrame.add(svmItemPrepTxtMENU);
+
+
+        svmAddItemsFrame.add(svmAddBtnSVMMENUItem);
+        svmAddItemsFrame.add(svmNextBtnSVMMENUItem);
+
+        svmAddItemsFrame.setResizable(false);
+        svmAddItemsFrame.setLayout(null);
+        svmAddItemsFrame.setVisible(false);
+        svmAddItemsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void svmAddBtnSVMMENUItem_Listener(ActionListener actionListener) {
+        this.svmAddBtnSVMMENUItem.addActionListener(actionListener);
+    }
+
+    public void svmNextBtnSVMMENUItem_Listener(ActionListener actionListener) {
+        this.svmNextBtnSVMMENUItem.addActionListener(actionListener);
+    }
+
+    public void setsvmItemStatusLblMENU(String text){
+        this.svmItemStatusLblMENU.setText(text);
+    }
+
+    public String getsvmItemNameTxtMENU(){
+        return this.svmItemNameTxtMENU.getText();
+    }
+    public void setsvmItemNameTxtMENU(String text){
+        this.svmItemNameTxtMENU.setText(text);
+    }
+
+    public String getsvmItemPriceTxtMENU(){
+        return this.svmItemPriceTxtMENU.getText();
+    }
+
+    public void setsvmItemPriceTxtMENU(String text){
+        this.svmItemPriceTxtMENU.setText(text);
+    }
+
+    public String getsvmItemCaloriesTxtMENU() {
+        return this.svmItemCaloriesTxtMENU.getText();
+    }
+
+    public void setsvmItemCaloriesTxtMENU(String text){
+        this.svmItemCaloriesTxtMENU.setText(text);
+    }
+
+    public String getsvmItemQuantityTxtMENU(){
+        return this.svmItemQuantityTxtMENU.getText();
+    }
+
+    public void setsvmItemQuantityTxtMENU(String text){
+        this.svmItemQuantityTxtMENU.setText(text);
+    }
+
+    public String getsvmItemPrepTxtMENU(){
+        return this.svmItemPrepTxtMENU.getText();
+    }
+
+    public void setsvmItemPrepTxtMENU(String text){
+        this.svmItemPrepTxtMENU.setText(text);
+    }
+
+    public JFrame getsvmAddItemsFrame(){
+        return this.svmAddItemsFrame;
+    }
+
+    public void rvmTransactions(){
+        rvmTransactions = new JFrame("RVM Transactions");
+        rvmTransactions.setSize(350, 450);
+
+        rvmTransactionsTextArea = new JTextArea();
+        rvmTransactionsTextArea.setBounds( 15, 10, 300, 380);
+
+        rvmTransactions.add(rvmTransactionsTextArea);
+
+        rvmTransactionsTextArea.setEditable(false);
+
+        rvmTransactions.setResizable(false);
+        rvmTransactions.setLayout(null);
+        rvmTransactions.setVisible(false);
+
+    }
+
+    public void setRVMTransactionsTextArea (String text) {
+        this.rvmTransactionsTextArea.setText(text);
+    }
+
+    public JFrame getRVMTransactions(){
+        return this.rvmTransactions;
+    }
+
+    public void setVMmaintenanceBackbtn_Listener(ActionListener actionListener){
+        this.VMmaintenanceBackbtn.addActionListener(actionListener);
+    }
+
+    public void setVMmaintenanceTransactionBtn_Listener(ActionListener actionListener){
+        this.VMmaintenanceTransactionBtn.addActionListener(actionListener);
     }
 }
 
