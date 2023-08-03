@@ -60,7 +60,6 @@ public class ItemSlot {
             }
             return true;
         }
-        
         return false;
     }
 

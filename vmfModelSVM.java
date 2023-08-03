@@ -8,14 +8,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class vmfModelSVM extends vmfModelVM {
-    private ItemSlot[] addOnSlotList;
-    private String[] prepItemList;
-    private String[] prepAddOnList;
-    private int numAddOn;
-    
+    protected ItemSlot[] addOnSlotList;
+    protected String[] prepItemList;
+    protected String[] prepAddOnList;
+    protected int numAddOn;
 
-    private int numAddOnCreated;
-    private SpecialItem customItem;
+    protected int numAddOnCreated;
+    protected SpecialItem customItem;
     
     /**
      * makes a svm object
@@ -48,7 +47,10 @@ public class vmfModelSVM extends vmfModelVM {
     public vmfModelSVM(){
         super();
         this.addOnSlotList = new ItemSlot[numAddOn];
+    }
 
+    public SpecialItem getCustomItem(){
+        return this.customItem;
     }
 
     /**
@@ -60,7 +62,7 @@ public class vmfModelSVM extends vmfModelVM {
     }
     
     public int getNumAddOn() {
-        return numAddOn;
+        return this.numAddOn;
     }
     /**
      * adds one to numberofaddons created
@@ -69,13 +71,6 @@ public class vmfModelSVM extends vmfModelVM {
         this.numAddOnCreated+=1;
     }
 
-    /**
-     * gets the addonSLotList
-     * @return addOnSlotList
-     */
-    public ItemSlot[] getAddOnSlotList(){
-        return addOnSlotList;
-    }
 
     /**
      * checks if the machine has valid ingredients for the custom item
@@ -182,7 +177,7 @@ public class vmfModelSVM extends vmfModelVM {
      * dispenses change in denominations
      * @return money object that contains number of denominations
      */
-    public Money dispenseCustomChange(){
+    public int dispenseCustomChange(){
         Money change = new Money();
         int i = 0;
         int tempChange = userInput.getTotalMoney() - customItem.getPrice();
@@ -254,8 +249,7 @@ public class vmfModelSVM extends vmfModelVM {
                 };
             }   
         }
-        System.out.println("You have received " + change.getTotalMoney() + " in change.");
-        return change;    
+        return change.getTotalMoney();    
     }
 
     /**
@@ -264,6 +258,10 @@ public class vmfModelSVM extends vmfModelVM {
      */
     public String[] getPrepItemList(){
         return this.prepItemList;
+    }
+
+    public ItemSlot[] getAddOnSlotList(){
+        return this.addOnSlotList;
     }
 
     /**
@@ -275,7 +273,7 @@ public class vmfModelSVM extends vmfModelVM {
     }
 
     @Override
-    public String getInventoryList() {
+    public String printInventoryList() {
         StringBuilder temp = new StringBuilder();
 
         temp.append("Items: \n");
@@ -293,9 +291,9 @@ public class vmfModelSVM extends vmfModelVM {
         return temp.toString();
     }
 
-    public String getAddOnList(){
+    public String printAddOnList(){
         StringBuilder temp = new StringBuilder();
-        temp.append("\nAdd-ons: \n");
+        
         for (int i = 0; i < addOnSlotList.length; i++) {
             temp.append( (i+1) + ". " + addOnSlotList[i].getItem().getName() + " - " + 
             addOnSlotList[i].getItem().getPrice() + "Php - " + addOnSlotList[i].getQuantity(maxItems) + " pcs\n");
@@ -307,19 +305,79 @@ public class vmfModelSVM extends vmfModelVM {
     @Override
     public void createTransaction(String name){
         int price = 0, index = -1;
-        for (int i = 0; i < slotList.length; i++) {
-            if (name.equals(slotList[i].getItem().getName()) == true) {
-                price = slotList[index].getItem().getPrice();
+        for (int z = 0; z < customItem.ingredients.size(); z++){
+            String temp = customItem.getIngredients().get(z).getName();
+            
+            for (int i = 0; i < slotList.length; i++) {
+                if (temp.equals(slotList[i].getItem().getName()) == true) {
+                    price += slotList[index].getItem().getPrice();
+                }
+            }
+
+            for (int i = 0; i < addOnSlotList.length; i++) {
+                if (temp.equals(addOnSlotList[i].getItem().getName()) == true) {
+                    price += addOnSlotList[index].getItem().getPrice();
+                }
+            }
+        }  
+        Transactions transaction = new Transactions(name, price);
+        transactionList.add(transaction);
+    }
+
+    public void removeFromSVM(){
+        for (int i = 0; i < customItem.ingredients.size(); i++) {
+            Item temp = customItem.ingredients.get(i);
+
+            for (int j = 0; j < slotList.length; j++) {
+                if (temp == slotList[j].getItem()) {
+                    slotList[j].removeOneStock(slotList[j].getItemList(), maxItems);
+                } else if (temp == addOnSlotList[j].getItem()) {
+                    addOnSlotList[j].removeOneStock(addOnSlotList[j].getItemList(), numAddOn);
+                }
+            }
+        }
+    }
+
+    public String preparationStrings(){
+        StringBuilder preps = new StringBuilder();
+
+        for (int i = 0; i < customItem.ingredients.size(); i++) {
+            String tempName = customItem.ingredients.get(i).getName();
+
+            for (int j = 0; j < slotList.length; j++) {
+                if(tempName.equals(slotList[j].getItem().getName())) {
+                    preps.append(getPrepItemList()[j] + tempName + ". . .\n");
+                }
+            }
+
+            for (int j = 0; j < addOnSlotList.length; j++) {
+                if(tempName.equals(addOnSlotList[j].getItem().getName())) {
+                    preps.append(getPrepAddOnSlotList()[j] + tempName + ". . .\n");
+                }
             }
         }
 
-        for (int i = 0; i < addOnSlotList.length; i++) {
-            if (name.equals(addOnSlotList[i].getItem().getName()) == true) {
-                price = addOnSlotList[index].getItem().getPrice();
+        preps.append("\n\nYou have received " + customItem.getName());
+        return preps.toString();
+    }
+
+    public void returnIngredients(){
+        for (int i = 0; i < getCustomItem().getIngredients().size(); i++) {
+            Item temp = getCustomItem().getIngredients().get(i);
+            for (int j = 0; j < slotList.length; j++) {
+                if (temp == getSlotList()[j].getItem()) {
+                    getSlotList()[j].addStock(1, maxItems);
+                    customItem.getIngredients().remove(0);
+                }
+            }    
+            
+            for (int j = 0; j < addOnSlotList.length; j++) {
+                if (temp == getAddOnSlotList()[j].getItem()) {
+                    getAddOnSlotList()[j].addStock(1, maxItems);
+                    customItem.getIngredients().remove(0);
+                }
             }
+            
         }
-        
-        Transactions transaction = new Transactions(name, price);
-        transactionList.add(transaction);
     }
 }

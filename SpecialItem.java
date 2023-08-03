@@ -7,8 +7,8 @@
 import java.util.ArrayList;
 
 public class SpecialItem extends Item{
-    private ArrayList<Item> ingredients;
-    private Item baseIngredient;
+    protected ArrayList<Item> ingredients;
+    protected Item baseIngredient;
     
     /**
      * Creates a special item object
@@ -29,6 +29,14 @@ public class SpecialItem extends Item{
         super.price += ingredient.getPrice();
     } 
 
+    public String printIngredientList(){
+        StringBuilder temp = new StringBuilder();
+        for (int i = 0; i < ingredients.size(); i++) {
+            temp.append((i+1) + ". " + ingredients.get(i).getName() + "\n");
+        }
+        return temp.toString();
+    }
+
     /**
      * gets the list of ingredients
      * @return arraylist of ingredients
@@ -37,10 +45,15 @@ public class SpecialItem extends Item{
         return this.ingredients;
     }
 
+    public Item getBaseIngredient(){
+        return this.baseIngredient;
+    }
+
     /**
      * resets custom item's price and calories
      */
     public void resetCustomItem() {
+        for (int i = 0; i < ingredients.size(); i++) ingredients.remove(i);
         this.price = 0;
         this.calories = 0;
     }

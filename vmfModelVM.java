@@ -177,11 +177,18 @@ public class vmfModelVM {
         return temp.toString();
     }
 
-    /**
-     * gets the inventory list
-     * @return string ver of inventory list
-     */
-    public String getInventoryList() {
+    public String printInventoryList() {
+        StringBuilder temp = new StringBuilder();
+
+        for (int i = 0; i < slotList.length; i++){
+            temp.append( (i+1) + ". " + slotList[i].getItem().getName() + " - " + 
+            slotList[i].getItem().getPrice() + "Php - " + slotList[i].getQuantity(maxItems) + " pcs\n");
+        }
+        return temp.toString();
+    }
+ 
+
+    public String printItemList() {
         StringBuilder temp = new StringBuilder();
 
         for (int i = 0; i < slotList.length; i++){

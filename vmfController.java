@@ -41,7 +41,7 @@ public class vmfController {
             }
         });
 
-        //TODO: IMPLEMENT INSTANCE OF
+
         this.vmfView.setVMTestBtn_Listener(new ActionListener() {//Test Features for both RVM and SVM
             public void actionPerformed(ActionEvent arg0) {
                 int found = 0, index = -1;;
@@ -52,10 +52,9 @@ public class vmfController {
                         index = i;
                         if (vmfModel.vmList.get(index) instanceof vmfModelSVM) { //if vm is an svm 
                             vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(i);
-                            //TODO: INSERT ASSIGNMENT OF ITEMS AND ADDONS HERE
+
                             vmfView.setStatus(vmfView.getVmListFrame(), false);
-                            vmfView.setStatus(vmfView.getcustomSVMMenuFrame(), true);
-                            
+                            vmfView.setStatus(vmfView.getsvmChoiceMenu(), true); 
                         } else { //if vm is a vm 
                             for (int j = 0; j < vmfModel.vmList.get(index).getSlotList().length; j++) {
                                 switch(j) {
@@ -196,15 +195,353 @@ public class vmfController {
             }
         });
 
-        this.vmfView.setcustomSVMreturnBtn_Listener(new ActionListener() {
+        //TODO: CHECK IF BREAD
+        this.vmfView.customBtn_Listener(new ActionListener() { //Button that goes to CustomSVMFrame
+            public void actionPerformed(ActionEvent arg0) {
+                Item temp = new Item();
+                int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());
+                if (vmfModel.vmList.get(vmIndex) instanceof vmfModelSVM) {
+                    vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(vmIndex);
+                    
+                    /* 
+                    if (svmObject.customItem.getBaseIngredient() != null) { 
+                        temp = svmObject.getCustomItem().getBaseIngredient();
+
+                        for (int i = 0; i < svmObject.getSlotList().length; i++) {
+                            if (svmObject.getSlotList()[i].getItem().equals(temp) 
+                            && svmObject.getSlotList()[i].getQuantity(svmObject.getMaxItems()) > 0) {
+                                //svmObject.getCustomItem().addIngredient(temp);
+
+                                vmfView.setcustomSVMNameLbl(svmObject.getName());
+                                vmfView.setcustomSVMMainsArea(svmObject.printItemList());
+                                vmfView.setcustomSVMAddOnsArea(svmObject.printAddOnList());
+                                vmfView.setcustomSVMIngredientsArea(svmObject.getCustomItem().printIngredientList());
+
+                                vmfView.getcustomSVMMenuFrame().revalidate();
+                                vmfView.getcustomSVMMenuFrame().repaint(); 
+
+                                vmfView.setStatus(vmfView.getsvmChoiceMenu(), false);
+                                vmfView.setStatus(vmfView.getcustomSVMMenuFrame(), true);
+                            }
+                        }*/
+                    
+                    //TODO: DELETE WHEN BASE INGREDIENT DONE
+                    vmfView.setcustomSVMNameLbl(svmObject.getName());
+                    vmfView.setcustomSVMMainsArea(svmObject.printItemList());
+                    vmfView.setcustomSVMAddOnsArea(svmObject.printAddOnList());
+                    vmfView.setcustomSVMIngredientsArea(svmObject.getCustomItem().printIngredientList());
+
+                    vmfView.getcustomSVMMenuFrame().revalidate();
+                    vmfView.getcustomSVMMenuFrame().repaint(); 
+
+                    vmfView.setStatus(vmfView.getsvmChoiceMenu(), false);
+                    vmfView.setStatus(vmfView.getcustomSVMMenuFrame(), true);
+                    //}  
+                }   
+            }
+        });
+
+        this.vmfView.customSVMaddBtn_Listener(new ActionListener() { //user adds ingredient
             public void actionPerformed(ActionEvent arg0){
+                int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());
+                int found = -1;
+                if (vmfModel.vmList.get(vmIndex) instanceof vmfModelSVM) {
+                    vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(vmIndex);
+                    String name = vmfView.getcustomSVMIngredientTxt();
+                    for (int i = 0; i < svmObject.slotList.length; i++) {
+                        if (name.equals(svmObject.getSlotList()[i].getItem().getName())){
+                            found = 1;
+                            if (svmObject.getSlotList()[i].getQuantity(svmObject.maxItems) <= 0) {
+                                vmfView.setcustomSVMLbl("Item/Add-On not available!");
+                                vmfView.setcustomSVMIngredientTxt("");
+                                vmfView.getcustomSVMMenuFrame().revalidate();
+                                vmfView.getcustomSVMMenuFrame().repaint();
+                            } else {
+                                svmObject.getSlotList()[i].removeOneStock(svmObject.getSlotList()[i].getItemList(), svmObject.maxItems);
+                                svmObject.getCustomItem().addIngredient(svmObject.getSlotList()[i].getItem());
+                                vmfView.setcustomSVMMainsArea(svmObject.printItemList());
+                                vmfView.setcustomSVMIngredientTxt("");
+                                vmfView.setcustomSVMLbl("Item added!");
+
+                                vmfView.setcustomSVMPriceLbl(String.valueOf(svmObject.getCustomItem().getPrice()));
+                                vmfView.setcustomSVMCalLbl(String.valueOf(svmObject.getCustomItem().getCalories()));
+                                vmfView.setcustomSVMIngredientsArea(svmObject.getCustomItem().printIngredientList());
+
+                                vmfView.getcustomSVMMenuFrame().revalidate();
+                                vmfView.getcustomSVMMenuFrame().repaint();
+                            }
+                        }
+                    }
+                    for (int i = 0; i < svmObject.addOnSlotList.length; i++) {
+                        if (name.equals(svmObject.getAddOnSlotList()[i].getItem().getName())){
+                            found = 1;
+                            if (svmObject.getAddOnSlotList()[i].getQuantity(svmObject.maxItems) <= 0) {
+                                vmfView.setcustomSVMLbl("Item/Add-On not available!");
+                                vmfView.setcustomSVMIngredientTxt("");
+                                vmfView.getcustomSVMMenuFrame().revalidate();
+                                vmfView.getcustomSVMMenuFrame().repaint();
+                            } else {
+                                svmObject.getAddOnSlotList()[i].removeOneStock(svmObject.getAddOnSlotList()[i].getItemList(), svmObject.maxItems);
+                                svmObject.getCustomItem().addIngredient(svmObject.getAddOnSlotList()[i].getItem());
+                                vmfView.setcustomSVMAddOnsArea(svmObject.printAddOnList());
+                                vmfView.setcustomSVMIngredientTxt("");
+                                vmfView.setcustomSVMLbl("Add-on added!");
+
+                                vmfView.setcustomSVMPriceLbl(String.valueOf(svmObject.getCustomItem().getPrice()));
+                                vmfView.setcustomSVMCalLbl(String.valueOf(svmObject.getCustomItem().getCalories()));
+                                vmfView.setcustomSVMIngredientsArea(svmObject.getCustomItem().printIngredientList());
+
+                                vmfView.getcustomSVMMenuFrame().revalidate();
+                                vmfView.getcustomSVMMenuFrame().repaint();
+                            }
+                        }
+                    }
+                }
+
+                if (found == -1) {
+                    vmfView.setcustomSVMLbl("Item/Add-On not found!");
+                    vmfView.setcustomSVMIngredientTxt("");
+                    vmfView.getcustomSVMMenuFrame().revalidate();
+                    vmfView.getcustomSVMMenuFrame().repaint();
+                } else {
+
+                }
+                
+            }
+        });
+
+        this.vmfView.customSVMbuyBtn_Listener(new ActionListener() { //user buys custom item from svm
+            public void actionPerformed(ActionEvent arg0){
+                int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());
+                if (vmfModel.vmList.get(vmIndex) instanceof vmfModelSVM) {
+                    vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(vmIndex);
+                
+                    if (svmObject.validChangeCustom() == true) {
+                        svmObject.removeFromSVM();
+                        svmObject.customItem.resetCustomItem();
+                        svmObject.dispenseCustomChange();
+
+                        vmfView.setcustomSVMtotalPrice("");
+                        vmfView.setRVMtextArea(svmObject.preparationStrings());
+                        vmfView.setcustomSVMIngredientsArea("");
+                        vmfView.setStatus(vmfView.getDispenseRVMItemFrame(), true);
+                    }
+                }
+            }
+        });
+
+        
+
+        
+        this.vmfView.customSVMcoin1_Listener(new ActionListener() {//adds 1 1coin to user input
+            public void actionPerformed(ActionEvent arg0){
+                int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());
+                vmfModel.vmList.get(vmIndex).userInput.setCoin1(vmfModel.vmList.get(vmIndex).userInput.getCoin1() + 1);
+                vmfView.setcustomSVMtotalPrice(String.valueOf(vmfModel.vmList.get(vmIndex).getUserInput().getTotalMoney())); 
+                vmfView.getcustomSVMMenuFrame().revalidate();
+                vmfView.getcustomSVMMenuFrame().repaint(); 
+            }
+        });
+
+        this.vmfView.customSVMcoin5_Listener(new ActionListener() {//adds 1 5coin to user input
+            public void actionPerformed(ActionEvent arg0){
+                int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());
+                vmfModel.vmList.get(vmIndex).userInput.setCoin5(vmfModel.vmList.get(vmIndex).userInput.getCoin5() + 1);
+                vmfView.setcustomSVMtotalPrice(String.valueOf(vmfModel.vmList.get(vmIndex).getUserInput().getTotalMoney())); 
+                vmfView.getcustomSVMMenuFrame().revalidate();
+                vmfView.getcustomSVMMenuFrame().repaint(); 
+            }
+        });
+
+        this.vmfView.customSVMcoin10_Listener(new ActionListener() {//adds 1 10coin to user input
+            public void actionPerformed(ActionEvent arg0){
+                int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());
+                vmfModel.vmList.get(vmIndex).userInput.setCoin10(vmfModel.vmList.get(vmIndex).userInput.getCoin10() + 1);
+                vmfView.setcustomSVMtotalPrice(String.valueOf(vmfModel.vmList.get(vmIndex).getUserInput().getTotalMoney())); 
+                vmfView.getcustomSVMMenuFrame().revalidate();
+                vmfView.getcustomSVMMenuFrame().repaint();
+            }
+        });
+
+        this.vmfView.customSVMbill20_Listener(new ActionListener() {//adds 1 20bill to user input
+            public void actionPerformed(ActionEvent arg0){
+                int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());             
+                vmfModel.vmList.get(vmIndex).userInput.setBill20(vmfModel.vmList.get(vmIndex).userInput.getBill20() + 1);
+                vmfView.setcustomSVMtotalPrice(String.valueOf(vmfModel.vmList.get(vmIndex).getUserInput().getTotalMoney())); 
+                vmfView.getcustomSVMMenuFrame().revalidate();
+                vmfView.getcustomSVMMenuFrame().repaint();
+            }
+        });
+
+        this.vmfView.customSVMbill50_Listener(new ActionListener() {//adds 1 50bill to user input
+            public void actionPerformed(ActionEvent arg0){
+                int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());          
+                vmfModel.vmList.get(vmIndex).userInput.setBill50(vmfModel.vmList.get(vmIndex).userInput.getBill50() + 1);
+                vmfView.setcustomSVMtotalPrice(String.valueOf(vmfModel.vmList.get(vmIndex).getUserInput().getTotalMoney())); 
+                vmfView.getcustomSVMMenuFrame().revalidate();
+                vmfView.getcustomSVMMenuFrame().repaint();
+            }
+        });
+
+        this.vmfView.customSVMbill100_Listener(new ActionListener() {//adds 1 100bill to user input
+            public void actionPerformed(ActionEvent arg0){
+                int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());          
+                vmfModel.vmList.get(vmIndex).userInput.setBill100(vmfModel.vmList.get(vmIndex).userInput.getBill100() + 1);
+                vmfView.setcustomSVMtotalPrice(String.valueOf(vmfModel.vmList.get(vmIndex).getUserInput().getTotalMoney())); 
+                vmfView.getcustomSVMMenuFrame().revalidate();
+                vmfView.getcustomSVMMenuFrame().repaint();
+            }
+        });
+
+        this.vmfView.indivBtn_Listener(new ActionListener() { //button that goes to indiv item svm
+            public void actionPerformed(ActionEvent arg0) {
+                vmfView.setStatus(vmfView.getsvmChoiceMenu(), false);
+                int vmIndex = vmfModel.getVmIndex(vmfView.getsvmMenuNameTxt()); 
+                for (int j = 0; j < vmfModel.vmList.get(vmIndex).getSlotList().length; j++) {
+                    switch(j) {
+                        case 0:
+                            if (vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem() != null) {
+                                vmfView.setVMslotName1(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getName());
+                                vmfView.setVMslotPrice1(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getPrice()));
+                                vmfView.setVMslotQty1(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getQuantity(vmfModel.vmList.get(vmIndex).getMaxItems()))); 
+                            } else {
+                                vmfView.setVMslotName1("Empty");
+                                vmfView.setVMslotPrice1("0");
+                                vmfView.setVMslotQty1("0");
+                            }
+                            break;
+                            
+                        case 1:
+                            if (vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem() != null) {
+                            vmfView.setVMslotName2(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getName());
+                            vmfView.setVMslotPrice2(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getPrice()));
+                            vmfView.setVMslotQty2(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getQuantity(vmfModel.vmList.get(vmIndex).getMaxItems())));
+                            } else {
+                                vmfView.setVMslotName2("Empty");
+                                vmfView.setVMslotPrice2("0");
+                                vmfView.setVMslotQty2("0");
+                            }
+                            break;
+                        case 2:
+                            if (vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem() != null) {
+                            vmfView.setVMslotName3(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getName());
+                            vmfView.setVMslotPrice3(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getPrice()));
+                            vmfView.setVMslotQty3(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getQuantity(vmfModel.vmList.get(vmIndex).getMaxItems())));
+                            } else {
+                                vmfView.setVMslotName3("Empty");
+                                vmfView.setVMslotPrice3("0");
+                                vmfView.setVMslotQty3("0");
+                            }
+                            break;
+
+                        case 3:
+                            if (vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem() != null) {
+                            vmfView.setVMslotName4(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getName());
+                            vmfView.setVMslotPrice4(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getPrice()));
+                            vmfView.setVMslotQty4(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getQuantity(vmfModel.vmList.get(vmIndex).getMaxItems())));
+                            } else {
+                                vmfView.setVMslotName4("Empty");
+                                vmfView.setVMslotPrice4("0");
+                                vmfView.setVMslotQty4("0");
+                            }
+                            break;
+
+                        case 4:
+                            if (vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem() != null) {
+                            vmfView.setVMslotName5(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getName());
+                            vmfView.setVMslotPrice5(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getPrice()));
+                            vmfView.setVMslotQty5(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getQuantity(vmfModel.vmList.get(vmIndex).getMaxItems())));
+                            } else {
+                                vmfView.setVMslotName5("Empty");
+                                vmfView.setVMslotPrice5("0");
+                                vmfView.setVMslotQty5("0");
+                            }
+                            break; 
+
+                        case 5:
+                            if (vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem() != null) {
+                            vmfView.setVMslotName6(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getName());
+                            vmfView.setVMslotPrice6(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getPrice()));
+                            vmfView.setVMslotQty6(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getQuantity(vmfModel.vmList.get(vmIndex).getMaxItems())));
+                            } else {
+                                vmfView.setVMslotName6("Empty");
+                                vmfView.setVMslotPrice6("0");
+                                vmfView.setVMslotQty6("Empty");
+                            }
+                            break;
+
+                        case 6:
+                            if (vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem() != null) {
+                            vmfView.setVMslotName7(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getName());
+                            vmfView.setVMslotPrice7(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getPrice()));
+                            vmfView.setVMslotQty7(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getQuantity(vmfModel.vmList.get(vmIndex).getMaxItems())));
+                            } else {
+                                vmfView.setVMslotName7("");
+                                vmfView.setVMslotPrice7("");
+                                vmfView.setVMslotQty7("");
+                            }
+                            break;
+
+                        case 7:
+                            if (vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem() != null) {
+                            vmfView.setVMslotName8(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getName());
+                            vmfView.setVMslotPrice8(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getPrice()));
+                            vmfView.setVMslotQty8(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getQuantity(vmfModel.vmList.get(vmIndex).getMaxItems())));
+                            } else {
+                                vmfView.setVMslotName8("");
+                                vmfView.setVMslotPrice8("");
+                                vmfView.setVMslotQty8("");
+                            }
+                            break;
+
+                        case 8:
+                            if (vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem() != null) {
+                            vmfView.setVMslotName9(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getName());
+                            vmfView.setVMslotPrice9(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getPrice()));
+                            vmfView.setVMslotQty9(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getQuantity(vmfModel.vmList.get(vmIndex).getMaxItems())));
+                            } else {
+                                vmfView.setVMslotName9("");
+                                vmfView.setVMslotPrice9("");
+                                vmfView.setVMslotQty9("");
+                            }
+                            break;
+
+                        case 9:
+                            if (vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem() != null) {
+                            vmfView.setVMslotName10(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getName());
+                            vmfView.setVMslotPrice10(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getPrice()));
+                            vmfView.setVMslotQty10(String.valueOf(vmfModel.vmList.get(vmIndex).getSlotList()[j].getQuantity(vmfModel.vmList.get(vmIndex).getMaxItems())));
+                            } else {
+                                vmfView.setVMslotName10("");
+                                vmfView.setVMslotPrice10("");
+                                vmfView.setVMslotQty10("");
+                            }
+                            break;
+                    }
+                }                                                    
+                
+                vmfView.setNameVMLbl(vmfModel.vmList.get(vmIndex).getName());
+                vmfView.getTestVmFrame().revalidate();
+                vmfView.getTestVmFrame().repaint(); 
+                vmfView.setStatus(vmfView.getTestVmFrame(), true);
+            }
+        });
+
+        this.vmfView.setcustomSVMreturnBtn_Listener(new ActionListener() {//Exit CustomSvm Frame
+            public void actionPerformed(ActionEvent arg0){
+                int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());
+                if (vmfModel.vmList.get(vmIndex) instanceof vmfModelSVM) {
+                    vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(vmIndex);
+                    if (svmObject.getCustomItem().getIngredients().size() > 0) {
+                        svmObject.returnIngredients();
+                    }
+                }
+                
                 vmfView.setStatus(vmfView.getcustomSVMMenuFrame(), false);
                 vmfView.setStatus(vmfView.getFirstMenu(), true);
-
             }
         });
         
-        //TODO: SVM MAINTENANCE
         this.vmfView.setVMMtBtn_Listener(new ActionListener() { //Perform Maintenance VM and SVM
             public void actionPerformed(ActionEvent arg0) {
                 int found = -1;
@@ -213,32 +550,17 @@ public class vmfController {
                         vmfView.setVMupdateLbl(vmfModel.vmList.get(i).getName());
                         found = 1;
 
-                        if (vmfModel.vmList.get(i) instanceof vmfModelSVM) {  //SVM MAINTENANCE
-                            //TODO: SVM MAINTENANCE
-                            vmfView.setNameVMLbl(vmfModel.vmList.get(i).getName());
-                            vmfView.getFirstMenu().revalidate();
-                            vmfView.getFirstMenu().repaint();
+                        vmfView.setNameVMLbl(vmfModel.vmList.get(i).getName());
+                        vmfView.getFirstMenu().revalidate();
+                        vmfView.getFirstMenu().repaint();
 
-                            vmfView.setVMtotalMoneyLblTxt(String.valueOf(vmfModel.vmList.get(i).getMoneyBox().getTotalMoney()));
-                            vmfView.setVMslotListTxt(vmfModel.vmList.get(i).getInventoryList());
+                        vmfView.setVMtotalMoneyLblTxt(String.valueOf(vmfModel.vmList.get(i).getMoneyBox().getTotalMoney()));
+                        vmfView.setVMslotListTxt(vmfModel.vmList.get(i).printInventoryList());
 
-                            vmfView.setStatus(vmfView.getVmListFrame(), false);
-                            vmfView.setStatus(vmfView.getMaintenanceFrameVM(), true);
-                        }
-
-                        } else { //RVM MAINTENANCE
-                            vmfView.setNameVMLbl(vmfModel.vmList.get(i).getName());
-                            vmfView.getFirstMenu().revalidate();
-                            vmfView.getFirstMenu().repaint();
-
-                            vmfView.setVMtotalMoneyLblTxt(String.valueOf(vmfModel.vmList.get(i).getMoneyBox().getTotalMoney()));
-                            vmfView.setVMslotListTxt(vmfModel.vmList.get(i).getInventoryList());
-
-                            vmfView.setStatus(vmfView.getVmListFrame(), false);
-                            vmfView.setStatus(vmfView.getMaintenanceFrameVM(), true);
-                        }
-                        
-                    }   
+                        vmfView.setStatus(vmfView.getVmListFrame(), false);
+                        vmfView.setStatus(vmfView.getMaintenanceFrameVM(), true);
+                    }
+                }   
                 
                 if (found == -1) {
                     vmfView.setVMupdateLbl("Vending Machine not found!");
@@ -353,7 +675,8 @@ public class vmfController {
                 if (Integer.parseInt(vmfView.getRVMMaxItemTxt()) <= 0 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) < 0) {
                     vmfView.setVMspecsLbl("Only positive values!");
 
-                } else if (Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 10 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 10) { //TODO revert other >10 to < 8
+                } else if (Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 10 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 10) { 
+                    //TODO revert other >10 to < 8
                     vmfView.setVMspecsLbl("Only 8-10 slots are allowed!");
                     
                 } else if (vmfView.getRVMNameTxt().equals("")) {
@@ -385,7 +708,6 @@ public class vmfController {
             }
         });
 
-        //TODO: TEST
         this.vmfView.setNextBtnSVM_Listener(new ActionListener() {//Button from asking SVM deets to Item deets
             public void actionPerformed(ActionEvent arg0) {
                 
@@ -400,15 +722,15 @@ public class vmfController {
                     int tempMax = Integer.parseInt(vmfView.getsvmMenuMaxItemTxt());
                     String customName = vmfView.getsvmMenuCustomTxt();
 
-                    if (tempSlotNum <= 0 || tempAddOnNum <= 0 || tempMax <= 0) {
+                    if (tempSlotNum <= 0 || tempAddOnNum <= 0 || tempMax <= 0)
                         vmfView.setsvmMenuCheckLbl("Only positive values!");
-                    } else if (tempSlotNum <= 0 || tempAddOnNum <= 0) {
-                        vmfView.setsvmMenuCheckLbl("Only 8-10 slots are allowed!");
-                    } else {
+                        //TODO: PUT BACK
+                    //else if (tempSlotNum < 8 || tempAddOnNum < 8 || tempSlotNum > 10 || tempAddOnNum > 10) vmfView.setsvmMenuCheckLbl("Only 8-10 slots are allowed!");
+                        
+                    else {
                         vmfModelSVM = new vmfModelSVM(tempName, tempSlotNum, tempMax, tempAddOnNum, customName);
 
-                        boolean result = vmfModel.vmList.add(vmfModelSVM);      
-                        
+                        boolean result = vmfModel.vmList.add(vmfModelSVM);                          
                         vmfView.setStatus(vmfView.getSVMMenuFrame(), false);
                         vmfView.setStatus(vmfView.getsvmAddItemsFrame(), true);
 
@@ -479,7 +801,6 @@ public class vmfController {
             }
         });   
         
-        //TODO: FINISHED FUNCTION(?)
         this.vmfView.svmAddBtnSVMMENUItem_Listener(new ActionListener() {//Button that sets and adds item to the svm
             public void actionPerformed(ActionEvent arg0) {
                 int vmIndex = 0;
@@ -489,15 +810,13 @@ public class vmfController {
                 vmfView.getsvmItemPrepTxtMENU().isEmpty()) {
                 vmfView.setsvmItemStatusLblMENU("All Fields must be filled!");
                 } else {
-                    vmIndex = vmfModel.getVmIndex(vmfView.getsvmMenuNameTxt());//TODO 
+                    vmIndex = vmfModel.getVmIndex(vmfView.getsvmMenuNameTxt()); 
                     String itemName = vmfView.getsvmItemNameTxtMENU();
                     int itemPrice = Integer.parseInt(vmfView.getsvmItemPriceTxtMENU());
                     int itemCalories = Integer.parseInt(vmfView.getsvmItemCaloriesTxtMENU());
                     int itemQty = Integer.parseInt(vmfView.getsvmItemQuantityTxtMENU());
                     String itemPrep = vmfView.getsvmItemPrepTxtMENU();
 
-                    
-                    //(vmfModelSVM) vmfModel.vmList.get(vmIndex).getPrepItemList()[vmfModel.vmList.get(vmIndex).getNumItems()] = ;                
                     if (itemPrice <= 0 || itemCalories <= 0 || itemQty <= 0) {
                         vmfView.setsvmItemStatusLblMENU("Only Positive values!");
                     } else {
@@ -547,7 +866,7 @@ public class vmfController {
             }
         });
 
-        this.vmfView.svmNextBtnSVMMENUItem_Listener(new ActionListener() {
+        this.vmfView.svmNextBtnSVMMENUItem_Listener(new ActionListener() {//Transition from item frame to add on frame
             public void actionPerformed(ActionEvent arg0){
                 vmfView.setStatus(vmfView. getsvmAddItemsFrame(), false);
                 vmfView.setStatus(vmfView.getsvmAddAddOnFrame(), true);
@@ -561,17 +880,14 @@ public class vmfController {
                 if (vmfView.getsvmAddOnNameTxtMENU().isEmpty() || vmfView.getsvmAddOnPriceTxtMENU().isEmpty() ||
                 vmfView.getsvmAddOnCaloriesTxtMENU().isEmpty() || vmfView.getsvmAddOnQuantityTxtMENU().isEmpty() ||
                 vmfView.getsvmAddOnPrepTxtMENU().isEmpty()) {
-                vmfView.setsvmAddOnStatusLblMENU("All Fields must be filled!"); //TODO add the method to view
+                vmfView.setsvmAddOnStatusLblMENU("All Fields must be filled!");
                 } else {
-                    vmIndex = vmfModel.getVmIndex(vmfView.getsvmMenuNameTxt());//TODO 
+                    vmIndex = vmfModel.getVmIndex(vmfView.getsvmMenuNameTxt());
                     String AddOnName = vmfView.getsvmAddOnNameTxtMENU();
                     int AddOnPrice = Integer.parseInt(vmfView.getsvmAddOnPriceTxtMENU());
                     int AddOnCalories = Integer.parseInt(vmfView.getsvmAddOnCaloriesTxtMENU());
                     int AddOnQty = Integer.parseInt(vmfView.getsvmAddOnQuantityTxtMENU());
                     String AddOnPrep = vmfView.getsvmAddOnPrepTxtMENU();
-
-                    
-                    //(vmfModelSVM) vmfModel.vmList.get(vmIndex).getPrepItemList()[vmfModel.vmList.get(vmIndex).getNumItems()] = ;                
                     if (AddOnPrice <= 0 || AddOnCalories <= 0 || AddOnQty <= 0) {
                         vmfView.setsvmAddOnStatusLblMENU("Only Positive values!");
                     } else {
@@ -585,20 +901,29 @@ public class vmfController {
                             }
                         }
                         
+                        for (int i = 0; i < vmfModelSVM.getSlotList().length; i++) {
+                            if (vmfModelSVM.getSlotList()[i] != null){
+                                    if (vmfModelSVM.getSlotList()[i].getItem().getName().equals(AddOnName)) {
+                                    found = 2;
+                                    }
+                                }
+                        }
+                        
                         if (found == 1)
                             vmfView.setsvmAddOnStatusLblMENU("Add-on name already exists!");
-                        else{
+                        else if (found == 2)
+                            vmfView.setsvmAddOnStatusLblMENU("An item with that name exists!");
+                        else {
                             Item tempAddOn= new Item(AddOnName, AddOnCalories, AddOnPrice);
                             Item[] itemList = new Item[vmfModelSVM.getMaxItems()];
                             for(int j = 0; j < AddOnQty; j++){
                                 itemList[j] = tempAddOn;
                             }
                             ItemSlot temp = new ItemSlot(itemList, tempAddOn);
-                            //vmfModel.vmList.get(vmIndex).getAddOnSlotList()[vmfModel.vmList.get(vmIndex).getNumItems()] = temp; //TODO check if correct
                             if(vmfModel.vmList.get(vmIndex) instanceof vmfModelSVM){
                                 vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(vmIndex);
-                                svmObject.getAddOnSlotList()[svmObject.getNumAddOn() - 1] = temp; //switch to here, tried -1 need to check tho
-                                svmObject.getPrepItemList()[svmObject.getNumAddOn() -1] = AddOnPrep;
+                                svmObject.getAddOnSlotList()[svmObject.getNumAddOn() - 1] = temp; 
+                                svmObject.getPrepAddOnSlotList()[svmObject.getNumAddOn() -1] = AddOnPrep;
                                 boolean flag = (svmObject.getAddOnSlotList()[svmObject.getNumAddOn() - 1] != null);
                                 if (flag) {
                                 vmfView.setsvmAddOnStatusLblMENU("Add-on added!");
@@ -612,7 +937,7 @@ public class vmfController {
                                     vmfView.getsvmAddAddOnFrame().revalidate();
                                     vmfView.getsvmAddAddOnFrame().repaint();
                                     
-                                    System.out.println(svmObject.getAddOnList());
+                                    System.out.println(svmObject.printAddOnList());
                                     }
                                 } else {
                                     vmfView.setsvmAddOnStatusLblMENU("Add-on adding failed :(");
@@ -626,12 +951,13 @@ public class vmfController {
             }
         });
 
-        this.vmfView.addOnsvmNextBtnSVMMENU_Listener(new ActionListener() { //Button that redirects to main frame when creation of rvm is done
+        this.vmfView.addOnsvmNextBtnSVMMENU_Listener(new ActionListener() { //Button that redirects to main frame when creation of svm is done
             public void actionPerformed(ActionEvent arg0) {
                 vmfView.setStatus(vmfView.getsvmAddAddOnFrame(), false);  
                 vmfView.setStatus(vmfView.getFirstMenu(), true); 
             }
         });
+        
         this.vmfView.setNextBtnVM_Listener(new ActionListener() { //Button that redirects to main frame when creation of rvm is done
             public void actionPerformed(ActionEvent arg0) {
                 vmfView.setStatus(vmfView.getAddItemFrame(), false);  
@@ -644,6 +970,7 @@ public class vmfController {
                 vmfView.setItemNameTxtVM("");
                 vmfView.setStatus(vmfView.getTestVmFrame(), false);
                 vmfView.setVmSuccessLbl("");
+                vmfView.setTotalPriceTextArea("");
                 vmfView.setStatus(vmfView.getFirstMenu(), true); 
             }
         });
@@ -711,11 +1038,44 @@ public class vmfController {
         this.vmfView.setVMupdateQuantityBtn_Listener(new ActionListener() {//Update Qty Button in VM Maintenance
             public void actionPerformed(ActionEvent arg0) {
                 int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());
-                //TODO: FIND A WAY TO ACCESS THE ADDONSLOT LIST
                 String name = vmfView.getVMmaintenanceNameTxt1();
                 int found = -1;
-                if (vmfModel.vmList.get(vmIndex) instanceof vmfModelSVM) {
 
+                if (vmfModel.vmList.get(vmIndex) instanceof vmfModelSVM) {
+                    vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(vmIndex);
+                    for (int i = 0; i < svmObject.addOnSlotList.length; i++) {
+                        if (name.equals(svmObject.getAddOnSlotList()[i].getItem().getName())) {
+                            found = 0;
+
+                            if (svmObject.getSlotList()[i].getQuantity(svmObject.getMaxItems()) + Integer.parseInt(vmfView.getVMmaintenanceQuantityTxt()) > svmObject.getMaxItems()) {
+                                vmfView.setVMmaintenanceNameTxt1Lbl("Over Limit!");
+                                vmfView.setVMmaintenanceNameTxt2("");
+                                vmfView.setVMmaintenanceQuantityTxt("");
+                                vmfView.getMaintenanceFrameVM().revalidate();
+                                vmfView.getMaintenanceFrameVM().repaint();  
+                            } else {
+
+                                boolean result = svmObject.getSlotList()[i].addStock(Integer.parseInt(vmfView.getVMmaintenanceQuantityTxt()), svmObject.getMaxItems());
+                                if (result) {
+                                    vmfView.setVMmaintenanceNameTxt1Lbl("Stocking success!");
+                                    vmfView.setVMmaintenanceNameTxt2("");
+                                    vmfView.setVMmaintenanceQuantityTxt("");
+                                    vmfView.setVMslotListTxt(svmObject.printInventoryList());
+                                    svmObject.transactionList.clear();
+                                    svmObject.setStartInventory(svmObject.getSlotList());
+                                    vmfView.getMaintenanceFrameVM().revalidate();
+                                    vmfView.getMaintenanceFrameVM().repaint(); 
+
+                                } else {
+                                    vmfView.setVMmaintenanceNameTxt1Lbl("Failed!");
+                                    vmfView.setVMmaintenanceNameTxt2("");
+                                    vmfView.setVMmaintenanceQuantityTxt("");
+                                    vmfView.getMaintenanceFrameVM().revalidate();
+                                    vmfView.getMaintenanceFrameVM().repaint(); 
+                                }
+                            }
+                        }
+                    }
                 }
                 for (int i = 0; i < vmfModel.vmList.get(vmIndex).slotList.length; i++) {
                     if (name.equals(vmfModel.vmList.get(vmIndex).getSlotList()[i].getItem().getName())) {
@@ -732,7 +1092,7 @@ public class vmfController {
                                 vmfView.setVMmaintenanceNameTxt1Lbl("Stocking success!");
                                 vmfView.setVMmaintenanceNameTxt2("");
                                 vmfView.setVMmaintenanceQuantityTxt("");
-                                vmfView.setVMslotListTxt(vmfModel.vmList.get(vmIndex).getInventoryList());
+                                vmfView.setVMslotListTxt(vmfModel.vmList.get(vmIndex).printInventoryList());
                                 vmfModel.vmList.get(vmIndex).transactionList.clear();
                                 vmfModel.vmList.get(vmIndex).setStartInventory(vmfModel.vmList.get(vmIndex).getSlotList());
                                 vmfView.getMaintenanceFrameVM().revalidate();
@@ -751,7 +1111,7 @@ public class vmfController {
                 
 
                 if (found == -1) {
-                    vmfView.setVMmaintenanceNameTxt1Lbl("Error! ->this button is sposed to b qty");
+                    vmfView.setVMmaintenanceNameTxt1Lbl("Error!");
                     vmfView.setVMmaintenanceNameTxt2("");
                     vmfView.setVMmaintenanceQuantityTxt("");
                     vmfView.getMaintenanceFrameVM().revalidate();
@@ -776,7 +1136,7 @@ public class vmfController {
                                 vmfView.setVMmaintenanceNameTxt2Lbl("Price updated!");
                                 vmfView.setVMmaintenanceNameTxt1("");
                                 vmfView.setVMmaintenanceNewPriceTxt("");
-                                vmfView.setVMslotListTxt(svmObject.getInventoryList());
+                                vmfView.setVMslotListTxt(svmObject.printInventoryList());
                                 vmfView.getMaintenanceFrameVM().revalidate();
                                 vmfView.getMaintenanceFrameVM().repaint();  
                             }
@@ -792,7 +1152,7 @@ public class vmfController {
                                 vmfView.setVMmaintenanceNameTxt2Lbl("Price updated!");
                                 vmfView.setVMmaintenanceNameTxt1("");
                                 vmfView.setVMmaintenanceNewPriceTxt("");
-                                vmfView.setVMslotListTxt(vmfModel.vmList.get(vmIndex).getInventoryList());
+                                vmfView.setVMslotListTxt(vmfModel.vmList.get(vmIndex).printInventoryList());
                                 vmfView.getMaintenanceFrameVM().revalidate();
                                 vmfView.getMaintenanceFrameVM().repaint();  
                             }
@@ -902,12 +1262,22 @@ public class vmfController {
         this.vmfView.setVMmaintenanceTransactionBtn_Listener(new ActionListener(){//Gets transactionlist summary for rvm
             public void actionPerformed(ActionEvent arg0){
                 int vmIndex = vmfModel.getVmIndex(vmfView.getVMupdateLbl());
-                vmfView.setRVMTransactionsTextArea(vmfModel.vmList.get(vmIndex).printTransactionSummary());
-                vmfView.setStatus(vmfView.getRVMTransactions(), true); 
-                vmfView.getRVMTransactions().revalidate();
-                vmfView.getRVMTransactions().repaint();  
+
+                if (vmfModel.vmList.get(vmIndex).transactionList.size() <= 0) {
+                    vmfView.setRVMTransactionsTextArea("No transactions!");
+                    vmfView.setStatus(vmfView.getRVMTransactions(), true); 
+                    vmfView.getRVMTransactions().revalidate();
+                    vmfView.getRVMTransactions().repaint();  
+                } else {
+                    vmfView.setRVMTransactionsTextArea(vmfModel.vmList.get(vmIndex).printTransactionSummary());
+                    vmfView.setStatus(vmfView.getRVMTransactions(), true); 
+                    vmfView.getRVMTransactions().revalidate();
+                    vmfView.getRVMTransactions().repaint();  
+                }
+
             }
         });
-    
+
+
     }
 }

@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 
 public class vmfView {
     
+    private JLabel customSVMPriceLbl, customSVMCalLbl;
     private JFrame firstMenuFrame, choiceMenuFrame, rvmMenuFrame, svmMenuFrame, addItemsFrame, vmListFrame, testVMFrame, maintenanceFrameVM;
 
     private JButton createBtn, testBtn, exitBtn, regularBtn, specialBtn;
@@ -75,7 +76,7 @@ public class vmfView {
     private JTextArea rvmTransactionsTextArea;
 
     private JButton VMmaintenanceBackbtn, VMmaintenanceTransactionBtn;
-    private JLabel svmMenuCheckLbl;
+    private JLabel svmMenuCheckLbl, customSVMLbl;
 
     private JButton addOnsvmAddBtnSVMMENU, addOnsvmNextBtnSVMMENU;
     
@@ -86,6 +87,9 @@ public class vmfView {
     private JTextField customSVMIngredientTxt;
     private JButton customSVMaddBtn, customSVMbuyBtn, customSVMreturnBtn;
     private JButton customSVMcoin1, customSVMcoin5, customSVMcoin10, customSVMbill20, customSVMbill50, customSVMbill100;
+
+    JButton customBtn, indivBtn;
+    JFrame svmChoiceMenu;
 
     /**
      * Function that displays all Frames
@@ -103,6 +107,7 @@ public class vmfView {
         svmAddItemsMenu();
         svmAddAddOnsMenu();
         customSVMMenu();
+        svmChoice();
     }
 
     /**
@@ -324,7 +329,6 @@ public class vmfView {
         
         svmMenuFrame.setResizable(false);
         svmMenuFrame.setLayout(null);
-        //TODO: REVERT
         svmMenuFrame.setVisible(false);
         svmMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -756,7 +760,7 @@ public class vmfView {
      * Window that displays the test features of an rvm
      */
     public void testVMMenu(){
-        testVMFrame = new JFrame("Test Regular Vending Machine");
+        testVMFrame = new JFrame("Test Vending Machine");
 
         nameVMLbl = new JLabel("");
         itemNameLbl = new JLabel("Enter Item name: ");
@@ -1303,8 +1307,8 @@ public class vmfView {
         VMmaintenanceBackbtn = new JButton("Back");
         VMmaintenanceTransactionBtn = new JButton("Transactions");
 
-        VMmaintenanceBackbtn.setBounds(184, 100, 104, 63);
-        VMmaintenanceTransactionBtn.setBounds(517, 100, 104, 63);
+        VMmaintenanceBackbtn.setBounds(184, 80, 104, 40);
+        VMmaintenanceTransactionBtn.setBounds(517, 80, 104, 40);
 
         maintenanceFrameVM.add(VMmaintenanceBackbtn);
         maintenanceFrameVM.add(VMmaintenanceTransactionBtn);
@@ -1565,7 +1569,7 @@ public class vmfView {
         svmAddOnCaloriesLblMENU.setBounds(82, 229, 268, 30);
         svmAddOnQuantityLblMENU.setBounds(82, 292, 268, 30);
         svmAddOnPrepLblMENU.setBounds(82, 355, 268, 30);
-        svmAddOnStatusLblMENU.setBounds(280, 380, 268, 30);
+        svmAddOnStatusLblMENU.setBounds(341, 50, 268, 30);
 
         svmAddOnNameTxtMENU.setBounds(341, 77, 304, 54);
         svmAddOnPriceTxtMENU.setBounds(341, 145, 304, 54);
@@ -1720,10 +1724,16 @@ public class vmfView {
 
         svmAddItemsFrame.setResizable(false);
         svmAddItemsFrame.setLayout(null);
-
-        //TODO: REVERT BAC
         svmAddItemsFrame.setVisible(false);
         svmAddItemsFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    
+    public void setcustomSVMPriceLbl (String text){
+        this.customSVMPriceLbl.setText("P: " + text);
+    }
+
+    public void setcustomSVMCalLbl (String text){
+        this.customSVMCalLbl.setText("Cal: " + text);
     }
 
     public JFrame getsvmAddItemsFrame(){
@@ -1827,16 +1837,18 @@ public class vmfView {
 
     public void customSVMMenu(){
 
-        customSVMMenuFrame = new JFrame("Custom item"); 
+        customSVMMenuFrame = new JFrame("Custom Item"); 
         customSVMMenuFrame.setSize(700, 900);
 
-        customSVMNameLbl = new JLabel("Vending Machine name"); // change to reference to actual name of vending machine
+        customSVMNameLbl = new JLabel(""); // change to reference to actual name of vending machine
         customSVMmainsLbl = new JLabel("Main ingredients");
         customSVMaddOnsLbl = new JLabel("Add-ons");
         customSVMEnterIngredientLbl = new JLabel("Enter ingredient: ");
         customSVMAddMoneyLbl = new JLabel("Add Money");
         customSVMItemOrderLbl = new JLabel("Item Order: ");
         customSVMMoneyAddedLbl = new JLabel("Money Added: ");
+
+        customSVMLbl = new JLabel("");
         customSVMNameLbl.setBounds(35, 50, 130, 29);
         customSVMmainsLbl.setBounds(40, 110, 124, 29);
         customSVMaddOnsLbl.setBounds(243, 110, 124, 29);
@@ -1845,10 +1857,18 @@ public class vmfView {
         customSVMItemOrderLbl.setBounds(487, 330, 158, 28);
         customSVMMoneyAddedLbl.setBounds(377, 689, 139, 23);
         
+        customSVMLbl.setBounds(479, 109, 158, 28);
+
         customSVMMainsArea = new JTextArea();
         customSVMAddOnsArea = new JTextArea();
         customSVMIngredientsArea = new JTextArea();
         customSVMtotalPrice = new JTextArea();
+
+        customSVMMainsArea.setEditable(false);
+        customSVMAddOnsArea.setEditable(false);
+        customSVMIngredientsArea.setEditable(false);
+        customSVMtotalPrice.setEditable(false);
+
         customSVMMainsArea.setBounds(35, 131, 186, 534);
         customSVMAddOnsArea.setBounds(239, 131, 186, 534);
         customSVMIngredientsArea.setBounds(483, 359, 165, 308);
@@ -1856,6 +1876,15 @@ public class vmfView {
 
         customSVMIngredientTxt = new JTextField();
         customSVMIngredientTxt.setBounds(479, 165, 164, 69);
+
+        customSVMPriceLbl = new JLabel("P:");
+        customSVMCalLbl = new JLabel("Cal:");
+
+        customSVMMenuFrame.add(customSVMPriceLbl);
+        customSVMMenuFrame.add(customSVMCalLbl);
+
+        customSVMPriceLbl.setBounds(483, 670, 165, 28);
+        customSVMCalLbl.setBounds(600, 670, 165, 28);
 
         customSVMaddBtn = new JButton("Add");
         customSVMbuyBtn = new JButton("Buy");      
@@ -1877,6 +1906,7 @@ public class vmfView {
         customSVMbill50.setBounds(131, 793, 70, 65);
         customSVMbill100.setBounds(242, 793, 70, 65);
 
+        customSVMMenuFrame.add(customSVMLbl);
         customSVMMenuFrame.add(customSVMNameLbl);
         customSVMMenuFrame.add(customSVMmainsLbl);
         customSVMMenuFrame.add(customSVMaddOnsLbl);
@@ -1904,12 +1934,114 @@ public class vmfView {
         customSVMMenuFrame.setVisible(false);
     }
 
+    public void setcustomSVMLbl(String text) {
+        this.customSVMLbl.setText(text);
+    }
+
+    //vm name
+    public void setcustomSVMNameLbl (String text) {
+        this.customSVMNameLbl.setText(text);
+    }
+
+    //ingredients list
+    public void setcustomSVMMainsArea (String text) {
+        this.customSVMMainsArea.setText(text);
+    }
+
+    //addons list
+    public void setcustomSVMAddOnsArea (String text) {
+        this.customSVMAddOnsArea.setText(text);
+    }
+
+    //ingredients of custom item
+    public void setcustomSVMIngredientsArea (String text) {
+        this.customSVMIngredientsArea.setText(text);
+    }
+
+    //total price of custom item
+    public void setcustomSVMtotalPrice(String text) {
+        this.customSVMtotalPrice.setText(text);
+    }
+
+    //gets user input for ingredient
+    public String getcustomSVMIngredientTxt() {
+        return this.customSVMIngredientTxt.getText();
+    }
+
+    //user input text field
+    public void setcustomSVMIngredientTxt(String text) {
+        this.customSVMIngredientTxt.setText(text);
+    }
+
+    public void customSVMcoin1_Listener(ActionListener actionListener) {
+        this.customSVMcoin1.addActionListener(actionListener);
+    }
+
+    public void customSVMcoin5_Listener(ActionListener actionListener) {
+        this.customSVMcoin5.addActionListener(actionListener);
+    }
+
+    public void customSVMcoin10_Listener(ActionListener actionListener) {
+        this.customSVMcoin10.addActionListener(actionListener);
+    }
+
+    public void customSVMbill20_Listener(ActionListener actionListener) {
+        this.customSVMbill20.addActionListener(actionListener);
+    }
+
+    public void customSVMbill50_Listener(ActionListener actionListener) {
+        this.customSVMbill50.addActionListener(actionListener);
+    }
+
+    public void customSVMbill100_Listener(ActionListener actionListener) {
+        this.customSVMbill100.addActionListener(actionListener);
+    }
+
     public JFrame getcustomSVMMenuFrame(){
         return customSVMMenuFrame;
     }
 
+    public void customSVMbuyBtn_Listener(ActionListener actionListener) {
+        this.customSVMbuyBtn.addActionListener(actionListener);
+    }
+
+    public void customSVMaddBtn_Listener(ActionListener actionListener) {
+        this.customSVMaddBtn.addActionListener(actionListener);
+    }
+    
     public void setcustomSVMreturnBtn_Listener(ActionListener actionLister){
         this.customSVMreturnBtn.addActionListener(actionLister);
+    }
+
+    public void svmChoice(){
+        svmChoiceMenu = new JFrame("SVM choice");
+
+        customBtn = new JButton("Make a custom item");
+        indivBtn = new JButton("Order individual item");
+        
+
+        svmChoiceMenu.setSize(700, 900);
+        svmChoiceMenu.setResizable(false);
+        svmChoiceMenu.setLayout(null);
+        customBtn.setBounds(120, 274, 460, 157);
+        indivBtn.setBounds(120, 469, 460, 157);
+
+        svmChoiceMenu.add(customBtn);
+        svmChoiceMenu.add(indivBtn);
+        svmChoiceMenu.setVisible(false);
+        svmChoiceMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public JFrame getsvmChoiceMenu(){
+        return this.svmChoiceMenu;
+    }
+
+    public void customBtn_Listener(ActionListener actionListener) {
+        this.customBtn.addActionListener(actionListener);
+    }
+
+    public void indivBtn_Listener(ActionListener actionListener) {
+        this.indivBtn.addActionListener(actionListener);
     }
 }
 
