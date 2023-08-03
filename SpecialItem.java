@@ -7,8 +7,8 @@
 import java.util.ArrayList;
 
 public class SpecialItem extends Item{
-    ArrayList<Item> ingredients;
-    Item baseIngredient;
+    private ArrayList<Item> ingredients;
+    private Item baseIngredient;
     
     /**
      * Creates a special item object

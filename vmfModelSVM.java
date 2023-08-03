@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class vmfModelSVM extends vmfModelVM {
-    ItemSlot[] addOnSlotList;
-    String[] prepItemList;
-    String[] prepAddOnList;
-    int numAddOn;
-    int numAddOnCreated;
-    SpecialItem customItem;
+    private ItemSlot[] addOnSlotList;
+    private String[] prepItemList;
+    private String[] prepAddOnList;
+    private int numAddOn;
+    private int numAddOnCreated;
+    private SpecialItem customItem;
     
     /**
      * makes a svm object
@@ -267,5 +267,54 @@ public class vmfModelSVM extends vmfModelVM {
      */
     public String[] getPrepAddOnSlotList(){
         return this.prepAddOnList;
+    }
+
+    @Override
+    public String getInventoryList() {
+        StringBuilder temp = new StringBuilder();
+
+        temp.append("Items: \n");
+        for (int i = 0; i < slotList.length; i++){
+            temp.append( (i+1) + ". " + slotList[i].getItem().getName() + " - " + 
+            slotList[i].getItem().getPrice() + "Php - " + slotList[i].getQuantity(maxItems) + " pcs\n");
+        }
+
+        temp.append("\nAdd-ons: \n");
+        for (int i = 0; i < addOnSlotList.length; i++) {
+            temp.append( (i+1) + ". " + addOnSlotList[i].getItem().getName() + " - " + 
+            addOnSlotList[i].getItem().getPrice() + "Php - " + addOnSlotList[i].getQuantity(maxItems) + " pcs\n");
+        }
+
+        return temp.toString();
+    }
+
+    public String getAddOnList(){
+        StringBuilder temp = new StringBuilder();
+        temp.append("\nAdd-ons: \n");
+        for (int i = 0; i < addOnSlotList.length; i++) {
+            temp.append( (i+1) + ". " + addOnSlotList[i].getItem().getName() + " - " + 
+            addOnSlotList[i].getItem().getPrice() + "Php - " + addOnSlotList[i].getQuantity(maxItems) + " pcs\n");
+        }
+
+        return temp.toString();
+    }
+
+    @Override
+    public void createTransaction(String name){
+        int price = 0, index = -1;
+        for (int i = 0; i < slotList.length; i++) {
+            if (name.equals(slotList[i].getItem().getName()) == true) {
+                price = slotList[index].getItem().getPrice();
+            }
+        }
+
+        for (int i = 0; i < addOnSlotList.length; i++) {
+            if (name.equals(addOnSlotList[i].getItem().getName()) == true) {
+                price = addOnSlotList[index].getItem().getPrice();
+            }
+        }
+        
+        Transactions transaction = new Transactions(name, price);
+        transactionList.add(transaction);
     }
 }
