@@ -12,6 +12,8 @@ public class vmfModelSVM extends vmfModelVM {
     private String[] prepItemList;
     private String[] prepAddOnList;
     private int numAddOn;
+    
+
     private int numAddOnCreated;
     private SpecialItem customItem;
     
@@ -56,7 +58,10 @@ public class vmfModelSVM extends vmfModelVM {
     public int getNumAddOnCreated(){
         return this.numAddOnCreated;
     }
-
+    
+    public int getNumAddOn() {
+        return numAddOn;
+    }
     /**
      * adds one to numberofaddons created
      */

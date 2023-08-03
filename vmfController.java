@@ -50,12 +50,13 @@ public class vmfController {
                         vmfView.setVMupdateLbl(vmfModel.vmList.get(i).getName());
                         found = 1;
                         index = i;
-                        if (vmfModel.vmList.get(index) instanceof vmfModelSVM) {
+                        if (vmfModel.vmList.get(index) instanceof vmfModelSVM) { //if vm is an svm 
                             vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(i);
                             //TODO: INSERT ASSIGNMENT OF ITEMS AND ADDONS HERE
-
-                        } else {
+                            vmfView.setStatus(vmfView.getVmListFrame(), false);
+                            vmfView.setStatus(vmfView.getcustomSVMMenuFrame(), true);
                             
+                        } else { //if vm is a vm 
                             for (int j = 0; j < vmfModel.vmList.get(index).getSlotList().length; j++) {
                                 switch(j) {
                                     case 0:
@@ -194,6 +195,15 @@ public class vmfController {
                 }   
             }
         });
+
+        this.vmfView.setcustomSVMreturnBtn_Listener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0){
+                vmfView.setStatus(vmfView.getcustomSVMMenuFrame(), false);
+                vmfView.setStatus(vmfView.getFirstMenu(), true);
+
+            }
+        });
+        
         //TODO: SVM MAINTENANCE
         this.vmfView.setVMMtBtn_Listener(new ActionListener() { //Perform Maintenance VM and SVM
             public void actionPerformed(ActionEvent arg0) {
@@ -205,6 +215,16 @@ public class vmfController {
 
                         if (vmfModel.vmList.get(i) instanceof vmfModelSVM) {  //SVM MAINTENANCE
                             //TODO: SVM MAINTENANCE
+                            vmfView.setNameVMLbl(vmfModel.vmList.get(i).getName());
+                            vmfView.getFirstMenu().revalidate();
+                            vmfView.getFirstMenu().repaint();
+
+                            vmfView.setVMtotalMoneyLblTxt(String.valueOf(vmfModel.vmList.get(i).getMoneyBox().getTotalMoney()));
+                            vmfView.setVMslotListTxt(vmfModel.vmList.get(i).getInventoryList());
+
+                            vmfView.setStatus(vmfView.getVmListFrame(), false);
+                            vmfView.setStatus(vmfView.getMaintenanceFrameVM(), true);
+                        }
 
                         } else { //RVM MAINTENANCE
                             vmfView.setNameVMLbl(vmfModel.vmList.get(i).getName());
@@ -219,7 +239,7 @@ public class vmfController {
                         }
                         
                     }   
-                }
+                
                 if (found == -1) {
                     vmfView.setVMupdateLbl("Vending Machine not found!");
                     vmfView.getFirstMenu().revalidate();
@@ -333,7 +353,7 @@ public class vmfController {
                 if (Integer.parseInt(vmfView.getRVMMaxItemTxt()) <= 0 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) < 0) {
                     vmfView.setVMspecsLbl("Only positive values!");
 
-                } else if (Integer.parseInt(vmfView.getRVMSlotNumTxt()) < 8 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 10) {
+                } else if (Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 10 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 10) { //TODO revert other >10 to < 8
                     vmfView.setVMspecsLbl("Only 8-10 slots are allowed!");
                     
                 } else if (vmfView.getRVMNameTxt().equals("")) {
@@ -409,6 +429,7 @@ public class vmfController {
         this.vmfView.setAddBtnVM_Listener(new ActionListener() {//Button that sets and adds item to the rvm machine
             public void actionPerformed(ActionEvent arg0) {      
                 int vmIndex = 0; 
+                int found = 0;
                 if (vmfView.getItemNameTxt().equals("") || Integer.parseInt(vmfView.getItemPriceTxt()) <= 0 || 
                 Integer.parseInt(vmfView.getItemCaloriesTxt()) <= 0) {
                     vmfView.setitemStatusLbl("Check your values!");
@@ -423,54 +444,194 @@ public class vmfController {
                         itemList[j] = tempItem; 
                     }
                     ItemSlot temp = new ItemSlot(itemList, tempItem);
-                    vmfModel.vmList.get(vmIndex).getSlotList()[vmfModel.vmList.get(vmIndex).getNumItems()] = temp;
-    
-                    boolean flag = (vmfModel.vmList.get(vmIndex).getSlotList()[vmfModel.vmList.get(vmIndex).getNumItems()] != null);
-                    if (flag) {
-                        vmfView.setitemStatusLbl("Item added!");
-                        vmfModel.vmList.get(vmIndex).incrementNumItems();
-                        vmfView.clearItemTxt();
-
-                        if (vmfModel.vmList.get(vmIndex).slotList.length == vmfModel.vmList.get(vmIndex).getNumItems()) {
-                            vmfView.setVisibleNextBtnVM(true);
-                            vmfView.setVisibleAddBtnVM(false);
-                            vmfView.getAddItemFrame().revalidate();
-                            vmfView.getAddItemFrame().repaint();
+                    if(vmfModelVM.getSlotList().length > 0){
+                            for (int i = 0; i < vmfModelVM.getSlotList().length; i++) {
+                                if (vmfModelVM.getSlotList()[i] != null){
+                                    if (vmfModelVM.getSlotList()[i].getItem().getName().equals(vmfView.getItemNameTxt().trim())) {
+                                    found = 1;
+                                    }
+                                }
+                            }
                         }
-                    } else {
-                        vmfView.setitemStatusLbl("Item adding failed :(");
+                        
+                    if (found == 1)
+                        vmfView.setitemStatusLbl("Item name already exists!");
+                    else{
+                        vmfModel.vmList.get(vmIndex).getSlotList()[vmfModel.vmList.get(vmIndex).getNumItems()] = temp;
+    
+                        boolean flag = (vmfModel.vmList.get(vmIndex).getSlotList()[vmfModel.vmList.get(vmIndex).getNumItems()] != null);
+                        if (flag) {
+                            vmfView.setitemStatusLbl("Item added!");
+                            vmfModel.vmList.get(vmIndex).incrementNumItems();
+                            vmfView.clearItemTxt();
+
+                            if (vmfModel.vmList.get(vmIndex).slotList.length == vmfModel.vmList.get(vmIndex).getNumItems()) {
+                                vmfView.setVisibleNextBtnVM(true);
+                                vmfView.setVisibleAddBtnVM(false);
+                                vmfView.getAddItemFrame().revalidate();
+                                vmfView.getAddItemFrame().repaint();
+                            }
+                        } else {
+                            vmfView.setitemStatusLbl("Item adding failed :(");
+                        }
                     }
                 }
             }
         });   
         
-        //TODO: UNFINISHED FUNCTION
+        //TODO: FINISHED FUNCTION(?)
         this.vmfView.svmAddBtnSVMMENUItem_Listener(new ActionListener() {//Button that sets and adds item to the svm
             public void actionPerformed(ActionEvent arg0) {
+                int vmIndex = 0;
+                int found = 0;
                 if (vmfView.getsvmItemNameTxtMENU().isEmpty() || vmfView.getsvmItemPriceTxtMENU().isEmpty() ||
                 vmfView.getsvmItemCaloriesTxtMENU().isEmpty() || vmfView.getsvmItemQuantityTxtMENU().isEmpty() ||
                 vmfView.getsvmItemPrepTxtMENU().isEmpty()) {
-                    vmfView.setsvmItemStatusLblMENU("All Fields must be filled!");
+                vmfView.setsvmItemStatusLblMENU("All Fields must be filled!");
                 } else {
+                    vmIndex = vmfModel.getVmIndex(vmfView.getsvmMenuNameTxt());//TODO 
                     String itemName = vmfView.getsvmItemNameTxtMENU();
                     int itemPrice = Integer.parseInt(vmfView.getsvmItemPriceTxtMENU());
                     int itemCalories = Integer.parseInt(vmfView.getsvmItemCaloriesTxtMENU());
                     int itemQty = Integer.parseInt(vmfView.getsvmItemQuantityTxtMENU());
                     String itemPrep = vmfView.getsvmItemPrepTxtMENU();
-                
+
+                    
+                    //(vmfModelSVM) vmfModel.vmList.get(vmIndex).getPrepItemList()[vmfModel.vmList.get(vmIndex).getNumItems()] = ;                
                     if (itemPrice <= 0 || itemCalories <= 0 || itemQty <= 0) {
                         vmfView.setsvmItemStatusLblMENU("Only Positive values!");
                     } else {
-                        for (int i = 0; i < vmfModelSVM.getSlotList().length; i++) {
-                            if (vmfModelSVM.getSlotList()[i].getItem().getName().equals(itemName)) {
-
+                        if(vmfModelSVM.getSlotList().length > 0){
+                            for (int i = 0; i < vmfModelSVM.getSlotList().length; i++) {
+                                if (vmfModelSVM.getSlotList()[i] != null){
+                                    if (vmfModelSVM.getSlotList()[i].getItem().getName().equals(itemName)) {
+                                    found = 1;
+                                    }
+                                }
                             }
-                        } 
+                        }
+                        
+                        if (found == 1)
+                            vmfView.setsvmItemStatusLblMENU("Item name already exists!");
+                        else{
+                            Item tempItem = new Item(itemName, itemCalories, itemPrice);
+                            Item[] itemList = new Item[vmfModelSVM.getMaxItems()];
+                            for(int j = 0; j < itemQty; j++){
+                                itemList[j] = tempItem;
+                            }
+                            ItemSlot temp = new ItemSlot(itemList, tempItem);
+                            vmfModel.vmList.get(vmIndex).getSlotList()[vmfModel.vmList.get(vmIndex).getNumItems()] = temp;
+                            if(vmfModel.vmList.get(vmIndex) instanceof vmfModelSVM){
+                                vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(vmIndex);
+                                svmObject.getPrepItemList()[vmfModel.vmList.get(vmIndex).getNumItems()] = itemPrep;
+                            }
+
+                            boolean flag = (vmfModel.vmList.get(vmIndex).getSlotList()[vmfModel.vmList.get(vmIndex).getNumItems()] != null);
+                            if (flag) {
+                                vmfView.setsvmItemStatusLblMENU("Item added!");
+                                vmfModel.vmList.get(vmIndex).incrementNumItems();
+                                vmfView.clearSVMItemTxt();
+
+                                if (vmfModel.vmList.get(vmIndex).slotList.length == vmfModel.vmList.get(vmIndex).getNumItems()) {
+                                    vmfView.setsvmNextBtnSVMMENUItem(true);
+                                    vmfView.setsvmAddBtnSVMMENUItem(false);
+                                    vmfView.getsvmAddItemsFrame().revalidate();
+                                    vmfView.getsvmAddItemsFrame().repaint();
+                                    }
+                                } else {
+                                    vmfView.setsvmItemStatusLblMENU("Item adding failed :(");
+                                }
+                        }
                     }
                 } 
             }
         });
 
+        this.vmfView.svmNextBtnSVMMENUItem_Listener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0){
+                vmfView.setStatus(vmfView. getsvmAddItemsFrame(), false);
+                vmfView.setStatus(vmfView.getsvmAddAddOnFrame(), true);
+            }
+        });
+
+        this.vmfView.addOnsvmAddBtnSVMMENU_Listener(new ActionListener() {//Button that sets and adds add-ons to the svm
+            public void actionPerformed(ActionEvent arg0) {
+                int vmIndex = 0;
+                int found = 0;
+                if (vmfView.getsvmAddOnNameTxtMENU().isEmpty() || vmfView.getsvmAddOnPriceTxtMENU().isEmpty() ||
+                vmfView.getsvmAddOnCaloriesTxtMENU().isEmpty() || vmfView.getsvmAddOnQuantityTxtMENU().isEmpty() ||
+                vmfView.getsvmAddOnPrepTxtMENU().isEmpty()) {
+                vmfView.setsvmAddOnStatusLblMENU("All Fields must be filled!"); //TODO add the method to view
+                } else {
+                    vmIndex = vmfModel.getVmIndex(vmfView.getsvmMenuNameTxt());//TODO 
+                    String AddOnName = vmfView.getsvmAddOnNameTxtMENU();
+                    int AddOnPrice = Integer.parseInt(vmfView.getsvmAddOnPriceTxtMENU());
+                    int AddOnCalories = Integer.parseInt(vmfView.getsvmAddOnCaloriesTxtMENU());
+                    int AddOnQty = Integer.parseInt(vmfView.getsvmAddOnQuantityTxtMENU());
+                    String AddOnPrep = vmfView.getsvmAddOnPrepTxtMENU();
+
+                    
+                    //(vmfModelSVM) vmfModel.vmList.get(vmIndex).getPrepItemList()[vmfModel.vmList.get(vmIndex).getNumItems()] = ;                
+                    if (AddOnPrice <= 0 || AddOnCalories <= 0 || AddOnQty <= 0) {
+                        vmfView.setsvmAddOnStatusLblMENU("Only Positive values!");
+                    } else {
+                        if(vmfModelSVM.getAddOnSlotList().length > 0){
+                            for (int i = 0; i < vmfModelSVM.getAddOnSlotList().length; i++) {
+                                if (vmfModelSVM.getAddOnSlotList()[i] != null){
+                                    if (vmfModelSVM.getAddOnSlotList()[i].getItem().getName().equals(AddOnName)) {
+                                    found = 1;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if (found == 1)
+                            vmfView.setsvmAddOnStatusLblMENU("Add-on name already exists!");
+                        else{
+                            Item tempAddOn= new Item(AddOnName, AddOnCalories, AddOnPrice);
+                            Item[] itemList = new Item[vmfModelSVM.getMaxItems()];
+                            for(int j = 0; j < AddOnQty; j++){
+                                itemList[j] = tempAddOn;
+                            }
+                            ItemSlot temp = new ItemSlot(itemList, tempAddOn);
+                            //vmfModel.vmList.get(vmIndex).getAddOnSlotList()[vmfModel.vmList.get(vmIndex).getNumItems()] = temp; //TODO check if correct
+                            if(vmfModel.vmList.get(vmIndex) instanceof vmfModelSVM){
+                                vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(vmIndex);
+                                svmObject.getAddOnSlotList()[svmObject.getNumAddOn() - 1] = temp; //switch to here, tried -1 need to check tho
+                                svmObject.getPrepItemList()[svmObject.getNumAddOn() -1] = AddOnPrep;
+                                boolean flag = (svmObject.getAddOnSlotList()[svmObject.getNumAddOn() - 1] != null);
+                                if (flag) {
+                                vmfView.setsvmAddOnStatusLblMENU("Add-on added!");
+
+                                svmObject.incrementNumAddOnCreated();
+                                vmfView.clearSVMAddOnTxt();
+
+                                if (svmObject.getAddOnSlotList().length == svmObject.getNumAddOn()) {
+                                    vmfView.setVisiblesvmNextBtnSVMMENU(true);
+                                    vmfView.setVisibleaddOnsvmAddBtnSVMMENU(false);
+                                    vmfView.getsvmAddAddOnFrame().revalidate();
+                                    vmfView.getsvmAddAddOnFrame().repaint();
+                                    
+                                    System.out.println(svmObject.getAddOnList());
+                                    }
+                                } else {
+                                    vmfView.setsvmAddOnStatusLblMENU("Add-on adding failed :(");
+                                }
+                            }
+
+                            
+                        }
+                    }
+                } 
+            }
+        });
+
+        this.vmfView.addOnsvmNextBtnSVMMENU_Listener(new ActionListener() { //Button that redirects to main frame when creation of rvm is done
+            public void actionPerformed(ActionEvent arg0) {
+                vmfView.setStatus(vmfView.getsvmAddAddOnFrame(), false);  
+                vmfView.setStatus(vmfView.getFirstMenu(), true); 
+            }
+        });
         this.vmfView.setNextBtnVM_Listener(new ActionListener() { //Button that redirects to main frame when creation of rvm is done
             public void actionPerformed(ActionEvent arg0) {
                 vmfView.setStatus(vmfView.getAddItemFrame(), false);  
