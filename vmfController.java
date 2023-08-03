@@ -681,7 +681,7 @@ public class vmfController {
                 if (Integer.parseInt(vmfView.getRVMMaxItemTxt()) <= 0 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) < 0) {
                     vmfView.setVMspecsLbl("Only positive values!");
 
-                } else if (Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 10 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 10) { 
+                } else if (Integer.parseInt(vmfView.getRVMSlotNumTxt()) < 8 || Integer.parseInt(vmfView.getRVMSlotNumTxt()) > 10) { 
                     //TODO revert other >10 to < 8
                     vmfView.setVMspecsLbl("Only 8-10 slots are allowed!");
                     
@@ -731,7 +731,7 @@ public class vmfController {
                     if (tempSlotNum <= 0 || tempAddOnNum <= 0 || tempMax <= 0)
                         vmfView.setsvmMenuCheckLbl("Only positive values!");
                         //TODO: PUT BACK
-                    //else if (tempSlotNum < 8 || tempAddOnNum < 8 || tempSlotNum > 10 || tempAddOnNum > 10) vmfView.setsvmMenuCheckLbl("Only 8-10 slots are allowed!");
+                    else if (tempSlotNum < 8 || tempAddOnNum < 8 || tempSlotNum > 10 || tempAddOnNum > 10) vmfView.setsvmMenuCheckLbl("Only 8-10 slots are allowed!");
                         
                     else {
                         vmfModelSVM = new vmfModelSVM(tempName, tempSlotNum, tempMax, tempAddOnNum, customName);
