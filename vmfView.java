@@ -88,8 +88,15 @@ public class vmfView {
     private JButton customSVMaddBtn, customSVMbuyBtn, customSVMreturnBtn;
     private JButton customSVMcoin1, customSVMcoin5, customSVMcoin10, customSVMbill20, customSVMbill50, customSVMbill100;
 
-    JButton customBtn, indivBtn;
-    JFrame svmChoiceMenu;
+    private JButton customBtn, indivBtn;
+    private JFrame svmChoiceMenu;
+
+    private JFrame baseMenuFrame;
+
+    private JLabel enterBaseLbl, ingredientsSectionLbl, baseMenuStatusLbl;
+    private JTextField enterBaseIngredientTxt;
+    private JTextArea baseIngredientsTextArea;
+    private JButton baseNextBtn;
 
     /**
      * Function that displays all Frames
@@ -108,6 +115,7 @@ public class vmfView {
         svmAddAddOnsMenu();
         customSVMMenu();
         svmChoice();
+        baseMenu();
     }
 
     /**
@@ -2042,6 +2050,59 @@ public class vmfView {
 
     public void indivBtn_Listener(ActionListener actionListener) {
         this.indivBtn.addActionListener(actionListener);
+    }
+
+    public void baseMenu(){
+        
+        baseMenuFrame = new JFrame("Base ingredient");
+
+        enterBaseLbl = new JLabel("Enter base item: ");
+        ingredientsSectionLbl = new JLabel("Ingredients");
+        enterBaseIngredientTxt = new JTextField();
+        baseIngredientsTextArea = new JTextArea("");
+        baseNextBtn = new JButton("Next ->");
+        baseMenuStatusLbl = new JLabel("");
+
+        baseMenuFrame.setSize(700, 900);
+        enterBaseLbl.setBounds(75, 66, 202, 34);
+        ingredientsSectionLbl.setBounds(320, 120, 242, 34);
+        enterBaseIngredientTxt.setBounds(293, 44, 331, 62);
+        baseIngredientsTextArea.setBounds(75, 148, 549, 500);
+        baseNextBtn.setBounds(265, 700, 200, 50);
+        baseMenuStatusLbl.setBounds(300, 650,242, 34 );
+        baseIngredientsTextArea.setEditable(false);
+
+        baseMenuFrame.add(enterBaseLbl);
+        baseMenuFrame.add(ingredientsSectionLbl);
+        baseMenuFrame.add(enterBaseIngredientTxt);
+        baseMenuFrame.add(baseIngredientsTextArea);
+        baseMenuFrame.add(baseNextBtn);
+        baseMenuFrame.add(baseMenuStatusLbl);
+
+        baseMenuFrame.setResizable(false);
+        baseMenuFrame.setLayout(null);
+        baseMenuFrame.setVisible(false);
+        baseMenuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void setbaseNextBtn_Listener(ActionListener actionListener){
+        this.baseNextBtn.addActionListener(actionListener);
+    }
+
+    public void setbaseIngredientsTextArea(String string){
+        this.baseIngredientsTextArea.setText(string);
+    }
+
+    public String getenterBaseIngredientTxt(){
+        return enterBaseIngredientTxt.getText();
+    }
+
+    public void setbaseMenuStatusLbl(String string){
+        this.baseMenuStatusLbl.setText(string);
+    }
+    
+    public JFrame getbaseMenuFrame(){
+        return baseMenuFrame;
     }
 }
 

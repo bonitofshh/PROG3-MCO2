@@ -17,6 +17,7 @@ public class SpecialItem extends Item{
     public SpecialItem (String name){
         super(name, 0, 0);
         ingredients = new ArrayList<Item>();
+        baseIngredient = new Item();
     }
 
     /**
@@ -49,6 +50,9 @@ public class SpecialItem extends Item{
         return this.baseIngredient;
     }
 
+    public void setBaseIngredient(Item baseIngredient){
+        this.baseIngredient = baseIngredient;
+    }
     /**
      * resets custom item's price and calories
      */

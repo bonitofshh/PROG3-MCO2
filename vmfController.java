@@ -203,15 +203,15 @@ public class vmfController {
                 if (vmfModel.vmList.get(vmIndex) instanceof vmfModelSVM) {
                     vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(vmIndex);
                     
-                    /* 
+                    
                     if (svmObject.customItem.getBaseIngredient() != null) { 
                         temp = svmObject.getCustomItem().getBaseIngredient();
 
                         for (int i = 0; i < svmObject.getSlotList().length; i++) {
                             if (svmObject.getSlotList()[i].getItem().equals(temp) 
                             && svmObject.getSlotList()[i].getQuantity(svmObject.getMaxItems()) > 0) {
-                                //svmObject.getCustomItem().addIngredient(temp);
-
+                                svmObject.getCustomItem().addIngredient(temp);
+                                svmObject.getSlotList()[i].removeOneStock(svmObject.getSlotList()[i].getItemList(), svmObject.maxItems);
                                 vmfView.setcustomSVMNameLbl(svmObject.getName());
                                 vmfView.setcustomSVMMainsArea(svmObject.printItemList());
                                 vmfView.setcustomSVMAddOnsArea(svmObject.printAddOnList());
@@ -223,8 +223,8 @@ public class vmfController {
                                 vmfView.setStatus(vmfView.getsvmChoiceMenu(), false);
                                 vmfView.setStatus(vmfView.getcustomSVMMenuFrame(), true);
                             }
-                        }*/
-                    
+                        }
+                    /* 
                     //TODO: DELETE WHEN BASE INGREDIENT DONE
                     vmfView.setcustomSVMNameLbl(svmObject.getName());
                     vmfView.setcustomSVMMainsArea(svmObject.printItemList());
@@ -235,8 +235,8 @@ public class vmfController {
                     vmfView.getcustomSVMMenuFrame().repaint(); 
 
                     vmfView.setStatus(vmfView.getsvmChoiceMenu(), false);
-                    vmfView.setStatus(vmfView.getcustomSVMMenuFrame(), true);
-                    //}  
+                    vmfView.setStatus(vmfView.getcustomSVMMenuFrame(), true);*/
+                    }  
                 }   
             }
         });
@@ -257,6 +257,7 @@ public class vmfController {
                                 vmfView.getcustomSVMMenuFrame().revalidate();
                                 vmfView.getcustomSVMMenuFrame().repaint();
                             } else {
+                                
                                 svmObject.getSlotList()[i].removeOneStock(svmObject.getSlotList()[i].getItemList(), svmObject.maxItems);
                                 svmObject.getCustomItem().addIngredient(svmObject.getSlotList()[i].getItem());
                                 vmfView.setcustomSVMMainsArea(svmObject.printItemList());
@@ -322,9 +323,14 @@ public class vmfController {
                         svmObject.dispenseCustomChange();
 
                         vmfView.setcustomSVMtotalPrice("");
+                        vmfView.setcustomSVMPriceLbl("0");
+                        vmfView.setcustomSVMCalLbl("0");
                         vmfView.setRVMtextArea(svmObject.preparationStrings());
                         vmfView.setcustomSVMIngredientsArea("");
                         vmfView.setStatus(vmfView.getDispenseRVMItemFrame(), true);
+                    }
+                    else{
+                        vmfView.setcustomSVMLbl("Not enough change!");
                     }
                 }
             }
@@ -951,10 +957,14 @@ public class vmfController {
             }
         });
 
-        this.vmfView.addOnsvmNextBtnSVMMENU_Listener(new ActionListener() { //Button that redirects to main frame when creation of svm is done
+        this.vmfView.addOnsvmNextBtnSVMMENU_Listener(new ActionListener() { //Button that goes to base ingredient when creation of svm is done
             public void actionPerformed(ActionEvent arg0) {
+                int vmIndex = vmfModel.getVmIndex(vmfView.getsvmMenuNameTxt());
+                vmfView.setbaseIngredientsTextArea(vmfModel.vmList.get(vmIndex).getItemList());
                 vmfView.setStatus(vmfView.getsvmAddAddOnFrame(), false);  
-                vmfView.setStatus(vmfView.getFirstMenu(), true); 
+                vmfView.setStatus(vmfView.getbaseMenuFrame(), true); 
+                
+
             }
         });
         
@@ -1278,6 +1288,28 @@ public class vmfController {
             }
         });
 
-
+        
+        this.vmfView.setbaseNextBtn_Listener(new ActionListener(){
+            public void actionPerformed(ActionEvent arg0){
+                int vmIndex = vmfModel.getVmIndex(vmfView.getsvmMenuNameTxt());
+                String name = vmfView.getenterBaseIngredientTxt();
+                for(int j = 0; j < vmfModel.vmList.get(vmIndex).getSlotList().length; j++){
+                    if(name.equals(vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem().getName())){
+                        if (vmfModel.vmList.get(vmIndex) instanceof vmfModelSVM) {
+                        Item temp = vmfModel.vmList.get(vmIndex).getSlotList()[j].getItem();
+                        System.out.println(temp.getName());
+                        vmfModelSVM svmObject = (vmfModelSVM) vmfModel.vmList.get(vmIndex);
+                        svmObject.customItem.setBaseIngredient(temp);
+                        System.out.println(svmObject.getCustomItem().getBaseIngredient().getName()); //TODO
+                        vmfView.setStatus(vmfView.getbaseMenuFrame(), false);
+                        vmfView.setStatus(vmfView.getFirstMenu(), true);
+                        }
+                    }
+                    else{
+                        vmfView.setbaseMenuStatusLbl("Item not found!");
+                    }
+                }
+            }
+        });
     }
 }
